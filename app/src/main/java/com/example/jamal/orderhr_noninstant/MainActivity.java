@@ -50,7 +50,9 @@ public class MainActivity extends Activity
         implements EasyPermissions.PermissionCallbacks {
     GoogleAccountCredential mCredential;
     private TextView mOutputText;
+
     private Button mCallApiButton;
+    private Button mCallApiButton2;
     ProgressDialog mProgress;
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
@@ -93,6 +95,18 @@ public class MainActivity extends Activity
             }
         });
         activityLayout.addView(mCallApiButton);
+        mCallApiButton2 = new Button(this);
+        mCallApiButton2.setText(BUTTON_TEXT);
+        mCallApiButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallApiButton2.setEnabled(false);
+                mOutputText.setText("");
+                gotostuff();
+                mCallApiButton2.setEnabled(true);
+            }
+        });
+        activityLayout.addView(mCallApiButton2);
 
         mOutputText = new TextView(this);
         mOutputText.setLayoutParams(tlp);
@@ -247,6 +261,10 @@ public class MainActivity extends Activity
         // Do nothing.
     }
 
+    public void gotostuff(){
+        Intent swapper = new Intent(this,QRHandlerActivity.class);
+        startActivity(swapper);
+    }
     /**
      * Callback for when a permission is denied using the EasyPermissions
      * library.
