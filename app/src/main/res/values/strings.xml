@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">OrderHR_NonInstant</string>
+
+    //all lesson start times
+    <string name="timeslot_one">08:30</string>
+    <string name="timeslot_two">09:20</string>
+    <string name="timeslot_three">10:30</string>
+    <string name="timeslot_four">11:20</string>
+    <string name="timeslot_five">12:10</string>
+    <string name="timeslot_six">13:00</string>
+    <string name="timeslot_seven">13:50</string>
+    <string name="timeslot_eight">15:00</string>
+    <string name="timeslot_nine">15:50</string>
+    <string name="timeslot_ten">17:00</string>
+    <string name="timeslot_eleven">17:50</string>
+    <string name="timeslot_twelve">18:40</string>
+    <string name="timeslot_thirteen">19:30</string>
+    <string name="timeslot_fourteen">20:20</string>
+    <string name="timeslot_fifteen">21:10</string>
+
+    //the two pauses in our schedule
+    <string name="pause_one">10:10</string>
+    <string name="pause_two">14:40</string>
+
+    //days of our workweek
+    <string name="day_mon">mon</string>
+    <string name="day_tue">tue</string>
+    <string name="day_wed">wed</string>
+    <string name="day_thu">thu</string>
+    <string name="day_fri">fri</string>
 </resources>
