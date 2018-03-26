@@ -40,7 +40,7 @@
 
     </TableRow>
 
-    <TableRow android:id="@+id/timeslot_one">
+    <TableRow android:id="@+id/timeslot_1">
 
 
         <TextView
@@ -50,7 +50,7 @@
 
     </TableRow>
 
-    <TableRow android:id="@+id/timeslot_two">
+    <TableRow android:id="@+id/timeslot_2">
 
         <TextView
             android:layout_column="0"
@@ -58,7 +58,7 @@
             android:text="@string/timeslot_two" />
     </TableRow>
 
-    <TableRow android:id="@+id/pause_one">
+    <TableRow android:id="@+id/pause_1">
 
         <TextView
             android:layout_column="0"
@@ -70,7 +70,7 @@
         android:layout_height="2dip"
         android:background="#FF909090" />
 
-    <TableRow android:id="@+id/timeslot_three">
+    <TableRow android:id="@+id/timeslot_3">
 
         <TextView
             android:layout_column="0"
@@ -78,7 +78,7 @@
             android:text="@string/timeslot_three" />
     </TableRow>
 
-    <TableRow android:id="@+id/timeslot_four">
+    <TableRow android:id="@+id/timeslot_4">
 
         <TextView
             android:padding="3dip"
@@ -89,7 +89,7 @@
         android:layout_height="2dip"
         android:background="#FF909090" />
 
-    <TableRow android:id="@+id/timeslot_five">
+    <TableRow android:id="@+id/timeslot_5">
 
         <TextView
             android:padding="3dip"
@@ -97,7 +97,7 @@
 
     </TableRow>
 
-    <TableRow android:id="@+id/timeslot_six">
+    <TableRow android:id="@+id/timeslot_6">
 
         <TextView
             android:layout_column="0"
@@ -109,7 +109,7 @@
         android:layout_height="2dip"
         android:background="#FF909090" />
 
-    <TableRow android:id="@+id/timeslot_seven">
+    <TableRow android:id="@+id/timeslot_7">
 
         <TextView
             android:layout_column="0"
@@ -118,7 +118,7 @@
     </TableRow>
 
 
-    <TableRow android:id="@+id/timeslot_eight">
+    <TableRow android:id="@+id/timeslot_8">
 
         <TextView
             android:layout_column="0"
@@ -126,7 +126,7 @@
             android:text="@string/timeslot_eight" />
     </TableRow>
 
-    <TableRow android:id="@+id/pause_two">
+    <TableRow android:id="@+id/pause_2">
 
         <TextView
             android:layout_column="0"
@@ -138,7 +138,7 @@
         android:layout_height="2dip"
         android:background="#FF909090" />
 
-    <TableRow android:id="@+id/timeslot_nine">
+    <TableRow android:id="@+id/timeslot_9">
 
         <TextView
             android:layout_column="0"
@@ -146,7 +146,7 @@
             android:text="@string/timeslot_nine" />
     </TableRow>
 
-    <TableRow android:id="@+id/timeslot_ten">
+    <TableRow android:id="@+id/timeslot_10">
 
         <TextView
             android:layout_column="0"
@@ -158,7 +158,7 @@
         android:layout_height="2dip"
         android:background="#FF909090" />
 
-    <TableRow android:id="@+id/timeslot_eleven">
+    <TableRow android:id="@+id/timeslot_11">
 
         <TextView
             android:layout_column="0"
@@ -166,7 +166,7 @@
             android:text="@string/timeslot_eleven" />
     </TableRow>
 
-    <TableRow android:id="@+id/timeslot_twelve">
+    <TableRow android:id="@+id/timeslot_12">
 
         <TextView
             android:layout_column="0"
@@ -178,7 +178,7 @@
         android:layout_height="2dip"
         android:background="#FF909090" />
 
-    <TableRow android:id="@+id/timeslot_thirteen">
+    <TableRow android:id="@+id/timeslot_13">
 
         <TextView
             android:layout_column="0"
@@ -186,7 +186,7 @@
             android:text="@string/timeslot_thirteen" />
     </TableRow>
 
-    <TableRow android:id="@+id/timeslot_fourteen">
+    <TableRow android:id="@+id/timeslot_14">
 
         <TextView
             android:layout_column="0"
@@ -198,7 +198,7 @@
         android:layout_height="2dip"
         android:background="#FF909090" />
 
-    <TableRow android:id="@+id/timeslot_fifteen">
+    <TableRow android:id="@+id/timeslot_15">
 
         <TextView
             android:layout_column="0"
