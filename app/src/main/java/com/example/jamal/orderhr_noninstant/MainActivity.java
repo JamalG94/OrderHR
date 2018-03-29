@@ -262,7 +262,7 @@ public class MainActivity extends Activity
     }
 
     public void gotostuff(){
-        Intent swapper = new Intent(this,QRHandlerActivity.class);
+        Intent swapper = new Intent(this,EasyScanActivity.class);
         startActivity(swapper);
     }
     /**
