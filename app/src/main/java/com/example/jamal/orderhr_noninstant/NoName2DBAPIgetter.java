@@ -12,7 +12,7 @@ import java.net.URL;
  * Created by Robin on 3/22/2018.
  */
 
-public class NoName2DBAPI extends AsyncTask<String,Void, String> {
+public class NoName2DBAPIgetter extends AsyncTask<String,Void, String> {
 
     public static final String REQUEST_METHOD = "GET";
     public static final int READ_TIMEOUT = 15000;

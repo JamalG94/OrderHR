@@ -27,7 +27,7 @@
         </activity>
         <activity android:name=".Defuncts.DefunctDetailActivity">
         </activity>
-        <activity android:name=".QRHandlerActivity">
+        <activity android:name=".EasyScanActivity">
         </activity>
     </application>
 
