@@ -1,6 +1,5 @@
 package com.example.jamal.orderhr_noninstant;
 
-<<<<<<< HEAD
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -51,12 +50,6 @@ public class MainActivity extends Activity
         implements EasyPermissions.PermissionCallbacks {
     GoogleAccountCredential mCredential;
     private TextView mOutputText;
-=======
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
->>>>>>> 73687915c4ebc481dc336e19522ce23fc52219ce
 
     private Button mCallApiButton;
     private Button mCallApiButton2;
@@ -78,7 +71,6 @@ import android.view.View;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
         LinearLayout activityLayout = new LinearLayout(this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -419,9 +411,6 @@ import android.view.View;
                 mOutputText.setText(TextUtils.join("\n", output));
             }
         }
-=======
-        setContentView(R.layout.activity_main);
->>>>>>> 73687915c4ebc481dc336e19522ce23fc52219ce
 
         @Override
         protected void onCancelled() {
@@ -444,13 +433,4 @@ import android.view.View;
             }
         }
     }
-<<<<<<< HEAD
 }
-=======
-
-    public void ClickSchedule(View view){
-        Intent intent = new Intent(this, ScheduleActivity.class);
-        startActivity(intent);
-    }
-}
->>>>>>> 73687915c4ebc481dc336e19522ce23fc52219ce

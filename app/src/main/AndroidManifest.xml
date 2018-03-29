@@ -25,14 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
         <activity android:name=".Defuncts.DefunctDetailActivity">
         </activity>
         <activity android:name=".EasyScanActivity">
-=======
-
-        <activity android:name=".ScheduleActivity">
->>>>>>> 73687915c4ebc481dc336e19522ce23fc52219ce
         </activity>
     </application>
 
