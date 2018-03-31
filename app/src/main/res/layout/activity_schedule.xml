@@ -9,30 +9,35 @@
     <TableRow>
 
         <TextView
+            android:id="@+id/day_2"
             android:layout_column="1"
             android:padding="3dip"
             android:text="@string/day_mon"
             android:textSize="24sp" />
 
         <TextView
+            android:id="@+id/day_3"
             android:layout_column="2"
             android:padding="3dip"
             android:text="@string/day_tue"
             android:textSize="24sp" />
 
         <TextView
+            android:id="@+id/day_4"
             android:layout_column="3"
             android:padding="3dip"
             android:text="@string/day_wed"
             android:textSize="24sp" />
 
         <TextView
+            android:id="@+id/day_5"
             android:layout_column="4"
             android:padding="3dip"
             android:text="@string/day_thu"
             android:textSize="24sp" />
 
         <TextView
+            android:id="@+id/day_6"
             android:layout_column="5"
             android:padding="3dip"
             android:text="@string/day_fri"
