@@ -10,20 +10,18 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.Date;
 
-
 /**
  * Created by jamal on 3/19/2018.
  */
 
 public class ScheduleActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
-        Booking b = new Booking(1);
-        b.GetBooking();
-        FillRows(b);
+
     }
 
     @Override
@@ -81,7 +79,5 @@ public class ScheduleActivity extends AppCompatActivity {
         int dayOfWeek = calender.get(Calendar.DAY_OF_WEEK);
         return dayOfWeek;
     }
-
-
 
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="375dp"
+        android:layout_height="506dp"
+        android:orientation="vertical"
+        android:theme="@style/Animation.AppCompat.Dialog"
+        tools:layout_editor_absoluteX="13dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:autoSizeMaxTextSize="40dp"
+            android:autoSizeMinTextSize="32dp"
+            android:text="Reservation Details:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <TextView
+            android:id="@+id/viewroomid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Room:" />
+
+        <TextView
+            android:id="@+id/viewbookdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date:" />
+
+        <TextView
+            android:id="@+id/viewTimeslot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Timeslots:" />
+
+        <TextView
+            android:id="@+id/viewTimes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Times:" />
+
+        <CheckBox
+            android:id="@+id/Available"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Available" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
