@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.jamal.orderhr_noninstant.Activities.Booking.BookingMakeActivity;
 import com.example.jamal.orderhr_noninstant.Activities.Defuncts.DefunctDetailActivity;
 import com.example.jamal.orderhr_noninstant.R;
 
@@ -37,12 +38,7 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
             }
         }
         Camera mCamera = Camera.open(backId);
-//        android.hardware.Camera.open(1);
-//        Intent intent = new Intent(this, EasyScan.class);
-//        TextView editText = (TextView) findViewById(R.id.textview2);
-//        String message = editText.getText().toString();
-//        intent.putExtra("hello", message);
-//        startActivity(intent);
+
         Log.e("halp","halp");
         mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view<br />
         setContentView(mScannerView);
@@ -59,31 +55,13 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
         builder.setTitle("result:");
         if(isvalidatedjson(resulttext)){
             startActivity(getnextintent(resulttext));
-//            IEasyScannable scanresult = methodname(resulttext);
         }
         else{
             mScannerView.startCamera();
         }
-//        try {
-//            JSONObject jsonparser = new JSONObject(result.getText());
-////            String type = jsonparser.optJSONObject("Reservation").optString("Username");
-//            if(jsonparser.has("Defunct")){
-//                builder.setMessage("REPORTED DEFUNCT MATE");
-//
-//            }
-//            else if(jsonparser.has("Reservation")){
-//                builder.setMessage("BOOKED BOOKING MATE");
-//                SwapToBooking();
-//
-//            }
-//        }
-//        catch(Exception e){
-//            builder.setMessage("error, please check QR");
-//            }finally{
-//            AlertDialog alert1 = builder.create();
-//            alert1.show();
-//        }
     }
+
+    //Checks if this json string returns any errors or so. Translates it into a boolean.
     private boolean isvalidatedjson(String jsonresult){
         boolean resultvalue = true;
         try {
@@ -93,9 +71,10 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
         }
         return resultvalue;
     }
+
+    //Based on the type of the input jsonstring, this decides that logical path will be progressed.
     private Intent getnextintent(String jsonresult){
         Intent resultingint = new Intent();
-
         try {
             JSONObject jsonparser = new JSONObject(jsonresult);
 
@@ -104,35 +83,13 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
 
             }
             else if(jsonparser.has("Reservation")){
-                resultingint.setClass(this, EasyScanActivity.class);
+                resultingint.putExtra("jsonparser",jsonresult);
+                resultingint.setClass(this, BookingMakeActivity.class);
 
             }
         }catch(Exception e){resultingint.setClass(this, EasyScanActivity.class);}
 
         return resultingint;
-    }
-
-    //This method takes a string json file, and returns a IeasyScannable which is a datastructure with the data
-    //parsed into it.
-//    private IEasyScannable methodname(String jsonresult){
-//        IEasyScannable result = new NullScannable();
-//        try {
-//            JSONObject jsonparser = new JSONObject(jsonresult);
-//
-//            if(jsonparser.has("Defunct")){
-//                result = new Booking();
-//
-//            }
-//            else if(jsonparser.has("Reservation")){
-//                result = new Booking();
-//            }
-//        }catch(Exception e){}
-//
-//        return result;
-//    }
-
-    protected void SwapToBooking(){
-        setContentView(R.layout.activity_makebooking);
     }
 
 
