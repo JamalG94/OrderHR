@@ -1,4 +1,4 @@
-package com.example.jamal.orderhr_noninstant;
+package com.example.jamal.orderhr_noninstant.Activities;
 
 import android.content.Intent;
 import android.hardware.Camera;
@@ -7,12 +7,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
-import com.example.jamal.orderhr_noninstant.Datastructures.IEasyScannable;
-import com.example.jamal.orderhr_noninstant.Datastructures.NullScannable;
-import com.example.jamal.orderhr_noninstant.Defuncts.DefunctDetailActivity;
+import com.example.jamal.orderhr_noninstant.Activities.Defuncts.DefunctDetailActivity;
+import com.example.jamal.orderhr_noninstant.R;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

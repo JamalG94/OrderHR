@@ -1,4 +1,4 @@
-package com.example.jamal.orderhr_noninstant.Defuncts;
+package com.example.jamal.orderhr_noninstant.Activities.Defuncts;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

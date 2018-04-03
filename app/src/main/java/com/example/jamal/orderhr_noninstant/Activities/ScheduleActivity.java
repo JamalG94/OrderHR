@@ -1,11 +1,15 @@
-package com.example.jamal.orderhr_noninstant;
+package com.example.jamal.orderhr_noninstant.Activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TableRow;
 import android.widget.TextView;
 import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
+import com.example.jamal.orderhr_noninstant.IO;
+import com.example.jamal.orderhr_noninstant.R;
+
 import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,6 +32,8 @@ public class ScheduleActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
 
+        Booking booking = IO.Getbookingbyid(1);
+        FillRows(booking);
     }
 
     private void ParseReservations(JSONObject json){
@@ -51,7 +57,7 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Booking booking = (Booking)(v.getTag());
-                System.out.print(booking.Lesson);
+                Log.d(booking.Lesson, booking.Lesson);
             }
         };
 
@@ -59,6 +65,7 @@ public class ScheduleActivity extends AppCompatActivity {
             //Create a textview object to hold the lesson and teacher strings
             timeslot_lesson = new TextView(this);
             timeslot_lesson.setText(teacher + lesson);
+            //Put the booking object in our specific cell;
             timeslot_lesson.setTag(booking);
             timeslot_lesson.setOnClickListener(listener);
 
