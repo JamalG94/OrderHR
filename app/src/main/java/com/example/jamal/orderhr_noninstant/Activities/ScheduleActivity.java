@@ -11,14 +11,19 @@ import com.example.jamal.orderhr_noninstant.IO;
 import com.example.jamal.orderhr_noninstant.R;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by jamal on 3/19/2018.
  */
 
 public class ScheduleActivity extends AppCompatActivity {
+
+    private List<Booking> selectedBookings = new ArrayList<>();
 
 
     @Override
@@ -36,16 +41,40 @@ public class ScheduleActivity extends AppCompatActivity {
         FillRows(booking);
     }
 
-    private void ParseReservations(JSONObject json){
+    private void onClickReserve(){
+        JSONObject[] jsonObjects = new JSONObject[selectedBookings.size()];
+        for(Booking b : selectedBookings){
+            JSONObject jsonObject = b.ObjecttoJson();
+        }
+        ParseReservations(jsonObjects);
 
+    }
 
+    private void ParseReservations(JSONObject[] jsonObjects){
+        //TODO magic jsonobjects to database away
+    }
+
+    private void MarkBookings(Booking booking){
+        if(selectedBookings.contains(booking)){
+            selectedBookings.remove(booking);
+        }
+        else {
+            selectedBookings.add(booking);
+        }
+    }
+
+    private int DatetoColumn(Date date){
+        Calendar calender = Calendar.getInstance();
+        calender.setTime(date);
+        int dayOfWeek = calender.get(Calendar.DAY_OF_WEEK);
+        return dayOfWeek;
     }
 
     private void FillRows(Booking booking){
         String tablerow_id;
-        String lesson = "DEVB"; //booking.Lesson;
-        String teacher = "Omar"; //booking.Username;
-        //int day = DatetoColumn();
+        String lesson = booking.Lesson;
+        String teacher = booking.Username;
+        //int day = DatetoColumn(booking.DateOn);
         int timeslotfrom = 3;
         int timeslotto = 4;
 
@@ -58,6 +87,7 @@ public class ScheduleActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Booking booking = (Booking)(v.getTag());
                 Log.d(booking.Lesson, booking.Lesson);
+                MarkBookings(booking);
             }
         };
 
@@ -76,15 +106,9 @@ public class ScheduleActivity extends AppCompatActivity {
 
             //Create a new TableRow.LayoutParams so we can set the reservation at the right day through help of DatetoColumn
             TableRow.LayoutParams tbr = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-            tbr.column = 3; //DatetoColumn
+            tbr.column = 3;//day;
             timeslot_lesson.setLayoutParams(tbr);
         }
-    }
-
-    private int DatetoColumn(Date date){
-        Calendar calender = Calendar.getInstance();
-        int dayOfWeek = calender.get(Calendar.DAY_OF_WEEK);
-        return dayOfWeek;
     }
 
 }
