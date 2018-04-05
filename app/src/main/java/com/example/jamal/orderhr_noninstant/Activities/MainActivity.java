@@ -16,8 +16,12 @@ public class MainActivity extends Activity {
 
         }
 
-        public void ClickSchedule(View view){
-            Intent intent = new Intent(this, ScheduleActivity.class);
-            startActivity(intent);
-        }
+    public void ClickSchedule(View view){
+        Intent intent = new Intent(this, ScheduleActivity.class);
+        startActivity(intent);
+    }
+    public void ClickEasyScan(View view){
+        Intent intent = new Intent(this, EasyScanActivity.class);
+        startActivity(intent);
+    }
 }

@@ -32,6 +32,8 @@
         </activity>
         <activity android:name=".Activities.EasyScanActivity">
         </activity>
+        <activity android:name=".Activities.Booking.BookingMakeActivity">
+        </activity>
     </application>
 
 </manifest>
