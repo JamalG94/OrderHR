@@ -28,6 +28,15 @@ public class BookingMakeActivity extends AppCompatActivity{
         }catch(Exception e){}finally{
             TextView roomview = (TextView)findViewById(R.id.viewroomid);
             roomview.setText(roomview.getText() + bookingstruc.Room);
+
+            TextView dateview = (TextView)findViewById(R.id.viewbookdate);
+            dateview.setText(dateview.getText() + bookingstruc.DateOn.toString());
+
+            TextView timeslots = (TextView)findViewById(R.id.viewTimeslot);
+            timeslots.setText(timeslots.getText() + " From  :" + bookingstruc.timeslotfrom + " -> to -> " + bookingstruc.timeslotto);
+
+            TextView times = (TextView)findViewById(R.id.viewTimes);
+            times.setText(times.getText() + " From  :" + bookingstruc.TimeFrom + " -> to -> " + bookingstruc.TimeTo);
         }
 
 

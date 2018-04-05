@@ -1,8 +1,11 @@
 package com.example.jamal.orderhr_noninstant.Datastructures;
 
+import android.content.Intent;
+
 import org.json.JSONObject;
 
-import java.io.Serializable;
+import java.util.Date;
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -10,8 +13,7 @@ import java.text.SimpleDateFormat;
  * Created by Robin on 3/22/2018.
  */
 
-public class Booking implements IEasyScannable{
-
+public class Booking {
     public int reservationid,timeslotto,timeslotfrom;
     public String Username,Lesson,Room;
     public java.util.Date TimeFrom, TimeTo, DateOn;
@@ -39,23 +41,4 @@ public class Booking implements IEasyScannable{
         }
     }
 
-    public JSONObject ObjecttoJson(){
-        JSONObject jo = new JSONObject();
-        try {
-            jo.put("Username", this.Username);
-            jo.put("Lesson", this.Lesson);
-            jo.put("Room", this.Room);
-            jo.put("TimeTo", this.TimeTo);
-            jo.put("TimeFrom", this.TimeFrom);
-            jo.put("Date", this.DateOn);
-            jo.put("TimeSlotFrom", this.timeslotfrom);
-            jo.put("TimeSlotTo", this.timeslotto);
-        }
-        catch (Exception e){
-
-        }
-        return jo;
-    }
-
 }
-
