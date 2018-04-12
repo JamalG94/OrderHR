@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -14,10 +12,7 @@ import com.example.jamal.orderhr_noninstant.IO;
 import com.example.jamal.orderhr_noninstant.R;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,7 +34,7 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_schedule);
         fragmentTable = findViewById(R.id.fragment_schedule);
-        CreateTable(5, 10);
+        CreateTable(5, 10, "timeslot_");
         setContentView(fragmentTable);
 
 
@@ -142,7 +137,7 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
         }
     }
 
-    public void CreateTable(int daysAmount, int timeslots){
+    public void CreateTable(int daysAmount, int timeslots, String identifier){
         View.OnClickListener onSelectCell = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,54 +146,28 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
             }
         };
 
-        TableRow days = new TableRow(this);
         float weight = 1 / daysAmount;
-        List<TableRow> tableRows = new ArrayList<>();
 
-        for (int j = 0; j < timeslots; j++){
-            TableRow timeslot = new TableRow(this);
+        for (int j = 1; j <= timeslots; j++){
+            String tablerow_id = identifier+j;
+            TableRow timeslot = findViewById(getResources().getIdentifier(tablerow_id, "id", getPackageName()));
 
             for(int z = 1; z <= daysAmount; z++){
                 TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, weight);
                 layoutParams.setMargins(0,0,10,30);
+                TextView dayTimeslot = new TextView(this);
+                dayTimeslot.setText("timeslot"+j + "\n" + "day"+ z);
+                dayTimeslot.setLayoutParams(layoutParams);
 
-                if(j < 1){
-
-                    TextView dayColumn = new TextView(this);
-                    dayColumn.setText("day"+z);
-                    dayColumn.setLayoutParams(layoutParams);
-
-
-                    try {
-                        String day = "day"+z;
-                        int dayID = Integer.parseInt("day");
-                        dayColumn.setId(dayID);
-                    }catch (Exception e){}
-                    days.addView(dayColumn);
+                try {
+                    int DTID = Integer.valueOf("timeslot"+j +"day"+z);
+                    dayTimeslot.setId(DTID);
                 }
-                else{
-                    TextView dayTimeslot = new TextView(this);
-                    dayTimeslot.setText("timeslot"+j + "\n" + "day"+ z);
-                    dayTimeslot.setLayoutParams(layoutParams);
+                catch (Exception e){}
 
-                    try {
-                        int DTID = Integer.valueOf("timeslot"+j +"day"+z);
-                        dayTimeslot.setId(DTID);
-                    }
-                    catch (Exception e){}
-                    dayTimeslot.setOnClickListener(onSelectCell);
-                    timeslot.addView(dayTimeslot);
-                }
+                dayTimeslot.setOnClickListener(onSelectCell);
+                timeslot.addView(dayTimeslot);
             }
-            tableRows.add(timeslot);
-
-        }
-        fragmentTable.addView(days);
-        for (TableRow tr: tableRows
-             ) {
-            fragmentTable.addView(tr, new TableLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
         }
     }
 }
