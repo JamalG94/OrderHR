@@ -1,61 +1,98 @@
 package com.example.jamal.orderhr_noninstant.Datastructures;
 
-import org.json.JSONObject;
-
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 
-/**
- * Created by Robin on 3/22/2018.
- */
+public class Booking implements Serializable{
 
-public class Booking implements IEasyScannable{
+    private int reservation_id,timeslot_to,timeslot_from;
+    private String username;
+    private String lesson;
+    private String room;
 
-    public int reservationid,timeslotto,timeslotfrom;
-    public String Username,Lesson,Room;
-    public java.util.Date TimeFrom, TimeTo, DateOn;
-    public EnumParseStatus parsestatus = EnumParseStatus.ERROR;
-
-    public void parsedata(JSONObject json){
-        try {
-            Username = json.optJSONObject("Reservation").optString("Username");
-            Lesson = json.optJSONObject("Reservation").optString("Lesson");
-            Room =json.optJSONObject("Reservation").optString("Room");
-
-            DateFormat formatter = new SimpleDateFormat("hh:mm");
-            TimeTo = formatter.parse(json.optJSONObject("Reservation").optString("TimeTo"));
-            TimeFrom = formatter.parse(json.optJSONObject("Reservation").optString("TimeFrom"));
-
-            formatter = new SimpleDateFormat("DD-MM-YYYY");
-            DateOn= formatter.parse(json.optJSONObject("Reservation").optString("Date"));
-
-            timeslotfrom= json.optJSONObject("Reservation").optInt("TimeSlotFrom");
-            timeslotto= json.optJSONObject("Reservation").optInt("TimeSlotTo");
-            parsestatus = EnumParseStatus.PARSED;
-        }
-        catch(Exception e){
-
-        }
+    public String getTime_from() {
+        return time_from;
     }
 
-    public JSONObject ObjecttoJson(){
-        JSONObject jo = new JSONObject();
-        try {
-            jo.put("Username", this.Username);
-            jo.put("Lesson", this.Lesson);
-            jo.put("Room", this.Room);
-            jo.put("TimeTo", this.TimeTo);
-            jo.put("TimeFrom", this.TimeFrom);
-            jo.put("Date", this.DateOn);
-            jo.put("TimeSlotFrom", this.timeslotfrom);
-            jo.put("TimeSlotTo", this.timeslotto);
-        }
-        catch (Exception e){
-
-        }
-        return jo;
+    public void setTime_from(String time_from) {
+        this.time_from = time_from;
     }
 
+    public String getTime_to() {
+        return time_to;
+    }
+
+    public void setTime_to(String time_to) {
+        this.time_to = time_to;
+    }
+
+    private String time_from;
+    private String time_to;
+    private Date  date;
+    private EnumParseStatus parseStatus = EnumParseStatus.ERROR;
+
+    public int getReservation_id() {
+        return reservation_id;
+    }
+
+    public void setReservation_id(int reservation_id) {
+        this.reservation_id = reservation_id;
+    }
+
+    public int getTimeslot_to() {
+        return timeslot_to;
+    }
+
+    public void setTimeslot_to(int timeslot_to) {
+        this.timeslot_to = timeslot_to;
+    }
+
+    public int getTimeslot_from() {
+        return timeslot_from;
+    }
+
+    public void setTimeslot_from(int timeslot_from) {
+        this.timeslot_from = timeslot_from;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getLesson() {
+        return lesson;
+    }
+
+    public void setLesson(String lesoon) {
+        this.lesson = lesoon;
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public EnumParseStatus getParseStatus() {
+        return parseStatus;
+    }
+
+    public void setParseStatus(EnumParseStatus parseStatus) {
+        this.parseStatus = parseStatus;
+    }
 }
 

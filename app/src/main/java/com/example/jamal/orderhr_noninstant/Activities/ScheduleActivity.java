@@ -4,14 +4,20 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
 import com.example.jamal.orderhr_noninstant.IO;
 import com.example.jamal.orderhr_noninstant.R;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,30 +27,44 @@ import java.util.List;
  * Created by jamal on 3/19/2018.
  */
 
-public class ScheduleActivity extends AppCompatActivity {
+public class ScheduleActivity extends AppCompatActivity implements IDataStructure {
 
     private List<Booking> selectedBookings = new ArrayList<>();
-
+    private List<Booking> allBookings = new ArrayList<>();
+    private IO _IO;
+    TableLayout fragmentTable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule);
+        setContentView(R.layout.fragment_schedule);
+        fragmentTable = findViewById(R.id.fragment_schedule);
+        CreateTable(5, 10);
+        setContentView(fragmentTable);
 
+
+        //setContentView(R.layout.activity_schedule);
+        //_IO = IO.GetInstance("http://markb.pythonanywhere.com/reservation");
     }
 
     @Override
     protected void onStart(){
         super.onStart();
 
-        Booking booking = IO.Getbookingbyid(1);
-        FillRows(booking);
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy");
+//        objectMapper.setDateFormat(simpleDateFormat);
+//
+//        this.IVisit(objectMapper, _IO.GetData(1));
+//        for (Booking b: allBookings) {
+//            FillRows(b);
+//        }
     }
 
     private void onClickReserve(){
         JSONObject[] jsonObjects = new JSONObject[selectedBookings.size()];
         for(Booking b : selectedBookings){
-            JSONObject jsonObject = b.ObjecttoJson();
+            //JSONObject jsonObject = b.ObjecttoJson();
         }
         ParseReservations(jsonObjects);
 
@@ -72,8 +92,8 @@ public class ScheduleActivity extends AppCompatActivity {
 
     private void FillRows(Booking booking){
         String tablerow_id;
-        String lesson = booking.Lesson;
-        String teacher = booking.Username;
+        final String lesson = booking.getLesson();
+        String teacher = booking.getUsername();
         //int day = DatetoColumn(booking.DateOn);
         int timeslotfrom = 3;
         int timeslotto = 4;
@@ -86,7 +106,7 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Booking booking = (Booking)(v.getTag());
-                Log.d(booking.Lesson, booking.Lesson);
+                Log.d("CellClick", lesson);
                 MarkBookings(booking);
             }
         };
@@ -106,9 +126,79 @@ public class ScheduleActivity extends AppCompatActivity {
 
             //Create a new TableRow.LayoutParams so we can set the reservation at the right day through help of DatetoColumn
             TableRow.LayoutParams tbr = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-            tbr.column = 3;//day;
+            tbr.column = 3;
             timeslot_lesson.setLayoutParams(tbr);
         }
     }
 
+    @Override
+    public void IVisit(ObjectMapper objectMapper, String json) {
+        try{
+            List<Booking> list = objectMapper.readValue(json, new TypeReference<List<Booking>>(){});
+            Log.d("", "check");
+        }
+        catch(Exception e ){
+            Log.d(e.toString(), e.toString());
+        }
+    }
+
+    public void CreateTable(int daysAmount, int timeslots){
+        View.OnClickListener onSelectCell = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Booking booking = (Booking)(v.getTag());
+                MarkBookings(booking);
+            }
+        };
+
+        TableRow days = new TableRow(this);
+        float weight = 1 / daysAmount;
+        List<TableRow> tableRows = new ArrayList<>();
+
+        for (int j = 0; j < timeslots; j++){
+            TableRow timeslot = new TableRow(this);
+
+            for(int z = 1; z <= daysAmount; z++){
+                TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, weight);
+                layoutParams.setMargins(0,0,10,30);
+
+                if(j < 1){
+
+                    TextView dayColumn = new TextView(this);
+                    dayColumn.setText("day"+z);
+                    dayColumn.setLayoutParams(layoutParams);
+
+
+                    try {
+                        String day = "day"+z;
+                        int dayID = Integer.parseInt("day");
+                        dayColumn.setId(dayID);
+                    }catch (Exception e){}
+                    days.addView(dayColumn);
+                }
+                else{
+                    TextView dayTimeslot = new TextView(this);
+                    dayTimeslot.setText("timeslot"+j + "\n" + "day"+ z);
+                    dayTimeslot.setLayoutParams(layoutParams);
+
+                    try {
+                        int DTID = Integer.valueOf("timeslot"+j +"day"+z);
+                        dayTimeslot.setId(DTID);
+                    }
+                    catch (Exception e){}
+                    dayTimeslot.setOnClickListener(onSelectCell);
+                    timeslot.addView(dayTimeslot);
+                }
+            }
+            tableRows.add(timeslot);
+
+        }
+        fragmentTable.addView(days);
+        for (TableRow tr: tableRows
+             ) {
+            fragmentTable.addView(tr, new TableLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+    }
 }
