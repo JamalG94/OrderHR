@@ -34,9 +34,17 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_schedule);
         fragmentTable = findViewById(R.id.fragment_schedule);
-        CreateTable(5, 10, "timeslot_");
-        setContentView(fragmentTable);
 
+        View.OnClickListener onSelectCell = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Booking booking = (Booking)(v.getTag());
+                MarkBookings(booking);
+            }
+        };
+
+        CreateTable(5, 10, "timeslot_", onSelectCell);
+        setContentView(fragmentTable);
 
         //setContentView(R.layout.activity_schedule);
         //_IO = IO.GetInstance("http://markb.pythonanywhere.com/reservation");
@@ -70,12 +78,13 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
     }
 
     private void MarkBookings(Booking booking){
-        if(selectedBookings.contains(booking)){
-            selectedBookings.remove(booking);
-        }
-        else {
-            selectedBookings.add(booking);
-        }
+        Log.d("YAYAOAOAOAO", "HET WERKT!");
+//        if(selectedBookings.contains(booking)){
+//            selectedBookings.remove(booking);
+//        }
+//        else {
+//            selectedBookings.add(booking);
+//        }
     }
 
     private int DatetoColumn(Date date){
@@ -137,17 +146,11 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
         }
     }
 
-    public void CreateTable(int daysAmount, int timeslots, String identifier){
-        View.OnClickListener onSelectCell = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Booking booking = (Booking)(v.getTag());
-                MarkBookings(booking);
-            }
-        };
-
+    public void CreateTable(int daysAmount, int timeslots, String identifier, View.OnClickListener onSelectCell){
+        //weight of every cell which means how much space it gets from the screen
         float weight = 1 / daysAmount;
 
+        //go through all the timeslots and foreach timeslot create *daysAmount of TextViews horizontally
         for (int j = 1; j <= timeslots; j++){
             String tablerow_id = identifier+j;
             TableRow timeslot = findViewById(getResources().getIdentifier(tablerow_id, "id", getPackageName()));
@@ -159,8 +162,10 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
                 dayTimeslot.setText("timeslot"+j + "\n" + "day"+ z);
                 dayTimeslot.setLayoutParams(layoutParams);
 
+                //try to assign an id to each TextView based on the timeslot and day so we can later find it back.
                 try {
-                    int DTID = Integer.valueOf("timeslot"+j +"day"+z);
+                    String cellSpecific= ""+j+""+z;
+                    int DTID = Integer.valueOf(cellSpecific);
                     dayTimeslot.setId(DTID);
                 }
                 catch (Exception e){}
