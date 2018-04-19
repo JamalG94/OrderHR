@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.example.jamal.orderhr_noninstant.Activities.Booking.BookingMakeActivity;
 import com.example.jamal.orderhr_noninstant.Activities.Defuncts.DefunctDetailActivity;
-import com.example.jamal.orderhr_noninstant.R;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,11 +78,11 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
         try {
             JSONObject jsonparser = new JSONObject(jsonresult);
 
-            if(jsonparser.has("Defunct")){
+            if(jsonparser.has("defunct")){
                 resultingint.setClass(this, DefunctDetailActivity.class);
 
             }
-            else if(jsonparser.has("Reservation")){
+            else if(jsonparser.has("reservation")){
                 resultingint.putExtra("jsonparser",jsonresult);
                 resultingint.setClass(this, BookingMakeActivity.class);
 
