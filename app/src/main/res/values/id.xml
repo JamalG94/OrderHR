@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--days id's day1 starting on monday-->
+    <item name="day1" type="id"/>
+    <item name="day2" type="id"/>
+    <item name="day3" type="id"/>
+    <item name="day4" type="id"/>
+    <item name="day5" type="id"/>
+    <item name="day6" type="id"/>
+    <item name="day7" type="id"/>
+</resources>
