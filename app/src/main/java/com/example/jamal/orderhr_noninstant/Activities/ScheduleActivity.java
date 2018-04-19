@@ -13,6 +13,8 @@ import com.example.jamal.orderhr_noninstant.R;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,22 +48,26 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
         CreateTable(5, 10, "timeslot_", onSelectCell);
         setContentView(fragmentTable);
 
-        //setContentView(R.layout.activity_schedule);
-        //_IO = IO.GetInstance("http://markb.pythonanywhere.com/reservation");
     }
 
     @Override
     protected void onStart(){
         super.onStart();
 
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy");
-//        objectMapper.setDateFormat(simpleDateFormat);
-//
-//        this.IVisit(objectMapper, _IO.GetData(1));
-//        for (Booking b: allBookings) {
-//            FillRows(b);
-//        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy");
+        objectMapper.setDateFormat(simpleDateFormat);
+
+        //this.IVisit(objectMapper, _IO.GetData(1));
+        //for (Booking b: allBookings) {
+        Booking b = new Booking();
+        b.setTimeslot_from(3);
+        b.setTimeslot_to(4);
+        b.setLesson("PORNO");
+        b.setUsername("JAMAL");
+        b.setRoom("WD 1.003");
+        FillRows(b);
+        //}
     }
 
     private void onClickReserve(){
@@ -87,51 +93,27 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
 //        }
     }
 
-    private int DatetoColumn(Date date){
-        Calendar calender = Calendar.getInstance();
-        calender.setTime(date);
-        int dayOfWeek = calender.get(Calendar.DAY_OF_WEEK);
-        return dayOfWeek;
-    }
+
 
     private void FillRows(Booking booking){
-        String tablerow_id;
-        final String lesson = booking.getLesson();
+        String cell_id;
+        String lesson = booking.getLesson();
         String teacher = booking.getUsername();
-        //int day = DatetoColumn(booking.DateOn);
-        int timeslotfrom = 3;
-        int timeslotto = 4;
+        String room = booking.getRoom();
+        int day = 1;//DatetoColumn(booking.getDate());
+        int timeslotfrom = booking.getTimeslot_from();
+        int timeslotto = booking.getTimeslot_to();
 
-        TableRow tablerow;
-        TextView timeslot_lesson;
-
-        //Create a listener that does something unique with each cell
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Booking booking = (Booking)(v.getTag());
-                Log.d("CellClick", lesson);
-                MarkBookings(booking);
-            }
-        };
+        TextView cell;
 
         for(int i = timeslotfrom; i <= timeslotto; i++ ){
+            //Each cell has a specific id
+            cell_id = Integer.toString(i) + Integer.toString(day);
+            cell = findViewById(getResources().getIdentifier(cell_id, "id", getPackageName()));
             //Create a textview object to hold the lesson and teacher strings
-            timeslot_lesson = new TextView(this);
-            timeslot_lesson.setText(teacher + lesson);
+            cell.setText(teacher + lesson + room);
             //Put the booking object in our specific cell;
-            timeslot_lesson.setTag(booking);
-            timeslot_lesson.setOnClickListener(listener);
-
-            //Find the appropiate timeslot of the reservation
-            tablerow_id = "timeslot_" + i;
-            tablerow = findViewById(getResources().getIdentifier(tablerow_id, "id", getPackageName()));
-            tablerow.addView(timeslot_lesson);
-
-            //Create a new TableRow.LayoutParams so we can set the reservation at the right day through help of DatetoColumn
-            TableRow.LayoutParams tbr = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-            tbr.column = 3;
-            timeslot_lesson.setLayoutParams(tbr);
+            cell.setTag(booking);
         }
     }
 
@@ -164,7 +146,7 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
 
                 //try to assign an id to each TextView based on the timeslot and day so we can later find it back.
                 try {
-                    String cellSpecific= ""+j+""+z;
+                    String cellSpecific= Integer.toString(j)+ Integer.toString(z);
                     int DTID = Integer.valueOf(cellSpecific);
                     dayTimeslot.setId(DTID);
                 }
@@ -174,5 +156,12 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
                 timeslot.addView(dayTimeslot);
             }
         }
+    }
+
+    private int DatetoColumn(Date date){
+        Calendar calender = Calendar.getInstance();
+        calender.setTime(date);
+        int dayOfWeek = calender.get(Calendar.DAY_OF_WEEK);
+        return dayOfWeek;
     }
 }
