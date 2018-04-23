@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_schedule"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragment_schedule">
+    android:stretchColumns="1">
 
     <TableRow>
 
         <TextView
+            android:layout_weight="1"
             android:id="@+id/day_2"
             android:layout_column="1"
             android:padding="3dip"
@@ -14,6 +16,7 @@
             android:textSize="24sp" />
 
         <TextView
+            android:layout_weight="1"
             android:id="@+id/day_3"
             android:layout_column="2"
             android:padding="3dip"
@@ -21,6 +24,7 @@
             android:textSize="24sp" />
 
         <TextView
+            android:layout_weight="1"
             android:id="@+id/day_4"
             android:layout_column="3"
             android:padding="3dip"
@@ -28,6 +32,7 @@
             android:textSize="24sp" />
 
         <TextView
+            android:layout_weight="1"
             android:id="@+id/day_5"
             android:layout_column="4"
             android:padding="3dip"
@@ -35,6 +40,7 @@
             android:textSize="24sp" />
 
         <TextView
+            android:layout_weight="1"
             android:id="@+id/day_6"
             android:layout_column="5"
             android:padding="3dip"
@@ -46,6 +52,7 @@
     <TableRow android:id="@+id/timeslot_1">
 
 
+
         <TextView
             android:layout_column="0"
             android:padding="3dip"
@@ -55,18 +62,11 @@
 
     <TableRow android:id="@+id/timeslot_2">
 
+
         <TextView
             android:layout_column="0"
             android:padding="3dip"
             android:text="@string/timeslot_two" />
-    </TableRow>
-
-    <TableRow android:id="@+id/pause_1">
-
-        <TextView
-            android:layout_column="0"
-            android:padding="3dip"
-            android:text="@string/pause_one" />
     </TableRow>
 
     <View
@@ -127,14 +127,6 @@
             android:layout_column="0"
             android:padding="3dip"
             android:text="@string/timeslot_eight" />
-    </TableRow>
-
-    <TableRow android:id="@+id/pause_2">
-
-        <TextView
-            android:layout_column="0"
-            android:padding="3dip"
-            android:text="@string/pause_two" />
     </TableRow>
 
     <View
@@ -211,4 +203,7 @@
             android:padding="3dip"
             android:text="@string/timeslot_fifteen" />
     </TableRow>
+
+    <Button />
+
 </TableLayout>

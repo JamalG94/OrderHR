@@ -40,8 +40,10 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
         View.OnClickListener onSelectCell = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(v.getTag() != null){
                 Booking booking = (Booking)(v.getTag());
                 MarkBookings(booking);
+                }
             }
         };
 
@@ -61,12 +63,12 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
         //this.IVisit(objectMapper, _IO.GetData(1));
         //for (Booking b: allBookings) {
         Booking b = new Booking();
-        b.setTimeslot_from(3);
-        b.setTimeslot_to(4);
+        b.setTimeslotfrom(3);
+        b.setTimeslotto(4);
         b.setLesson("PORNO");
         b.setUsername("JAMAL");
         b.setRoom("WD 1.003");
-        FillRows(b);
+        //FillRows(b);
         //}
     }
 
@@ -84,13 +86,13 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
     }
 
     private void MarkBookings(Booking booking){
-        Log.d("YAYAOAOAOAO", "HET WERKT!");
-//        if(selectedBookings.contains(booking)){
-//            selectedBookings.remove(booking);
-//        }
-//        else {
-//            selectedBookings.add(booking);
-//        }
+        Log.d("SelectBookingCell", booking.getLesson());
+        if(selectedBookings.contains(booking)){
+            selectedBookings.remove(booking);
+        }
+        else {
+            selectedBookings.add(booking);
+        }
     }
 
 
@@ -101,8 +103,8 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
         String teacher = booking.getUsername();
         String room = booking.getRoom();
         int day = 1;//DatetoColumn(booking.getDate());
-        int timeslotfrom = booking.getTimeslot_from();
-        int timeslotto = booking.getTimeslot_to();
+        int timeslotfrom = booking.getTimeslotfrom();
+        int timeslotto = booking.getTimeslotto();
 
         TextView cell;
 
@@ -138,8 +140,10 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
             TableRow timeslot = findViewById(getResources().getIdentifier(tablerow_id, "id", getPackageName()));
 
             for(int z = 1; z <= daysAmount; z++){
-                TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, weight);
+                TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, weight);
                 layoutParams.setMargins(0,0,10,30);
+
+
                 TextView dayTimeslot = new TextView(this);
                 dayTimeslot.setText("timeslot"+j + "\n" + "day"+ z);
                 dayTimeslot.setLayoutParams(layoutParams);
