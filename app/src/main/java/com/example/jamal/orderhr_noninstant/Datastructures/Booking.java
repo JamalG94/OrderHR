@@ -1,7 +1,5 @@
 package com.example.jamal.orderhr_noninstant.Datastructures;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,11 +9,11 @@ public class Booking implements Serializable{
     private String lesson;
     private String username;
     private Date date;
-    private int timeslotto;
-    private int timeslotfrom;
-    private int reservationid;
-    private String timefrom;
-    private String timeto;
+    private int timeslot_to;
+    private int timeslot_from;
+    private int reservation_id;
+    private String time_from;
+    private String time_to;
 
     public String getRoom() {
         return room;
@@ -49,44 +47,44 @@ public class Booking implements Serializable{
         this.date = date;
     }
 
-    public int getTimeslotto() {
-        return timeslotto;
+    public int getTimeslot_to() {
+        return timeslot_to;
     }
 
-    public void setTimeslotto(int timeslotto) {
-        this.timeslotto = timeslotto;
+    public void setTimeslot_to(int timeslot_to) {
+        this.timeslot_to = timeslot_to;
     }
 
-    public int getTimeslotfrom() {
-        return timeslotfrom;
+    public int getTimeslot_from() {
+        return timeslot_from;
     }
 
     public void setTimeslotfrom(int timeslotfrom) {
-        this.timeslotfrom = timeslotfrom;
+        this.timeslot_from = timeslotfrom;
     }
 
-    public int getReservationid() {
-        return reservationid;
+    public int getReservation_id() {
+        return reservation_id;
     }
 
-    public void setReservationid(int reservationid) {
-        this.reservationid = reservationid;
+    public void setReservation_id(int reservationid) {
+        this.reservation_id = reservation_id;
     }
 
-    public String getTimefrom() {
-        return timefrom;
+    public String getTime_from() {
+        return time_from;
     }
 
-    public void setTimefrom(String timefrom) {
-        this.timefrom = timefrom;
+    public void setTime_from(String timefrom) {
+        this.time_from = timefrom;
     }
 
-    public String getTimeto() {
-        return timeto;
+    public String getTime_to() {
+        return time_to;
     }
 
-    public void setTimeto(String timeto) {
-        this.timeto = timeto;
+    public void setTime_to(String time_to) {
+        this.time_to = time_to;
     }
 }
 
