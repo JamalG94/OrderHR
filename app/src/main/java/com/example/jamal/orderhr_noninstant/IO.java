@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -19,9 +20,32 @@ import java.net.URL;
  * Created by Robin on 3/29/2018.
  */
 
-public class IO extends AsyncTask<String,Void, String> {
+public class IO extends AsyncTask<String,String, String> {
+    public IO() {
+        super();
+    }
 
-    private static final String REQUEST_METHOD = "GET";
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
+
+    @Override
+    protected void onProgressUpdate(String... values) {
+        super.onProgressUpdate(values);
+    }
+
+    @Override
+    protected void onCancelled(String s) {
+        super.onCancelled(s);
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+    }
+
+    private static final String REQUEST_METHOD = "POST";
     private static final int READ_TIMEOUT = 15000;
     private static final int CONNECTION_TIMEOUT = 15000;
     private static ObjectMapper objectMapper = new ObjectMapper();
@@ -31,74 +55,83 @@ public class IO extends AsyncTask<String,Void, String> {
     //Singleton
     private static IO _instance = null;
 
-    private IO(String apiUrl)
-    {
-        this.url = apiUrl;
+//    private IO(String apiUrl)
+//    {
+//        super();
+//        this.url = apiUrl;
+//
+//    }
+//
+//    public static IO GetInstance(String apiUrl)
+//    {
+//        if (_instance == null) _instance = new IO(apiUrl);
+//        return _instance;
+//    }
 
-    }
-
-    public static IO GetInstance(String apiUrl)
-    {
-        if (_instance == null) _instance = new IO(apiUrl);
-        return _instance;
-    }
-
-    public String GetData(int id){
-
-        String resultstring = "";
-        try{
-            resultstring = this.execute(url).get();
-        }
-        catch(Exception e){
-            Log.d("GetDataGoneWrong", e.toString());
-        }
-        return resultstring;
-    }
 
 
     @Override
     protected String doInBackground(String... params){
         String stringUrl = params[0];
+        String json = params[1];
         String result = "";
         String inputLine;
-        try{
-            //create a url object holding our url
-            URL myUrl = new URL(stringUrl);
+        try {
+//            HttpResponseCache client = new DefaultHttpClient();
 
-            //Create a connection
-            HttpURLConnection connection =
-                    (HttpURLConnection) myUrl.openConnection();
 
-            //set methods and timeouts
-            connection.setRequestMethod(REQUEST_METHOD);
+            URL url = new URL(stringUrl); //in the real code, there is an ip and a port
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept","Text");
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            conn.setConnectTimeout(15000);
+            conn.setReadTimeout(15000);
+            conn.connect();
 
-            connection.setReadTimeout(READ_TIMEOUT);
 
-            connection.setConnectTimeout(CONNECTION_TIMEOUT);
 
-            //Create a new InputStreamReader
-            InputStreamReader streamReader = new
-                    InputStreamReader(connection.getInputStream());
-            //Create a new buffered reader and String Builder
-            BufferedReader reader = new BufferedReader(streamReader);
-            StringBuilder stringBuilder = new StringBuilder();
-            //Check if the line we are reading is not null
-            while((inputLine = reader.readLine()) != null){
-                stringBuilder.append(inputLine);
+            DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+//                os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
+            os.writeBytes(json);
+            os.flush();
+            String output ="";
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+            StringBuilder sb = new StringBuilder();
+            while((output = br.readLine()) != null){
+                sb.append(output);
             }
-            //Close our InputStream and Buffered reader
-            reader.close();
-            streamReader.close();
-            //Set our result equal to our stringBuilder
-            result = stringBuilder.toString();
-        }
-        catch(IOException e) {
-            e.printStackTrace();
+            result= sb.toString();
+
+
+            Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+            Log.i("MSG" , result);
+            conn.disconnect();
+            os.close();
+
+
+
+
+
+
+        } catch (Exception e) {
+            Log.i("error","..");
         }
 
 
         return result;
     }
+
+//    @Override
+//    protected Object doInBackground(Object[] objects) {
+//        t
+//    }
+
+
+
+
 
     @Override
     protected void onPostExecute(String result){

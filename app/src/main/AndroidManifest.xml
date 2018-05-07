@@ -29,11 +29,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.MainActivity">
+        </activity>
+        <activity android:name=".Activities.ScheduleActivity">
+        </activity>
+        <activity android:name=".Activities.Defuncts.DefunctDetailActivity">
+        </activity>
+        <activity android:name=".Activities.EasyScanActivity">
+        </activity>
+        <activity android:name=".Activities.Booking.BookingMakeActivity">
+        </activity>
+        <activity android:name=".Activities.Defuncts.DefunctMakeActivity">
 
         </activity>
-        <activity android:name=".Activities.ScheduleActivity"></activity>
-        <activity android:name=".Activities.Defuncts.DefunctDetailActivity"></activity>
-        <activity android:name=".Activities.EasyScanActivity"></activity>
     </application>
 
 </manifest>
