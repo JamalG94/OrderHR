@@ -40,7 +40,7 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
         TextView timeslotview = (TextView) findViewById(R.id.viewTimeslot);
 
 
-        String test = GetData.checkbooking("{ \"room\":\"WN4.101\", \"timeslotfrom\":2, \"timeslotto\":3, \"date\":\"12-03-2018\" }");
+        String test = GetData.CheckBooking("{ \"room\":\"WN4.101\", \"timeslotfrom\":2, \"timeslotto\":3, \"date\":\"12-03-2018\" }");
         if(test.equals("\"False\"")){
             Toast.makeText(this, "These slots are not available!",
                     Toast.LENGTH_LONG).show();

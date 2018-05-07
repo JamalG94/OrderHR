@@ -5,12 +5,26 @@ package com.example.jamal.orderhr_noninstant;
  */
 
 public final class GetData {
-    static public String checkbooking(String Json){
+    static public String CheckBooking(String Json){
         String temp = "";
         String returnf = "";
         IO instance = new IO();
         try{
             temp = instance.execute("http://markb.pythonanywhere.com/availableslot/",Json).get();
+            //temp = instance.doInBackground("http://markb.pythonanywhere.com/availableslot/",Json);
+        }catch(Exception e){}finally{
+            returnf = temp;
+        }
+
+        return returnf;
+    }
+
+    static public String RequestRoom(String Json){
+        String temp = "";
+        String returnf = "";
+        IO instance = new IO();
+        try{
+            temp = instance.execute("http://markb.pythonanywhere.com/bookingbyroom/",Json).get();
             //temp = instance.doInBackground("http://markb.pythonanywhere.com/availableslot/",Json);
         }catch(Exception e){}finally{
             returnf = temp;
