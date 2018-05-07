@@ -60,7 +60,7 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy");
         objectMapper.setDateFormat(simpleDateFormat);
 
-        //this.IVisit(objectMapper, _IO.GetData(1));
+        //this.IFillDataStructures(objectMapper, _IO.GetData(1));
         //for (Booking b: allBookings) {
         Booking b = new Booking();
         b.setTimeslotfrom(3);
@@ -120,7 +120,7 @@ public class ScheduleActivity extends AppCompatActivity implements IDataStructur
     }
 
     @Override
-    public void IVisit(ObjectMapper objectMapper, String json) {
+    public void IFillDataStructures(ObjectMapper objectMapper, String json) {
         try{
             List<Booking> list = objectMapper.readValue(json, new TypeReference<List<Booking>>(){});
             Log.d("", "check");

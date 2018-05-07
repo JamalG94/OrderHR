@@ -20,11 +20,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/buttonSaveBooking"
+            android:id="@+id/buttonSaveDefunct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickSaveBooking"
-            android:text="Save Booking" />
+            android:text="Save Defunct" />
 
         <TextView
             android:id="@+id/textView6"
@@ -32,7 +32,7 @@
             android:layout_height="38dp"
             android:autoSizeMaxTextSize="40dp"
             android:autoSizeMinTextSize="32dp"
-            android:text="Reservation Details:"
+            android:text="Report Details:"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <TextView
@@ -51,22 +51,7 @@
             android:id="@+id/viewTimeslot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Timeslots:" />
-
-        <TextView
-            android:id="@+id/viewTimes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Times:" />
-
-        <CheckBox
-            android:id="@+id/Available"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autoText="true"
-            android:checked="true"
-            android:enabled="false"
-            android:text="Available" />
+            android:text="User:" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,34 +72,10 @@
                 android:hint="Lesson"
                 android:inputType="textPersonName" />
 
-            <LinearLayout
+            <Spinner
+                android:id="@+id/spinnerType"
                 android:layout_width="match_parent"
-                android:layout_height="51dp"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/editTextClass"
-                    android:layout_width="282dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:autoText="false"
-                    android:ems="10"
-                    android:hint="Class"
-                    android:inputType="textPersonName" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="onClickAddClass"
-                    android:text="+" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/viewClasses"
-                android:layout_width="match_parent"
-                android:layout_height="152dp"
-                android:orientation="vertical"></LinearLayout>
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
