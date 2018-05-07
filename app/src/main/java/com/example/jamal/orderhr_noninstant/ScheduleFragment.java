@@ -16,8 +16,15 @@ import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by jamal on 3/29/2018.
@@ -27,6 +34,7 @@ public class ScheduleFragment extends Fragment implements IDataStructure{
 
     private List<Booking> selectedBookings = new ArrayList<>();
     private List<Booking> allBookings;
+    private IO _IO;
     LinearLayout fragmentTable;
 
     @Override
@@ -49,7 +57,27 @@ public class ScheduleFragment extends Fragment implements IDataStructure{
             }
         };
 
+
+
         CreateTable(5, 10, "timeslot_", onSelectCell);
+
+//        IO io = IO.GetInstance("http://markb.pythonanywhere.com/reservation/");
+//        String result = io.GetData(1);
+//        IVisit(objectMapper, result);
+
+        allBookings = new ArrayList<Booking>();
+        Booking testBooking = new Booking();
+        testBooking.setRoom("AB");
+        testBooking.setUsername("Jamal");
+        testBooking.setLesson("Trekken");
+        testBooking.setTimeslot_to(4);
+        testBooking.setTimeslotfrom(3);
+        testBooking.setDate(new GregorianCalendar(2018, Calendar.JUNE, 5).getTime());
+
+        allBookings.add(testBooking);
+        for (Booking b: allBookings) {
+            FillRows(b);
+        }
     }
 
     @Override
@@ -63,6 +91,19 @@ public class ScheduleFragment extends Fragment implements IDataStructure{
         }
     }
 
+    private void onClickReserve(){
+        JSONObject[] jsonObjects = new JSONObject[selectedBookings.size()];
+        for(Booking b : selectedBookings){
+            //JSONObject jsonObject = b.ObjecttoJson();
+        }
+        ParseReservations(jsonObjects);
+
+    }
+
+    private void ParseReservations(JSONObject[] jsonObjects){
+        //TODO magic jsonobjects to database away
+    }
+
     private void MarkBookings(Booking booking){
         Log.d("SelectBookingCell", booking.getLesson());
         if(selectedBookings.contains(booking)){
@@ -70,6 +111,28 @@ public class ScheduleFragment extends Fragment implements IDataStructure{
         }
         else {
             selectedBookings.add(booking);
+        }
+    }
+
+    private void FillRows(Booking booking){
+        String cell_id;
+        String lesson = booking.getLesson();
+        String teacher = booking.getUsername();
+        String room = booking.getRoom();
+        int day = DatetoColumn(booking.getDate());
+        int timeslotfrom = booking.getTimeslot_from();
+        int timeslotto = booking.getTimeslot_to();
+
+        TextView cell;
+
+        for(int i = timeslotfrom; i <= timeslotto; i++ ){
+            //Each cell has a specific id
+            cell_id = Integer.toString(i) + Integer.toString(day);
+            cell = getView().findViewById(getResources().getIdentifier(cell_id, "id", getActivity().getPackageName()));
+            //Create a textview object to hold the lesson and teacher strings
+            cell.setText(teacher + " " + lesson + " " + room);
+            //Put the booking object in our specific cell;
+            cell.setTag(booking);
         }
     }
 
@@ -109,5 +172,19 @@ public class ScheduleFragment extends Fragment implements IDataStructure{
         }
     }
 
+    private int DatetoColumn(Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setCalendar(Calendar.getInstance());
+
+        sdf.format(date);
+        //Here you set to your timezone
+        sdf.setTimeZone(TimeZone.getDefault());
+        //Will print on your default Timezone
+        System.out.println(sdf.format(sdf.getCalendar().getTime()));
+
+        int day = sdf.getCalendar().get(Calendar.DAY_OF_WEEK);
+        //We return -1 because the Calendar.DAY_OF_WEEK method starts at sunday, and my week schedule starts counting from monday
+        return day -1;
+    }
 
 }
