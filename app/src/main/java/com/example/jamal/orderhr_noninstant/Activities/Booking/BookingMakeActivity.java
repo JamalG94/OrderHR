@@ -50,8 +50,9 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
 
         roomview.setText(roomview.getText() + receivedBooking.getRoom());
         dateview.setText(dateview.getText() + receivedBooking.getDate().toString());
-        timesview.setText(timesview.getText() + receivedBooking.getTimefrom() + " to " + receivedBooking.getTimeto());
-        timeslotview.setText(timeslotview.getText() + String.valueOf(receivedBooking.getTimeslotfrom()) + " to " + String.valueOf(receivedBooking.getTimeslotto()));
+
+        timesview.setText(timesview.getText() + receivedBooking.getTime_from() + " to " + receivedBooking.getTime_to());
+        timeslotview.setText(timeslotview.getText() + String.valueOf(receivedBooking.getTimeslot_from()) + " to " + String.valueOf(receivedBooking.getTimeslot_to()));
 
     }
 

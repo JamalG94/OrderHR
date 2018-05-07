@@ -38,9 +38,8 @@
         </activity>
         <activity android:name=".Activities.Booking.BookingMakeActivity">
         </activity>
-        <activity android:name=".Activities.Defuncts.DefunctMakeActivity">
+        <activity android:name=".Activities.Defuncts.DefunctMakeActivity"></activity>
 
-        </activity>
     </application>
 
 </manifest>

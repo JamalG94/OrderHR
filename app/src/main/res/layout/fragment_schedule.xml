@@ -5,213 +5,213 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
-<TableLayout
-    android:id="@+id/fragment_schedule"
-    android:stretchColumns="1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:weightSum="6">
+    <TableLayout
+        android:id="@+id/fragment_schedule"
+        android:stretchColumns="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="6">
 
-    <TableRow>
+        <TableRow>
 
-        <TextView
-            android:id="@+id/day_2"
-            android:layout_column="1"
-            android:padding="3dip"
-            android:text="@string/day_mon"
-            android:textSize="24sp" />
+            <TextView
+                android:id="@+id/day_2"
+                android:layout_column="1"
+                android:padding="3dip"
+                android:text="@string/day_mon"
+                android:textSize="24sp" />
 
-        <TextView
+            <TextView
 
-            android:id="@+id/day_3"
-            android:layout_column="2"
-            android:padding="3dip"
-            android:text="@string/day_tue"
-            android:textSize="24sp" />
+                android:id="@+id/day_3"
+                android:layout_column="2"
+                android:padding="3dip"
+                android:text="@string/day_tue"
+                android:textSize="24sp" />
 
-        <TextView
+            <TextView
 
-            android:id="@+id/day_4"
-            android:layout_column="3"
-            android:padding="3dip"
-            android:text="@string/day_wed"
-            android:textSize="24sp" />
+                android:id="@+id/day_4"
+                android:layout_column="3"
+                android:padding="3dip"
+                android:text="@string/day_wed"
+                android:textSize="24sp" />
 
-        <TextView
+            <TextView
 
-            android:id="@+id/day_5"
-            android:layout_column="4"
-            android:padding="3dip"
-            android:text="@string/day_thu"
-            android:textSize="24sp" />
+                android:id="@+id/day_5"
+                android:layout_column="4"
+                android:padding="3dip"
+                android:text="@string/day_thu"
+                android:textSize="24sp" />
 
-        <TextView
+            <TextView
 
-            android:id="@+id/day_6"
-            android:layout_column="5"
-            android:padding="3dip"
-            android:text="@string/day_fri"
-            android:textSize="24sp" />
+                android:id="@+id/day_6"
+                android:layout_column="5"
+                android:padding="3dip"
+                android:text="@string/day_fri"
+                android:textSize="24sp" />
 
-    </TableRow>
+        </TableRow>
 
-    <TableRow android:id="@+id/timeslot_1">
-
-
-
-        <TextView
-            android:layout_column="0"
-            android:padding="3dip"
-            android:text="@string/timeslot_one" />
-
-    </TableRow>
-
-    <TableRow android:id="@+id/timeslot_2">
+        <TableRow android:id="@+id/timeslot_1">
 
 
-        <TextView
-            android:layout_column="0"
-            android:padding="3dip"
-            android:text="@string/timeslot_two" />
-    </TableRow>
 
-    <View
-        android:layout_height="2dip"
-        android:background="#FF909090" />
+            <TextView
+                android:layout_column="0"
+                android:padding="3dip"
+                android:text="@string/timeslot_one" />
 
-    <TableRow android:id="@+id/timeslot_3">
+        </TableRow>
 
-        <TextView
-            android:layout_column="0"
-            android:padding="3dip"
-            android:text="@string/timeslot_three" />
-    </TableRow>
-
-    <TableRow android:id="@+id/timeslot_4">
-
-        <TextView
-            android:padding="3dip"
-            android:text="@string/timeslot_four" />
-    </TableRow>
-
-    <View
-        android:layout_height="2dip"
-        android:background="#FF909090" />
-
-    <TableRow android:id="@+id/timeslot_5">
-
-        <TextView
-            android:padding="3dip"
-            android:text="@string/timeslot_five" />
-
-    </TableRow>
-
-    <TableRow android:id="@+id/timeslot_6">
-
-        <TextView
-            android:layout_column="0"
-            android:padding="3dip"
-            android:text="@string/timeslot_six" />
-    </TableRow>
-
-    <View
-        android:layout_height="2dip"
-        android:background="#FF909090" />
-
-    <TableRow android:id="@+id/timeslot_7">
-
-        <TextView
-            android:layout_column="0"
-            android:padding="3dip"
-            android:text="@string/timeslot_seven" />
-    </TableRow>
+        <TableRow android:id="@+id/timeslot_2">
 
 
-    <TableRow android:id="@+id/timeslot_8">
+            <TextView
+                android:layout_column="0"
+                android:padding="3dip"
+                android:text="@string/timeslot_two" />
+        </TableRow>
 
-        <TextView
-            android:layout_column="0"
-            android:padding="3dip"
-            android:text="@string/timeslot_eight" />
-    </TableRow>
+        <View
+            android:layout_height="2dip"
+            android:background="#FF909090" />
 
-    <View
-        android:layout_height="2dip"
-        android:background="#FF909090" />
+        <TableRow android:id="@+id/timeslot_3">
 
-    <TableRow android:id="@+id/timeslot_9">
+            <TextView
+                android:layout_column="0"
+                android:padding="3dip"
+                android:text="@string/timeslot_three" />
+        </TableRow>
 
-        <TextView
-            android:layout_column="0"
-            android:padding="3dip"
-            android:text="@string/timeslot_nine" />
-    </TableRow>
+        <TableRow android:id="@+id/timeslot_4">
 
-    <TableRow android:id="@+id/timeslot_10">
+            <TextView
+                android:padding="3dip"
+                android:text="@string/timeslot_four" />
+        </TableRow>
 
-        <TextView
-            android:layout_column="0"
-            android:padding="3dip"
-            android:text="@string/timeslot_ten" />
-    </TableRow>
+        <View
+            android:layout_height="2dip"
+            android:background="#FF909090" />
 
-    <View
-        android:layout_height="2dip"
-        android:background="#FF909090" />
+        <TableRow android:id="@+id/timeslot_5">
 
-    <TableRow android:id="@+id/timeslot_11">
+            <TextView
+                android:padding="3dip"
+                android:text="@string/timeslot_five" />
 
-        <TextView
-            android:layout_column="0"
-            android:padding="3dip"
-            android:text="@string/timeslot_eleven" />
-    </TableRow>
+        </TableRow>
 
-    <TableRow android:id="@+id/timeslot_12">
+        <TableRow android:id="@+id/timeslot_6">
 
-        <TextView
-            android:layout_column="0"
-            android:padding="3dip"
-            android:text="@string/timeslot_twelve" />
-    </TableRow>
+            <TextView
+                android:layout_column="0"
+                android:padding="3dip"
+                android:text="@string/timeslot_six" />
+        </TableRow>
 
-    <View
-        android:layout_height="2dip"
-        android:background="#FF909090" />
+        <View
+            android:layout_height="2dip"
+            android:background="#FF909090" />
 
-    <TableRow android:id="@+id/timeslot_13">
+        <TableRow android:id="@+id/timeslot_7">
 
-        <TextView
-            android:layout_column="0"
-            android:padding="3dip"
-            android:text="@string/timeslot_thirteen" />
-    </TableRow>
+            <TextView
+                android:layout_column="0"
+                android:padding="3dip"
+                android:text="@string/timeslot_seven" />
+        </TableRow>
 
-    <TableRow android:id="@+id/timeslot_14">
 
-        <TextView
-            android:layout_column="0"
-            android:padding="3dip"
-            android:text="@string/timeslot_fourteen" />
-    </TableRow>
+        <TableRow android:id="@+id/timeslot_8">
 
-    <View
-        android:layout_height="2dip"
-        android:background="#FF909090" />
+            <TextView
+                android:layout_column="0"
+                android:padding="3dip"
+                android:text="@string/timeslot_eight" />
+        </TableRow>
 
-    <TableRow
-        android:id="@+id/timeslot_15"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <View
+            android:layout_height="2dip"
+            android:background="#FF909090" />
 
-        <TextView
-            android:layout_column="0"
-            android:padding="3dip"
-            android:text="@string/timeslot_fifteen" />
-    </TableRow>
+        <TableRow android:id="@+id/timeslot_9">
 
-    <Button />
+            <TextView
+                android:layout_column="0"
+                android:padding="3dip"
+                android:text="@string/timeslot_nine" />
+        </TableRow>
 
-</TableLayout>
+        <TableRow android:id="@+id/timeslot_10">
+
+            <TextView
+                android:layout_column="0"
+                android:padding="3dip"
+                android:text="@string/timeslot_ten" />
+        </TableRow>
+
+        <View
+            android:layout_height="2dip"
+            android:background="#FF909090" />
+
+        <TableRow android:id="@+id/timeslot_11">
+
+            <TextView
+                android:layout_column="0"
+                android:padding="3dip"
+                android:text="@string/timeslot_eleven" />
+        </TableRow>
+
+        <TableRow android:id="@+id/timeslot_12">
+
+            <TextView
+                android:layout_column="0"
+                android:padding="3dip"
+                android:text="@string/timeslot_twelve" />
+        </TableRow>
+
+        <View
+            android:layout_height="2dip"
+            android:background="#FF909090" />
+
+        <TableRow android:id="@+id/timeslot_13">
+
+            <TextView
+                android:layout_column="0"
+                android:padding="3dip"
+                android:text="@string/timeslot_thirteen" />
+        </TableRow>
+
+        <TableRow android:id="@+id/timeslot_14">
+
+            <TextView
+                android:layout_column="0"
+                android:padding="3dip"
+                android:text="@string/timeslot_fourteen" />
+        </TableRow>
+
+        <View
+            android:layout_height="2dip"
+            android:background="#FF909090" />
+
+        <TableRow
+            android:id="@+id/timeslot_15"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_column="0"
+                android:padding="3dip"
+                android:text="@string/timeslot_fifteen" />
+        </TableRow>
+
+        <Button />
+
+    </TableLayout>
 </LinearLayout>

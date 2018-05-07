@@ -81,7 +81,7 @@ public class ScheduleFragment extends Fragment implements IDataStructure{
     }
 
     @Override
-    public void IVisit(ObjectMapper objectMapper, String json) {
+    public void IFillDataStructures(ObjectMapper objectMapper, String json) {
         try{
             allBookings = objectMapper.readValue(json, new TypeReference<List<Booking>>(){});
             Log.d("", "check");
