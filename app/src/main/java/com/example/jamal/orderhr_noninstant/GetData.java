@@ -32,4 +32,18 @@ public final class GetData {
 
         return returnf;
     }
+
+    static public String RequestBookingByID(String Json){
+        String temp = "";
+        String returnf = "";
+        IO instance = new IO();
+        try{
+            temp = instance.execute("http://markb.pythonanywhere.com/bookingbyid/",Json).get();
+            //temp = instance.doInBackground("http://markb.pythonanywhere.com/availableslot/",Json);
+        }catch(Exception e){}finally{
+            returnf = temp;
+        }
+
+        return returnf;
+    }
 }

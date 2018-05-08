@@ -9,15 +9,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
 
+import com.example.jamal.orderhr_noninstant.Datastructures.BookingWrapper;
+import com.example.jamal.orderhr_noninstant.GetData;
 import com.example.jamal.orderhr_noninstant.R;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -28,6 +27,7 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
 
     private List<Booking> selectedBookings = new ArrayList<>();
     private List<Booking> allBookings;
+    private BookingWrapper[] bookingWrapper;
     LinearLayout fragmentTable;
 
 
@@ -60,20 +60,22 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy");
         objectMapper.setDateFormat(simpleDateFormat);
 
+        String test = GetData.RequestBookingByID("{\"id\":\"1\"}");
+
 //        IO io = IO.GetInstance("http://markb.pythonanywhere.com/reservation/");
 //        String result = io.GetData(1);
-//        IVisit(objectMapper, result);
+        IFillDataStructures(objectMapper, test);
 
-        allBookings = new ArrayList<Booking>();
-        Booking testBooking = new Booking();
-        testBooking.setRoom("AB");
-        testBooking.setUsername("Jamal");
-        testBooking.setLesson("Trekken");
-        testBooking.setTimeslot_to(4);
-        testBooking.setTimeslotfrom(3);
-        testBooking.setDate(new GregorianCalendar(2018, Calendar.JUNE, 5).getTime());
+//        allBookings = new ArrayList<Booking>();
+//        Booking testBooking = new Booking();
+//        testBooking.setRoom("AB");
+//        testBooking.setUsername("Jamal");
+//        testBooking.setLesson("Trekken");
+//        testBooking.setTimeslot_to(4);
+//        testBooking.setTimeslotfrom(3);
+//        testBooking.setDate(new GregorianCalendar(2018, Calendar.JUNE, 5).getTime());
 
-        allBookings.add(testBooking);
+        //allBookings.add(testBooking);
         for (Booking b: allBookings) {
             FillRows(b);
         }
@@ -108,8 +110,8 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
         String teacher = booking.getUsername();
         String room = booking.getRoom();
         int day = DatetoColumn(booking.getDate());
-        int timeslotfrom = booking.getTimeslot_from();
-        int timeslotto = booking.getTimeslot_to();
+        int timeslotfrom = booking.getTimeslotfrom();
+        int timeslotto = booking.getTimeslotto();
 
         TextView cell;
 
@@ -126,8 +128,9 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
 
     @Override
     public void IFillDataStructures(ObjectMapper objectMapper, String json) {
+        //new TypeReference<List<Booking>>(){}
         try{
-            allBookings = objectMapper.readValue(json, new TypeReference<List<Booking>>(){});
+            bookingWrapper = objectMapper.readValue(json, BookingWrapper[].class);
             Log.d("", "check");
         }
         catch(Exception e ){

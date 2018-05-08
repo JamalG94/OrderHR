@@ -5,15 +5,16 @@ import java.util.Date;
 
 
 public class Booking implements Serializable{
+
     private String room;
     private String lesson;
     private String username;
+    private String timefrom;
+    private String timeto;
     private Date date;
-    private int timeslot_to;
-    private int timeslot_from;
-    private int reservation_id;
-    private String time_from;
-    private String time_to;
+    private int timeslotto;
+    private int timeslotfrom;
+    private int weeknummer;
 
     public String getRoom() {
         return room;
@@ -39,6 +40,22 @@ public class Booking implements Serializable{
         this.username = username;
     }
 
+    public String getTimefrom() {
+        return timefrom;
+    }
+
+    public void setTimefrom(String timefrom) {
+        this.timefrom = timefrom;
+    }
+
+    public String getTimeto() {
+        return timeto;
+    }
+
+    public void setTimeto(String timeto) {
+        this.timeto = timeto;
+    }
+
     public Date getDate() {
         return date;
     }
@@ -47,45 +64,33 @@ public class Booking implements Serializable{
         this.date = date;
     }
 
-    public int getTimeslot_to() {
-        return timeslot_to;
+    public int getTimeslotto() {
+        return timeslotto;
     }
 
-    public void setTimeslot_to(int timeslot_to) {
-        this.timeslot_to = timeslot_to;
+    public void setTimeslotto(int timeslotto) {
+        this.timeslotto = timeslotto;
     }
 
-    public int getTimeslot_from() {
-        return timeslot_from;
+    public int getTimeslotfrom() {
+        return timeslotfrom;
     }
 
     public void setTimeslotfrom(int timeslotfrom) {
-        this.timeslot_from = timeslotfrom;
+        this.timeslotfrom = timeslotfrom;
     }
 
-    public int getReservation_id() {
-        return reservation_id;
+    public int getWeeknummer() {
+        return weeknummer;
     }
 
-    public void setReservation_id(int reservationid) {
-        this.reservation_id = reservation_id;
+    public void setWeeknummer(int weeknummer) {
+        this.weeknummer = weeknummer;
     }
 
-    public String getTime_from() {
-        return time_from;
-    }
 
-    public void setTime_from(String timefrom) {
-        this.time_from = timefrom;
-    }
 
-    public String getTime_to() {
-        return time_to;
-    }
 
-    public void setTime_to(String time_to) {
-        this.time_to = time_to;
-    }
 }
 
 
