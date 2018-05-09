@@ -46,6 +46,20 @@ public final class GetData {
 
         return returnf;
     }
+
+    static public String RequestBookingByRoom(String Json){
+        String temp = "";
+        String returnf = "";
+        IO instance = new IO();
+        try{
+            temp = instance.execute("http://markb.pythonanywhere.com/bookingbyroom/",Json).get();
+            //temp = instance.doInBackground("http://markb.pythonanywhere.com/availableslot/",Json);
+        }catch(Exception e){}finally{
+            returnf = temp;
+        }
+
+        return returnf;
+    }
 //    static public String DoPostOnAPIserver(String rawJsonToSend,String ApiURL){
 //
 //    }

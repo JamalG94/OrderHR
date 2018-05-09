@@ -29,6 +29,7 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
     private List<Booking> allBookings;
     private BookingWrapper[] bookingWrapper;
     LinearLayout fragmentTable;
+    private ObjectMapper objectMapper;
 
 
     @Override
@@ -40,7 +41,7 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
             @Override
             public void onClick(View v) {
                 if(v.getTag() != null){
-                Booking booking = (Booking)(v.getTag());
+                Booking booking = (Booking) (v.getTag());
                 MarkBookings(booking);
                 }
             }
@@ -56,41 +57,44 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
     protected void onStart(){
         super.onStart();
 
-        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper = new ObjectMapper();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy");
         objectMapper.setDateFormat(simpleDateFormat);
 
         String test = GetData.RequestBookingByID("{\"id\":\"1\"}");
 
+        String test1 =GetData.RequestBookingByRoom("{\"room\":\"H.3.403\",  \"weeknummer\":\"2\"}");
+
 //        IO io = IO.GetInstance("http://markb.pythonanywhere.com/reservation/");
 //        String result = io.GetData(1);
-        IFillDataStructures(objectMapper, test);
+        IFillDataStructures(objectMapper, test1);
 
-//        allBookings = new ArrayList<Booking>();
-//        Booking testBooking = new Booking();
-//        testBooking.setRoom("AB");
-//        testBooking.setUsername("Jamal");
-//        testBooking.setLesson("Trekken");
-//        testBooking.setTimeslot_to(4);
-//        testBooking.setTimeslotfrom(3);
+
 //        testBooking.setDate(new GregorianCalendar(2018, Calendar.JUNE, 5).getTime());
 
         //allBookings.add(testBooking);
-        for (Booking b: allBookings) {
+        for (BookingWrapper b: bookingWrapper) {
             FillRows(b);
         }
     }
 
-    private void onClickReserve(){
-        JSONObject[] jsonObjects = new JSONObject[selectedBookings.size()];
+    public void ClickReserve(View view){
+        ArrayList<String> jsonObjects = new ArrayList<String>();
         for(Booking b : selectedBookings){
-            //JSONObject jsonObject = b.ObjecttoJson();
+            try{
+                jsonObjects.add(objectMapper.writeValueAsString(b));
+            }
+            catch (Exception e){
+                Log.d("BookingToString", e.toString());
+            }
         }
+
+
         ParseReservations(jsonObjects);
 
     }
 
-    private void ParseReservations(JSONObject[] jsonObjects){
+    private void ParseReservations(ArrayList<String> jsonObjects){
         //TODO magic jsonobjects to database away
     }
 
@@ -104,14 +108,14 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
         }
     }
 
-    private void FillRows(Booking booking){
+    private void FillRows(BookingWrapper booking){
         String cell_id;
-        String lesson = booking.getLesson();
-        String teacher = booking.getUsername();
-        String room = booking.getRoom();
-        int day = DatetoColumn(booking.getDate());
-        int timeslotfrom = booking.getTimeslotfrom();
-        int timeslotto = booking.getTimeslotto();
+        String lesson = booking.getFields().getLesson();
+        String teacher = booking.getFields().getUsername();
+        String room = booking.getFields().getRoom();
+        int day = DatetoColumn(booking.getFields().getDate());
+        int timeslotfrom = booking.getFields().getTimeslotfrom();
+        int timeslotto = booking.getFields().getTimeslotto();
 
         TextView cell;
 
@@ -122,7 +126,7 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
             //Create a textview object to hold the lesson and teacher strings
             cell.setText(teacher + " " + lesson + " " + room);
             //Put the booking object in our specific cell;
-            cell.setTag(booking);
+            cell.setTag(booking.getFields());
         }
     }
 

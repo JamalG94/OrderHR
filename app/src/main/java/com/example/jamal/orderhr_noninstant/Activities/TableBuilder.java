@@ -8,6 +8,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 /**
@@ -40,7 +41,7 @@ public class TableBuilder extends AppCompatActivity {
 
                 TextView dayTimeslot = new TextView(this);
                 dayTimeslot.setText("timeslot"+j + "\n" + "day"+ z);
-                dayTimeslot.setTextSize(12);
+                dayTimeslot.setTextSize(10);
                 dayTimeslot.setLayoutParams(layoutParams);
 
 
@@ -64,6 +65,8 @@ public class TableBuilder extends AppCompatActivity {
     }
 
     public int DatetoColumn(Date date){
+       // date = new GregorianCalendar(2018, Calendar.JUNE, 20).getTime();
+        //testBooking.setDate(new GregorianCalendar(2018, Calendar.JUNE, 5).getTime());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setCalendar(Calendar.getInstance());
 
@@ -75,7 +78,7 @@ public class TableBuilder extends AppCompatActivity {
 
         int day = sdf.getCalendar().get(Calendar.DAY_OF_WEEK);
         //We return -1 because the Calendar.DAY_OF_WEEK method starts at sunday, and my week schedule starts counting from monday
-        return day -1;
+        return day;
     }
 
 }
