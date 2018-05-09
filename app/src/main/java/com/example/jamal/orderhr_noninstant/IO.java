@@ -21,9 +21,9 @@ import java.net.URL;
  */
 
 public class IO extends AsyncTask<String,String, String> {
-    public IO() {
-        super();
-    }
+//    public IO() {
+//        super();
+//    }
 
     @Override
     protected void onPreExecute() {
@@ -48,25 +48,23 @@ public class IO extends AsyncTask<String,String, String> {
     private static final String REQUEST_METHOD = "POST";
     private static final int READ_TIMEOUT = 15000;
     private static final int CONNECTION_TIMEOUT = 15000;
-    private static ObjectMapper objectMapper = new ObjectMapper();
 
-    private String url = "";
+
 
     //Singleton
     private static IO _instance = null;
 
-//    private IO(String apiUrl)
-//    {
-//        super();
-//        this.url = apiUrl;
-//
-//    }
-//
-//    public static IO GetInstance(String apiUrl)
-//    {
-//        if (_instance == null) _instance = new IO(apiUrl);
-//        return _instance;
-//    }
+    private IO(String apiUrl)
+    {
+        super();
+
+    }
+
+    public static IO GetInstance(String apiUrl)
+    {
+       _instance = new IO(apiUrl);
+        return _instance;
+    }
 
 
 
