@@ -7,16 +7,16 @@ package com.example.jamal.orderhr_noninstant;
 public final class GetData {
     static public String CheckBooking(String Json){
         String temp = "";
-        String returnf = "";
+//        String returnf = "";
         IO instance = new IO();
         try{
             temp = instance.execute("http://markb.pythonanywhere.com/availableslot/",Json).get();
             //temp = instance.doInBackground("http://markb.pythonanywhere.com/availableslot/",Json);
         }catch(Exception e){}finally{
-            returnf = temp;
+//            returnf = temp;
         }
 
-        return returnf;
+        return temp;
     }
 
     static public String RequestRoom(String Json){
@@ -46,4 +46,7 @@ public final class GetData {
 
         return returnf;
     }
+//    static public String DoPostOnAPIserver(String rawJsonToSend,String ApiURL){
+//
+//    }
 }

@@ -136,6 +136,19 @@ public class IO extends AsyncTask<String,String, String> {
         super.onPostExecute(result);
     }
 
+
+    public String DoPostRequestToAPIServer(String RawJsonStringToInput,String ApiURL){
+        String temp = "";
+        try{
+            temp = this.execute(ApiURL,RawJsonStringToInput).get();
+            //temp = instance.doInBackground("http://markb.pythonanywhere.com/availableslot/",Json);
+        }catch(Exception e){}finally{
+//            returnf = temp;
+        }
+
+        return temp;
+    }
+
 }
 
 

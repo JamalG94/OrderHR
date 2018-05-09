@@ -24,6 +24,8 @@ import org.json.JSONObject;
 
 public class BookingMakeActivity extends AppCompatActivity implements IDataStructure {
     Booking receivedBooking;
+    IO IOInstance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,9 +41,9 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
         TextView timesview = (TextView) findViewById(R.id.viewTimes);
         TextView timeslotview = (TextView) findViewById(R.id.viewTimeslot);
 
-
-        String test = GetData.CheckBooking("{ \"room\":\"WN4.101\", \"timeslotfrom\":2, \"timeslotto\":3, \"date\":\"12-03-2018\" }");
-        if(test.equals("\"False\"")){
+        IOInstance = new IO();
+        String test = IOInstance.DoPostRequestToAPIServer("{ \"room\":\""+receivedBooking.getRoom()+"\", \"timeslotfrom\":"+ String.valueOf(receivedBooking.getTimeslotfrom()) + ", \"timeslotto\":"+String.valueOf(receivedBooking.getTimeslotto())+", \"date\":\"12-03-2018\" }","http://markb.pythonanywhere.com/availableslot/");
+        if(!test.equals("[]")){
             Toast.makeText(this, "These slots are not available!",
                     Toast.LENGTH_LONG).show();
             CheckBox cbAval = (CheckBox) findViewById(R.id.Available);
