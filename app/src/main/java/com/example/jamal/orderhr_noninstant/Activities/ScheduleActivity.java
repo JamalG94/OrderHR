@@ -1,20 +1,16 @@
 package com.example.jamal.orderhr_noninstant.Activities;
 
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-
 import android.widget.TextView;
 import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
-
 import com.example.jamal.orderhr_noninstant.Datastructures.BookingWrapper;
 import com.example.jamal.orderhr_noninstant.GetData;
+import com.example.jamal.orderhr_noninstant.IO;
 import com.example.jamal.orderhr_noninstant.R;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +26,7 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
     private BookingWrapper[] bookingWrapper;
     LinearLayout fragmentTable;
     private ObjectMapper objectMapper;
+    private IO _IO;
 
 
     @Override
@@ -61,12 +58,12 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy");
         objectMapper.setDateFormat(simpleDateFormat);
 
-        String test = GetData.RequestBookingByID("{\"id\":\"1\"}");
+        String test =  GetData.RequestBookingByID("{\"id\":\"1\"}");
 
-        String test1 =GetData.RequestBookingByRoom("{\"room\":\"H.3.403\",  \"weeknummer\":\"2\"}");
+        String test1 = GetData.RequestBookingByRoom("{\"room\":\"H.3.403\",  \"weeknummer\":\"2\"}");
 
-//        IO io = IO.GetInstance("http://markb.pythonanywhere.com/reservation/");
-//        String result = io.GetData(1);
+        _IO = IO.GetInstance("http://markb.pythonanywhere.com/boomroom/");
+
         IFillDataStructures(objectMapper, test1);
 
 
@@ -95,7 +92,10 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
     }
 
     private void ParseReservations(ArrayList<String> jsonObjects){
-        //TODO magic jsonobjects to database away
+        for (String booking: jsonObjects)
+        {
+            GetData.BookRoom(booking);
+        }
     }
 
     private void MarkBookings(Booking booking){
