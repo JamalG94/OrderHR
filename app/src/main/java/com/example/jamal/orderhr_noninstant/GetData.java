@@ -89,14 +89,14 @@ public final class GetData {
         HardCodedTimeSlots.put(5,new Pair<String, String>("12:10","13:00"));
         HardCodedTimeSlots.put(6,new Pair<String, String>("13:00","13:50"));
         HardCodedTimeSlots.put(7,new Pair<String, String>("13:50","14:40"));
-        HardCodedTimeSlots.put(7,new Pair<String, String>("15:00","15:50"));
-        HardCodedTimeSlots.put(7,new Pair<String, String>("15:50","16:40"));
-        HardCodedTimeSlots.put(7,new Pair<String, String>("17:00","17:50"));
-        HardCodedTimeSlots.put(7,new Pair<String, String>("17:50","18:40"));
-        HardCodedTimeSlots.put(7,new Pair<String, String>("18:40","19:30"));
-        HardCodedTimeSlots.put(7,new Pair<String, String>("19:30","20:20"));
-        HardCodedTimeSlots.put(7,new Pair<String, String>("20:20","21:10"));
-        HardCodedTimeSlots.put(7,new Pair<String, String>("21:10","22:00"));
+        HardCodedTimeSlots.put(8,new Pair<String, String>("15:00","15:50"));
+        HardCodedTimeSlots.put(9,new Pair<String, String>("15:50","16:40"));
+        HardCodedTimeSlots.put(10,new Pair<String, String>("17:00","17:50"));
+        HardCodedTimeSlots.put(11,new Pair<String, String>("17:50","18:40"));
+        HardCodedTimeSlots.put(12,new Pair<String, String>("18:40","19:30"));
+        HardCodedTimeSlots.put(13,new Pair<String, String>("19:30","20:20"));
+        HardCodedTimeSlots.put(14,new Pair<String, String>("20:20","21:10"));
+        HardCodedTimeSlots.put(15,new Pair<String, String>("21:10","22:00"));
 
         return HardCodedTimeSlots.get(TimeslotToConvert);
 

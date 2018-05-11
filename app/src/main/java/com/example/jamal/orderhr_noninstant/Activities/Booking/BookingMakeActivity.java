@@ -51,7 +51,7 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
         receivedBooking = new Booking();
         IFillDataStructures(new ObjectMapper(), extras.getString("jsonparser"));
 
-        DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        DateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
 
         TextView roomview = (TextView) findViewById(R.id.viewroomid);
         TextView dateview = (TextView) findViewById(R.id.viewbookdate);
@@ -91,6 +91,10 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
         try {
             JSONObject test = new JSONObject(json);
             String gottenres = test.getJSONObject("reservation").toString();
+
+            DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+            objectMapper.setDateFormat(format);
+
             receivedBooking = objectMapper.readValue(gottenres, receivedBooking.getClass());
             Pair<String, String> timesofslotstart = GetData.CovertTimeslotToTime(receivedBooking.getTimeslotfrom());
             Pair<String, String> timesofslotstop = GetData.CovertTimeslotToTime(receivedBooking.getTimeslotto());

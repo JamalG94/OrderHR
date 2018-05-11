@@ -43,4 +43,12 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!--Defuncts-->
+    <string-array name="defunctypes">
+        <item>broken</item>
+        <item>missing</item>
+        <item>software</item>
+        <item>empty</item>
+    </string-array>
 </resources>

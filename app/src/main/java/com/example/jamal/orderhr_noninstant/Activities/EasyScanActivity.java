@@ -69,6 +69,7 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
             JSONObject jsonparser = new JSONObject(jsonresult);
 
             if(jsonparser.has("defunct")){
+                resultingint.putExtra("jsonparser",jsonresult);
                 resultingint.setClass(this, DefunctMakeActivity.class);
 
             }
