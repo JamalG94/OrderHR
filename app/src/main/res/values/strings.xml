@@ -49,6 +49,6 @@
         <item>broken</item>
         <item>missing</item>
         <item>software</item>
-        <item>empty</item>
+        <item>notype</item>
     </string-array>
 </resources>

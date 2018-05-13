@@ -136,7 +136,7 @@ public class IO extends AsyncTask<String,String, String> {
 
 
     public String DoPostRequestToAPIServer(String RawJsonStringToInput,String ApiURL){
-        GetInstance("");
+//        GetInstance("");
         String temp = "";
         try{
             temp = this.execute(ApiURL,RawJsonStringToInput).get();
