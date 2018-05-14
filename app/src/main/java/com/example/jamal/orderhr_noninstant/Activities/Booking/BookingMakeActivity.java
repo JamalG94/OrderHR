@@ -53,7 +53,6 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
         receivedBooking = new Booking();
         IFillDataStructures(new ObjectMapper(), extras.getString("jsonparser"));
 
-
         AssignTextViewVariables();
 
         available = CheckIfSlotsInRoomAvailable(receivedBooking, IOInstance);
@@ -88,6 +87,7 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
         return ( textreturnedfromserver.equals("[]"));
     }
 
+    //Sets the initial values of all the appropiate text views in this activity.
     private void SetInitialTexts(Booking databooking,TextView targetroomview,TextView targetdateview,TextView targettimesview,TextView targettimeslotview){
         DateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
         targetroomview.setText(targetroomview.getText() + databooking.getRoom());
@@ -126,6 +126,7 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
         }
     }
 
+    //Adds a new class to the class text view
     public void onClickAddClass(View View){
         TextView addclass = (TextView) findViewById(R.id.editTextClass);
         if(addclass.getText() != ""){
@@ -166,11 +167,11 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
         return returnmessage;
     }
 
-    @Override
+    @Override   // This function handles the loading and filling of all the initial data.
     public void IFillDataStructures(ObjectMapper objectMapper, String json) {
         try {
-            JSONObject test = new JSONObject(json);
-            String gottenres = test.getJSONObject("reservation").toString();
+            JSONObject jsonobjectparser = new JSONObject(json);
+            String gottenres = jsonobjectparser.getJSONObject("reservation").toString();
 
             DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
             objectMapper.setDateFormat(format);
