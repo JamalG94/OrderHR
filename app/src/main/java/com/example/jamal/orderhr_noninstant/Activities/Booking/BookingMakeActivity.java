@@ -56,7 +56,7 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
 
         AssignTextViewVariables();
 
-        available = CheckIfSlotsInRoomAvailable(receivedBooking);
+        available = CheckIfSlotsInRoomAvailable(receivedBooking, IOInstance);
         cbAval.setChecked(available);
         if(!available){
             cbAval.setError("Not available");
@@ -79,7 +79,7 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
     }
 
     //Does a call to the server to get the required data on the availability of these slots, then returns compares true if available and false if not.
-    private boolean CheckIfSlotsInRoomAvailable(Booking databooking){
+    private boolean CheckIfSlotsInRoomAvailable(Booking databooking, IO IOInstance){
         IOInstance =  IO.GetInstance("");
 
         DateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
@@ -102,15 +102,15 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
         if(available){
             if((! classedit.getText().toString().equals("")) && (!lessonedit.getText().toString().equals(""))){
                 receivedBooking.setLesson(lessonedit.getText().toString());
-                String savingstatus = saveBooking(receivedBooking);
+                String savingstatus = saveBooking(receivedBooking,IOInstance);
                 if(savingstatus.equals("Error")){
                     Toast.makeText(this, "Something went wrong with saving the data! (is all data correct and do you have connection?)",
                             Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(this, "Booking saved Succefully!",
                             Toast.LENGTH_LONG).show();
-                    Intent dostuff = new Intent(this, MainActivity.class);
-                    startActivity(dostuff);
+                    Intent returntomainactivity = new Intent(this, MainActivity.class);
+                    startActivity(returntomainactivity);
                 }
             }
             else{
@@ -142,7 +142,7 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
     }
 
     //Saves the instance and filed in data to the database. Returns the return text.
-    public String saveBooking(Booking databooking ){
+    public String saveBooking(Booking databooking,IO IOInstance){
         String returnmessage = "Error";
 
         try{
