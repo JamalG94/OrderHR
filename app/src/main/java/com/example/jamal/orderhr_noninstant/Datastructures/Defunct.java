@@ -12,6 +12,16 @@ public class Defunct implements Serializable {
     private String room,type,description;
     private Date date;
 
+    public boolean isHandled() {
+        return handled;
+    }
+
+    public void setHandled(boolean handled) {
+        this.handled = handled;
+    }
+
+    private boolean handled;
+
     public Date getDate() {
         return date;
     }

@@ -66,6 +66,7 @@ public class DefunctMakeActivity extends AppCompatActivity implements IDataStruc
         if((! descriptionedit.getText().toString().equals(""))){
 //            String status = saveBooking();
             String status = "Error";
+
             String jsonsending = "{ room:" + receiveddefunct.getRoom() +",description:"+descriptionedit.getText()+",user:"+"ronaldo"+"type:"+defuncttypeedit.getSelectedItem()+"}";
             if(status.equals("Error")){
                 Toast.makeText(this, "Something went wrong with saving the data! (is all data correct and do you have connection?)",
@@ -81,9 +82,6 @@ public class DefunctMakeActivity extends AppCompatActivity implements IDataStruc
                     Toast.LENGTH_LONG).show();
             descriptionedit.setError("!");
         }
-
-
-
     }
 
 }

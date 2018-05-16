@@ -50,5 +50,6 @@
         <item>missing</item>
         <item>software</item>
         <item>notype</item>
+        <item></item>
     </string-array>
 </resources>
