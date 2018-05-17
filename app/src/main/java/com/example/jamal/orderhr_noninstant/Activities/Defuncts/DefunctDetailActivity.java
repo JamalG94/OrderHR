@@ -82,7 +82,7 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
         for (DefunctWrapper receiveddefunct: receiveddefuncts) {
             if(!receiveddefunct.getFields().isHandled() || !showhandled){
                 if(!type.equals("view all")){
-                    if(receiveddefunct.getFields().getType().equals(type)){
+                    if(receiveddefunct.getFields().getType().toUpperCase().equals(type.toUpperCase())){
                         test.add(receiveddefunct.getFields().getRoom() + " " + receiveddefunct.getFields().getType() + " " +  receiveddefunct.getFields().getDate());
                     }
                 }else{
