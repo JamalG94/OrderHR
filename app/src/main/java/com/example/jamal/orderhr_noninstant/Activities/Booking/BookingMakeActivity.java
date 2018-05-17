@@ -2,8 +2,6 @@ package com.example.jamal.orderhr_noninstant.Activities.Booking;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Pair;
@@ -22,14 +20,16 @@ import com.example.jamal.orderhr_noninstant.IO;
 import com.example.jamal.orderhr_noninstant.R;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Date;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Robin on 4/3/2018.
@@ -40,82 +40,80 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
     IO IOInstance;
     EditText classedit;
     EditText lessonedit;
-    boolean avaliable= false;
+    TextView roomview;
+    TextView dateview;
+    TextView timesview;
+    TextView timeslotview;
+    CheckBox cbAval;
+
+    boolean available = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_makebooking);
 
         Bundle extras = getIntent().getExtras();
         receivedBooking = new Booking();
         IFillDataStructures(new ObjectMapper(), extras.getString("jsonparser"));
 
-        DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-
-        TextView roomview = (TextView) findViewById(R.id.viewroomid);
-        TextView dateview = (TextView) findViewById(R.id.viewbookdate);
-        TextView timesview = (TextView) findViewById(R.id.viewTimes);
-        TextView timeslotview = (TextView) findViewById(R.id.viewTimeslot);
+        roomview = (TextView) findViewById(R.id.viewroomid);
+        dateview = (TextView) findViewById(R.id.viewbookdate);
+        timesview = (TextView) findViewById(R.id.viewTimes);
+        timeslotview = (TextView) findViewById(R.id.viewTimeslot);
         classedit = (EditText) findViewById(R.id.editTextClass) ;
         lessonedit = (EditText) findViewById(R.id.editTextLesson) ;
+        cbAval = (CheckBox) findViewById(R.id.Available);
 
-        IOInstance =  IO.GetInstance("");
-        String test = IOInstance.DoPostRequestToAPIServer("{ \"room\":\""+receivedBooking.getRoom()+"\", \"timeslotfrom\":"+ String.valueOf(receivedBooking.getTimeslotfrom()) + ", \"timeslotto\":"+String.valueOf(receivedBooking.getTimeslotto())+", \"date\":\""+format.format(receivedBooking.getDate())+"\" }","http://markb.pythonanywhere.com/availableslot/");
-        CheckBox cbAval = (CheckBox) findViewById(R.id.Available);
-        if( test.equals("[]"))
-        {
-            avaliable = true;
-            cbAval.setChecked(true);
-        }
-        else{
+        available = CheckIfSlotsInRoomAvailable(receivedBooking, IOInstance);
+        cbAval.setChecked(available);
+        if(!available){
+            cbAval.setError("Not available");
             Toast.makeText(this, "These slots are not available!",
-                Toast.LENGTH_LONG).show();
-            cbAval.setError("NOT AVAILABLE");
-            cbAval.setChecked(false);
+                    Toast.LENGTH_LONG).show();
         }
-
-
-
-
-        roomview.setText(roomview.getText() + receivedBooking.getRoom());
-        dateview.setText(dateview.getText() + format.format(receivedBooking.getDate()));
-
-        timesview.setText(timesview.getText() + receivedBooking.getTimefrom() + " to " + receivedBooking.getTimeto());
-        timeslotview.setText(timeslotview.getText() + String.valueOf(receivedBooking.getTimeslotfrom()) + " to " + String.valueOf(receivedBooking.getTimeslotto()));
-
+        SetInitialTexts(receivedBooking);
     }
 
-    @Override
-    public void IFillDataStructures(ObjectMapper objectMapper, String json) {
+    //Does a call to the server to get the required data on the availability of these slots, then returns compares true if available and false if not.
+    private boolean CheckIfSlotsInRoomAvailable(Booking databooking, IO IOInstance) {
+        IOInstance = IO.GetInstance("");
+        String textreturnedfromserver = "";
+
         try {
-            JSONObject test = new JSONObject(json);
-            String gottenres = test.getJSONObject("reservation").toString();
-            receivedBooking = objectMapper.readValue(gottenres, receivedBooking.getClass());
-            Pair<String, String> timesofslotstart = GetData.CovertTimeslotToTime(receivedBooking.getTimeslotfrom());
-            Pair<String, String> timesofslotstop = GetData.CovertTimeslotToTime(receivedBooking.getTimeslotto());
-            receivedBooking.setTimeto(timesofslotstop.second);
-            receivedBooking.setTimefrom(timesofslotstart.first);
-            Calendar timeconverter = new GregorianCalendar();
-            timeconverter.setTime(receivedBooking.getDate());
-            int weeknum = timeconverter.get(Calendar.WEEK_OF_YEAR);
-            receivedBooking.setWeeknummer(weeknum);
-        } catch (Exception e) {
-            Log.d(e.toString(), e.toString());
+            DateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
+            textreturnedfromserver = IOInstance.DoPostRequestToAPIServer("{ \"room\":\"" + databooking.getRoom() + "\", \"timeslotfrom\":" + String.valueOf(databooking.getTimeslotfrom()) + ", \"timeslotto\":" + String.valueOf(databooking.getTimeslotto()) + ", \"date\":\"" + format.format(databooking.getDate()) + "\" }", "http://markb.pythonanywhere.com/availableslot/");
+        } catch (InterruptedException | ExecutionException exe) {
+            //TODO:
         }
+
+        return (textreturnedfromserver.equals("[]"));
+    }
+
+    //Sets the initial values of all the appropiate text views in this activity.
+    private void SetInitialTexts(Booking databooking){
+        DateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
+        roomview.setText(roomview.getText() + databooking.getRoom());
+        dateview.setText(dateview.getText() + format.format(databooking.getDate()));
+
+        timesview.setText(timesview.getText() + databooking.getTimefrom() + " to " + databooking.getTimeto());
+        timeslotview.setText(timeslotview.getText() + String.valueOf(databooking.getTimeslotfrom()) + " to " + String.valueOf(databooking.getTimeslotto()));
     }
 
     //Handler of the onClickButtonSave.
     public void onClickSaveBooking(View view){
-        if(avaliable){
+        if(available){
             if((! classedit.getText().toString().equals("")) && (!lessonedit.getText().toString().equals(""))){
-                String status = saveBooking();
-                if(status.equals("Error")){
+                receivedBooking.setLesson(lessonedit.getText().toString());
+                String savingstatus = saveBooking(receivedBooking,IOInstance);
+                if(savingstatus.equals("Error")){
                     Toast.makeText(this, "Something went wrong with saving the data! (is all data correct and do you have connection?)",
                             Toast.LENGTH_LONG).show();
                 }else{
-                    Intent dostuff = new Intent(this, MainActivity.class);
-                    startActivity(dostuff);
+                    Toast.makeText(this, "Booking saved Succefully!",
+                            Toast.LENGTH_LONG).show();
+                    Intent returntomainactivity = new Intent(this, MainActivity.class);
+                    startActivity(returntomainactivity);
                 }
             }
             else{
@@ -129,12 +127,10 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
             Toast.makeText(this, "Please try generating on another timeslot",
                     Toast.LENGTH_LONG).show();
         }
-
-
     }
 
+    //Adds a new class to the class text view
     public void onClickAddClass(View View){
-
         TextView addclass = (TextView) findViewById(R.id.editTextClass);
         if(addclass.getText() != ""){
             LinearLayout viewclasses = (LinearLayout) findViewById(R.id.viewClasses);
@@ -146,37 +142,52 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
             addclass.setText("");
             viewclasses.addView(tv);
         }
-
-    }
-    //Checks the database if there are similiar bookings to the received booking and returns true if not.
-    public boolean checkIfAvailable() {
-        return true;
     }
 
     //Saves the instance and filed in data to the database. Returns the return text.
-    public String saveBooking(){
+    public String saveBooking(Booking databooking,IO IOInstance){
         String returnmessage = "Error";
-
         try{
             //PRESETUP FOR THE JSON
             Calendar timeconverter = new GregorianCalendar();
-            timeconverter.setTime(receivedBooking.getDate());
+            timeconverter.setTime(databooking.getDate());
             DateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
 
 
             //THIS LINE BUILDS THE JASON
-            String rawrjson = "{ \"timeslotfrom\":\""+receivedBooking.getTimeslotfrom()+"\", \"timeslotto\":"+receivedBooking.getTimeslotto()+", \"timefrom\":\""+receivedBooking.getTimefrom()+"\", \"timeto\":\""+receivedBooking.getTimeto()+"\", \"date\":\""+format.format(receivedBooking.getDate())+"\", \"username\":\""+"RONALDO"+"\", \"lesson\":\""+lessonedit.getText()+"\", \"room\":\""+receivedBooking.getRoom()+"\", \"weeknummer\":\""+
-                    receivedBooking.getWeeknummer()+"\"}";
+            String rawrjson = "{ \"timeslotfrom\":\""+databooking.getTimeslotfrom()+"\", \"timeslotto\":"+databooking.getTimeslotto()+", \"timefrom\":\""+databooking.getTimefrom()+"\", \"timeto\":\""+databooking.getTimeto()+"\", \"date\":\""+format.format(databooking.getDate())+"\", \"username\":\""+"RONALDO"+"\", \"lesson\":\""+databooking.getLesson()+"\", \"room\":\""+databooking.getRoom()+"\", \"weeknummer\":\""+
+                    databooking.getWeeknummer()+"\"}";
 
-            //THIS LINE CALLS THE METHODS THAT DO THE ACTUAL API STUFF
+            //THIS LINE CALLS THE METHODS THAT DO THE ACTUAL API CALL AND RETURNING
+            IOInstance = IO.GetInstance("");
             returnmessage = IOInstance.DoPostRequestToAPIServer(rawrjson,"http://markb.pythonanywhere.com/bookroom/");
-        }catch (Exception ex ){
-            System.out.println(ex);
-
+        }catch (InterruptedException | ExecutionException exe){
+            //TODO
         }
-
-
-
         return returnmessage;
+    }
+
+    @Override   // This function handles the loading and filling of all the initial data.
+    public void IFillDataStructures(ObjectMapper objectMapper, String json) {
+        try {
+            JSONObject jsonobjectparser = new JSONObject(json);
+            String gottenres = jsonobjectparser.getJSONObject("reservation").toString();
+
+            DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+            objectMapper.setDateFormat(format);
+
+            receivedBooking = objectMapper.readValue(gottenres, receivedBooking.getClass());
+            Pair<String, String> timesofslotstart = GetData.CovertTimeslotToTime(receivedBooking.getTimeslotfrom());
+            Pair<String, String> timesofslotstop = GetData.CovertTimeslotToTime(receivedBooking.getTimeslotto());
+            receivedBooking.setTimeto(timesofslotstop.second);
+            receivedBooking.setTimefrom(timesofslotstart.first);
+            Calendar timeconverter = new GregorianCalendar();
+            timeconverter.setTime(receivedBooking.getDate());
+            int weeknum = timeconverter.get(Calendar.WEEK_OF_YEAR);
+            receivedBooking.setWeeknummer(weeknum);
+        } catch (JSONException|IOException e) {
+            //TODO:
+            Log.d(e.toString(), e.toString());
+        }
     }
 }

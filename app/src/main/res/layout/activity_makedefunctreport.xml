@@ -23,7 +23,7 @@
             android:id="@+id/buttonSaveDefunct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onClickSaveBooking"
+            android:onClick="onClickSaveDefunct"
             android:text="Save Defunct" />
 
         <TextView
@@ -64,18 +64,19 @@
                 android:layout_height="wrap_content"
                 android:text="Please fill in the required data below before saving:" />
 
-            <EditText
-                android:id="@+id/editTextLesson"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Lesson"
-                android:inputType="textPersonName" />
-
             <Spinner
                 android:id="@+id/spinnerType"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:entries="@array/defunctypes" />
+
+            <EditText
+                android:id="@+id/edittextdescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Description"
+                android:inputType="textPersonName" />
 
         </LinearLayout>
 

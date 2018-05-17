@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Robin on 3/29/2018.
@@ -135,14 +136,16 @@ public class IO extends AsyncTask<String,String, String> {
     }
 
 
-    public String DoPostRequestToAPIServer(String RawJsonStringToInput,String ApiURL){
+    public String DoPostRequestToAPIServer(String RawJsonStringToInput,String ApiURL) throws ExecutionException,InterruptedException{
+//        GetInstance("");
         String temp = "";
-        try{
+
+//        try{
             temp = this.execute(ApiURL,RawJsonStringToInput).get();
             //temp = instance.doInBackground("http://markb.pythonanywhere.com/availableslot/",Json);
-        }catch(Exception e){}finally{
-//            returnf = temp;
-        }
+//        }catch(Exception e){}finally{
+////            returnf = temp;
+//        }
 
         return temp;
     }
