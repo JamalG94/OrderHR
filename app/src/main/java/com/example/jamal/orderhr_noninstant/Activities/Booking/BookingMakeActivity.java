@@ -55,7 +55,7 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
 
         Bundle extras = getIntent().getExtras();
         receivedBooking = new Booking();
-        IFillDataStructures(new ObjectMapper(), extras.getString("jsonparser"));
+//        IFillDataStructures(new ObjectMapper(), extras.getString("jsonparser"));
 
         roomview = (TextView) findViewById(R.id.viewroomid);
         dateview = (TextView) findViewById(R.id.viewbookdate);
@@ -72,7 +72,7 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
             Toast.makeText(this, "These slots are not available!",
                     Toast.LENGTH_LONG).show();
         }
-        SetInitialTexts(receivedBooking);
+//        SetInitialTexts(receivedBooking);
     }
 
     //Does a call to the server to get the required data on the availability of these slots, then returns compares true if available and false if not.
@@ -80,12 +80,9 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
         IOInstance = IO.GetInstance("");
         String textreturnedfromserver = "";
 
-        try {
             DateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
-            textreturnedfromserver = IOInstance.DoPostRequestToAPIServer("{ \"room\":\"" + databooking.getRoom() + "\", \"timeslotfrom\":" + String.valueOf(databooking.getTimeslotfrom()) + ", \"timeslotto\":" + String.valueOf(databooking.getTimeslotto()) + ", \"date\":\"" + format.format(databooking.getDate()) + "\" }", "http://markb.pythonanywhere.com/availableslot/");
-        } catch (InterruptedException | ExecutionException exe) {
-            //TODO:
-        }
+            textreturnedfromserver = IOInstance.DoPostRequestToAPIServer("{ \"room\":\"" + databooking.getRoom() + "\", \"timeslotfrom\":" + String.valueOf(databooking.getTimeslotfrom()) + ", \"timeslotto\":" + String.valueOf(databooking.getTimeslotto()) + ", \"date\":\"" + format.format(databooking.getDate()) + "\" }", "http://markb.pythonanywhere.com/availableslot/",this);
+
 
         return (textreturnedfromserver.equals("[]"));
     }
@@ -147,7 +144,7 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
     //Saves the instance and filed in data to the database. Returns the return text.
     public String saveBooking(Booking databooking,IO IOInstance){
         String returnmessage = "Error";
-        try{
+
             //PRESETUP FOR THE JSON
             Calendar timeconverter = new GregorianCalendar();
             timeconverter.setTime(databooking.getDate());
@@ -160,10 +157,8 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
 
             //THIS LINE CALLS THE METHODS THAT DO THE ACTUAL API CALL AND RETURNING
             IOInstance = IO.GetInstance("");
-            returnmessage = IOInstance.DoPostRequestToAPIServer(rawrjson,"http://markb.pythonanywhere.com/bookroom/");
-        }catch (InterruptedException | ExecutionException exe){
-            //TODO
-        }
+            returnmessage = IOInstance.DoPostRequestToAPIServer(rawrjson,"http://markb.pythonanywhere.com/bookroom/",this);
+
         return returnmessage;
     }
 

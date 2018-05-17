@@ -37,8 +37,8 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
     public String getdatafromio(boolean handled){
         String returnjson = "";
         ioinstance = IO.GetInstance("");
-        try{
-            returnjson  = ioinstance.DoPostRequestToAPIServer("{\"handled\":"+handled+"}","http://markb.pythonanywhere.com/alldefuncts/");
+
+            returnjson  = ioinstance.DoPostRequestToAPIServer("{\"handled\":"+handled+"}","http://markb.pythonanywhere.com/alldefuncts/",this);
 
 
 //            if(handled){
@@ -52,9 +52,7 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
 //                returnjson = ioinstance.DoPostRequestToAPIServer("{  \"type\":\""+type+"\",\"handled\":\"False\"}","http://markb.pythonanywhere.com/alldefuncts/");
 //            }
 
-        }catch(ExecutionException|InterruptedException e){
-            //TODO
-        }
+
         return returnjson;
     }
 

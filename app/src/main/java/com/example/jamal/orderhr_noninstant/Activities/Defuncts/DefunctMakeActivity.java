@@ -14,6 +14,7 @@ import com.example.jamal.orderhr_noninstant.Activities.IDataStructure;
 import com.example.jamal.orderhr_noninstant.Activities.MainActivity;
 import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
 import com.example.jamal.orderhr_noninstant.Datastructures.Defunct;
+import com.example.jamal.orderhr_noninstant.IO;
 import com.example.jamal.orderhr_noninstant.R;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -66,9 +67,12 @@ public class DefunctMakeActivity extends AppCompatActivity implements IDataStruc
         if((! descriptionedit.getText().toString().equals(""))){
 //            String status = saveBooking();
             String status = "Error";
+            IO ioisntance = IO.GetInstance("");
+            String jsonsending = "{ \"room\":\"" + receiveddefunct.getRoom() +"\",\"description\":\""+descriptionedit.getText()+"\",\"type\":\""+defuncttypeedit.getSelectedItem()+"\"}";
 
-            String jsonsending = "{ room:" + receiveddefunct.getRoom() +",description:"+descriptionedit.getText()+",user:"+"ronaldo"+"type:"+defuncttypeedit.getSelectedItem()+"}";
-            if(status.equals("Error")){
+                status = ioisntance.DoPostRequestToAPIServer(jsonsending,"http://markb.pythonanywhere.com/makedefunct/",this);
+
+            if(status.equals("Error") || status.equals("")){
                 Toast.makeText(this, "Something went wrong with saving the data! (is all data correct and do you have connection?)",
                         Toast.LENGTH_LONG).show();
                 Log.i("there you go:",jsonsending);
