@@ -24,7 +24,17 @@ public final class GetData {
     }
 
 
-    static public Pair<String,String> CovertTimeslotToTime(int TimeslotToConvert){
+    static public Pair<String,String> CovertTimeslotToTime(int TimeslotToConvert) throws IndexOutOfBoundsException{
+        //TODO:
+        if(TimeslotToConvert <= 0 || TimeslotToConvert > 15){
+            // FIXME: Kevin: Index should never be below 1 or above 15, temp fix for 0 timeslot
+            if (TimeslotToConvert == 0) {
+                TimeslotToConvert++;
+            } else {
+                throw new IndexOutOfBoundsException("INVALID TIMESLOT: " + TimeslotToConvert);
+            }
+        }
+
         HashMap<Integer,Pair<String,String>> HardCodedTimeSlots = new HashMap<>();
         HardCodedTimeSlots.put(1,new Pair<String, String>("08:30","09:20"));
         HardCodedTimeSlots.put(2,new Pair<String, String>("09:20","10:10"));

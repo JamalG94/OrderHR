@@ -59,6 +59,12 @@
             android:layout_height="wrap_content"
             android:text="Times:" />
 
+        <TextView
+            android:id="@+id/textviewWeeknumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Weeknumber" />
+
         <CheckBox
             android:id="@+id/Available"
             android:layout_width="match_parent"

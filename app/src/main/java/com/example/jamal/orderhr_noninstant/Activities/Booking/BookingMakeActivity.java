@@ -24,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -44,6 +45,7 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
     TextView dateview;
     TextView timesview;
     TextView timeslotview;
+    TextView weeknumber;
     CheckBox cbAval;
 
     boolean available = false;
@@ -55,12 +57,13 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
 
         Bundle extras = getIntent().getExtras();
         receivedBooking = new Booking();
-//        IFillDataStructures(new ObjectMapper(), extras.getString("jsonparser"));
+        IFillDataStructures(new ObjectMapper(), extras.getString("jsonparser"));
 
         roomview = (TextView) findViewById(R.id.viewroomid);
         dateview = (TextView) findViewById(R.id.viewbookdate);
         timesview = (TextView) findViewById(R.id.viewTimes);
         timeslotview = (TextView) findViewById(R.id.viewTimeslot);
+        weeknumber = (TextView) findViewById(R.id.textviewWeeknumber);
         classedit = (EditText) findViewById(R.id.editTextClass) ;
         lessonedit = (EditText) findViewById(R.id.editTextLesson) ;
         cbAval = (CheckBox) findViewById(R.id.Available);
@@ -72,7 +75,7 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
             Toast.makeText(this, "These slots are not available!",
                     Toast.LENGTH_LONG).show();
         }
-//        SetInitialTexts(receivedBooking);
+        SetInitialTexts(receivedBooking);
     }
 
     //Does a call to the server to get the required data on the availability of these slots, then returns compares true if available and false if not.
@@ -80,8 +83,9 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
         IOInstance = IO.GetInstance();
         String textreturnedfromserver = "";
 
-            DateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
-            textreturnedfromserver = IOInstance.DoPostRequestToAPIServer("{ \"room\":\"" + databooking.getRoom() + "\", \"timeslotfrom\":" + String.valueOf(databooking.getTimeslotfrom()) + ", \"timeslotto\":" + String.valueOf(databooking.getTimeslotto()) + ", \"date\":\"" + format.format(databooking.getDate()) + "\" }", "http://markb.pythonanywhere.com/availableslot/",this);
+        DateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
+        String json = "{ \"room\":\"" + databooking.getRoom() + "\", \"timeslotfrom\":" + String.valueOf(databooking.getTimeslotfrom()) + ", \"timeslotto\":" + String.valueOf(databooking.getTimeslotto()) + ", \"date\":\"" + format.format(databooking.getDate()) + "\" }";
+        textreturnedfromserver = IOInstance.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/availableslot/",this);
 
 
         return (textreturnedfromserver.equals("[]"));
@@ -92,7 +96,7 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
         DateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
         roomview.setText(roomview.getText() + databooking.getRoom());
         dateview.setText(dateview.getText() + format.format(databooking.getDate()));
-
+        weeknumber.setText("Weeknumber : " + databooking.getWeeknummer());
         timesview.setText(timesview.getText() + databooking.getTimefrom() + " to " + databooking.getTimeto());
         timeslotview.setText(timeslotview.getText() + String.valueOf(databooking.getTimeslotfrom()) + " to " + String.valueOf(databooking.getTimeslotto()));
     }
@@ -180,7 +184,13 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
             timeconverter.setTime(receivedBooking.getDate());
             int weeknum = timeconverter.get(Calendar.WEEK_OF_YEAR);
             receivedBooking.setWeeknummer(weeknum);
-        } catch (JSONException|IOException e) {
+        } catch (IndexOutOfBoundsException ioobe) {
+            // Todo: Show alert: "Invalid timeslot in QR code"
+            receivedBooking.setTimeto(new Time(0,0,0).toString());
+            receivedBooking.setTimefrom(new Time(0,0,0).toString());
+            receivedBooking.setWeeknummer(0);
+        }
+        catch (JSONException|IOException e) {
             //TODO:
             Log.d(e.toString(), e.toString());
         }
