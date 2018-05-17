@@ -3,6 +3,8 @@ package com.example.jamal.orderhr_noninstant.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.example.jamal.orderhr_noninstant.ClassroomSpinner;
 import com.example.jamal.orderhr_noninstant.R;
 
 
@@ -23,7 +25,5 @@ public class MainActivity extends TableBuilder {
         Intent intent = new Intent(this, EasyScanActivity.class);
         startActivity(intent);
     }
-
-
 
 }

@@ -3,13 +3,18 @@ package com.example.jamal.orderhr_noninstant.Activities;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.example.jamal.orderhr_noninstant.ClassroomSpinner;
 import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
 import com.example.jamal.orderhr_noninstant.Datastructures.BookingWrapper;
 import com.example.jamal.orderhr_noninstant.GetData;
 import com.example.jamal.orderhr_noninstant.IO;
 import com.example.jamal.orderhr_noninstant.R;
+import com.example.jamal.orderhr_noninstant.Session;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +50,7 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
         };
 
         this.setOnSelectCell(onSelectCell);
+        Log.d("Test1", Session.getUsername());
         super.CreateTable(5, 10, "timeslot_", true);
 
 
@@ -54,25 +60,21 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
     protected void onStart(){
         super.onStart();
 
+        ClassroomSpinner classroomSpinner = new ClassroomSpinner(this);
+        classroomSpinner.FillSpinner();
+
         objectMapper = new ObjectMapper();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy");
         objectMapper.setDateFormat(simpleDateFormat);
 
-        String test =  GetData.RequestBookingByID("{\"id\":\"1\"}");
-
-        String test1 = GetData.RequestBookingByRoom("{\"room\":\"H.3.403\",  \"weeknummer\":\"2\"}");
-
         _IO = IO.GetInstance("http://markb.pythonanywhere.com/boomroom/");
-
-        IFillDataStructures(objectMapper, test1);
-
-
-//        testBooking.setDate(new GregorianCalendar(2018, Calendar.JUNE, 5).getTime());
-
-        //allBookings.add(testBooking);
+        IFillDataStructures(objectMapper, _IO.DoPostRequestToAPIServer("{\"room\":\"H.3.403\",  \"weeknummer\":\"2\"}", "http://markb.pythonanywhere.com/boomroom/" ));
+        
         for (BookingWrapper b: bookingWrapper) {
             FillRows(b);
         }
+
+        // testBooking.setDate(new GregorianCalendar(2018, Calendar.JUNE, 5).getTime());
     }
 
     public void ClickReserve(View view){
@@ -108,6 +110,8 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
         }
     }
 
+
+
     private void FillRows(BookingWrapper booking){
         String cell_id;
         String lesson = booking.getFields().getLesson();
@@ -141,5 +145,7 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
             Log.d(e.toString(), e.toString());
         }
     }
+
+
 
 }

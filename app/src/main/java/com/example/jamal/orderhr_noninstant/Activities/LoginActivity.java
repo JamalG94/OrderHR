@@ -3,7 +3,9 @@ package com.example.jamal.orderhr_noninstant.Activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -38,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.jamal.orderhr_noninstant.R;
+import com.example.jamal.orderhr_noninstant.Session;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -66,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +91,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+
+        session = new Session(this);
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -194,6 +200,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
+
+            session.setUsername(email);
+            session.setPassword(password);
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
