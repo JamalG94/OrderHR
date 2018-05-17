@@ -1,7 +1,9 @@
 package com.example.jamal.orderhr_noninstant;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -136,16 +138,17 @@ public class IO extends AsyncTask<String,String, String> {
     }
 
 
-    public String DoPostRequestToAPIServer(String RawJsonStringToInput,String ApiURL) throws ExecutionException,InterruptedException{
+    public String DoPostRequestToAPIServer(String RawJsonStringToInput, String ApiURL, Activity context) {
 //        GetInstance("");
         String temp = "";
 
-//        try{
+        try{
             temp = this.execute(ApiURL,RawJsonStringToInput).get();
             //temp = instance.doInBackground("http://markb.pythonanywhere.com/availableslot/",Json);
-//        }catch(Exception e){}finally{
-////            returnf = temp;
-//        }
+        }catch(ExecutionException | InterruptedException e){
+            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+        }finally{
+        }
 
         return temp;
     }
