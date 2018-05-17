@@ -60,7 +60,7 @@
                     android:id="@+id/spinnertypefiler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/defunctypes" />
+                    android:entries="@array/defunctfilters" />
             </LinearLayout>
         </LinearLayout>
 

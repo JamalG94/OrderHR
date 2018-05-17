@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import com.example.jamal.orderhr_noninstant.Activities.IDataStructure;
 import com.example.jamal.orderhr_noninstant.Datastructures.DefunctWrapper;
@@ -32,16 +33,24 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
     ListView screenlistview;
     IO ioinstance;
     Spinner typeselectionfilter;
-
-    public String getdatafromio(String type){
+    Switch switchhandled;
+    public String getdatafromio(boolean handled){
         String returnjson = "";
         ioinstance = IO.GetInstance("");
         try{
-            if(type.equals("")){
-                returnjson = ioinstance.DoPostRequestToAPIServer("{  \"handled\":\"False\"}","http://markb.pythonanywhere.com/alldefuncts/");
-            }else{
-                returnjson = ioinstance.DoPostRequestToAPIServer("{  \"type\":\""+type+"\",\"handled\":\"False\"}","http://markb.pythonanywhere.com/alldefuncts/");
-            }
+            returnjson  = ioinstance.DoPostRequestToAPIServer("{\"handled\":"+handled+"}","http://markb.pythonanywhere.com/alldefuncts/");
+
+
+//            if(handled){
+//                returnjson = ioinstance.DoPostRequestToAPIServer()
+//            }else{
+//
+//            }
+//            if(type.equals("")){
+//                returnjson = ioinstance.DoPostRequestToAPIServer("{  \"handled\":\"False\"}","http://markb.pythonanywhere.com/alldefuncts/");
+//            }else{
+//                returnjson = ioinstance.DoPostRequestToAPIServer("{  \"type\":\""+type+"\",\"handled\":\"False\"}","http://markb.pythonanywhere.com/alldefuncts/");
+//            }
 
         }catch(ExecutionException|InterruptedException e){
             //TODO
@@ -56,35 +65,49 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
 
 
 
-        this.IFillDataStructures(new ObjectMapper(),getdatafromio(""));
+        receiveddefuncts = new ArrayList<>();
+
+        this.IFillDataStructures(new ObjectMapper(),getdatafromio(true));
+        this.IFillDataStructures(new ObjectMapper(),getdatafromio(false));
         screenlistview = (ListView)findViewById(R.id.listviewDefuncts);
-        typeselectionfilter = (Spinner)findViewById(R.id.spinnertypefiler) ;
-        ModifyAllReceivedBookingsToListView(this.receiveddefuncts);
+        typeselectionfilter = (Spinner)findViewById(R.id.spinnertypefiler);
+        switchhandled = (Switch)findViewById(R.id.switch1);
+        ModifyAllReceivedBookingsToListView(this.receiveddefuncts,typeselectionfilter.getSelectedItem().toString(),switchhandled.isChecked());
 //        TextView roomview = (TextView)findViewById(R.id.viewroomid);
 //        roomview.setText(roomview.getText() + "WN012");
 
     }
 
-    public void ModifyAllReceivedBookingsToListView(List<DefunctWrapper> receiveddefuncts){
+    public void ModifyAllReceivedBookingsToListView(List<DefunctWrapper> receiveddefuncts, String type,boolean showhandled){
         ArrayAdapter<String> test = (new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1));
         screenlistview.setAdapter(test);
         for (DefunctWrapper receiveddefunct: receiveddefuncts) {
+            if(!receiveddefunct.getFields().isHandled() || !showhandled){
+                if(!type.equals("view all")){
+                    if(receiveddefunct.getFields().getType().equals(type)){
+                        test.add(receiveddefunct.getFields().getRoom() + " " + receiveddefunct.getFields().getType() + " " +  receiveddefunct.getFields().getDate());
+                    }
+                }else{
+                    test.add(receiveddefunct.getFields().getRoom() + " " + receiveddefunct.getFields().getType() + " " +  receiveddefunct.getFields().getDate());
+
+                }
+            }
+
 //            Button gotowidget = new Button(this);
 //            gotowidget.setText(receiveddefunct.getRoom() + receiveddefunct.getType() + receiveddefunct.getDate());
-            test.add(receiveddefunct.getFields().getRoom() + " " + receiveddefunct.getFields().getType() + " " +  receiveddefunct.getFields().getDate());
         }
         test.notifyDataSetChanged();
     }
 
     public void OnClickSearch(View view){
-        IFillDataStructures(new ObjectMapper(),getdatafromio(typeselectionfilter.getSelectedItem().toString()));
-        ModifyAllReceivedBookingsToListView(receiveddefuncts);
+//        IFillDataStructures(new ObjectMapper(),getdatafromio(typeselectionfilter.getSelectedItem().toString()));
+        ModifyAllReceivedBookingsToListView(receiveddefuncts,typeselectionfilter.getSelectedItem().toString(),switchhandled.isChecked());
     }
 
 
     @Override
     public void IFillDataStructures(ObjectMapper objectMapper, String json) {
-        receiveddefuncts = new ArrayList<>();
+
         //First get json
         //Give json and api link to io
         //convert io data into list of defuncts

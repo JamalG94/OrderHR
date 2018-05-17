@@ -50,6 +50,12 @@
         <item>missing</item>
         <item>software</item>
         <item>notype</item>
-        <item></item>
+    </string-array>
+    <string-array name="defunctfilters">
+        <item>view all</item>
+        <item>broken</item>
+        <item>missing</item>
+        <item>software</item>
+        <item>notype</item>
     </string-array>
 </resources>
