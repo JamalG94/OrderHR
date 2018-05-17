@@ -67,8 +67,8 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy");
         objectMapper.setDateFormat(simpleDateFormat);
 
-        _IO = IO.GetInstance("http://markb.pythonanywhere.com/boomroom/");
-        IFillDataStructures(objectMapper, _IO.DoPostRequestToAPIServer("{\"room\":\"H.3.403\",  \"weeknummer\":\"2\"}", "http://markb.pythonanywhere.com/boomroom/" , this));
+        _IO = IO.GetInstance();
+        IFillDataStructures(objectMapper, _IO.DoPostRequestToAPIServer("{\"room\":\"H.3.403\",  \"weeknummer\":\"2\"}", "http://markb.pythonanywhere.com/bookingbyroom/" , this));
 
         for (BookingWrapper b: bookingWrapper) {
             FillRows(b);
@@ -96,7 +96,8 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
     private void ParseReservations(ArrayList<String> jsonObjects){
         for (String booking: jsonObjects)
         {
-            GetData.BookRoom(booking);
+            _IO = IO.GetInstance();
+            _IO.DoPostRequestToAPIServer(booking, "http://markb.pythonanywhere.com/bookroom/", this);
         }
     }
 

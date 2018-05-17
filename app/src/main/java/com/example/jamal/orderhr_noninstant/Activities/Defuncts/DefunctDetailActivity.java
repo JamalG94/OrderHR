@@ -36,7 +36,7 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
     Switch switchhandled;
     public String getdatafromio(boolean handled){
         String returnjson = "";
-        ioinstance = IO.GetInstance("");
+        ioinstance = IO.GetInstance();
 
             returnjson  = ioinstance.DoPostRequestToAPIServer("{\"handled\":"+handled+"}","http://markb.pythonanywhere.com/alldefuncts/",this);
 

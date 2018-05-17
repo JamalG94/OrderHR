@@ -12,7 +12,7 @@ public final class GetData {
     static public String CheckBooking(String Json){
         String temp = "";
 //        String returnf = "";
-        IO instance = IO.GetInstance("");
+        IO instance = IO.GetInstance();
         try{
             temp = instance.execute("http://markb.pythonanywhere.com/availableslot/",Json).get();
             //temp = instance.doInBackground("http://markb.pythonanywhere.com/availableslot/",Json);
@@ -21,62 +21,6 @@ public final class GetData {
         }
 
         return temp;
-    }
-
-    static public String RequestRoom(String Json){
-        String temp = "";
-        String returnf = "";
-        IO instance =  IO.GetInstance("");
-        try{
-            temp = instance.execute("http://markb.pythonanywhere.com/bookingbyroom/",Json).get();
-            //temp = instance.doInBackground("http://markb.pythonanywhere.com/availableslot/",Json);
-        }catch(Exception e){}finally{
-            returnf = temp;
-        }
-
-        return returnf;
-    }
-
-    static public String RequestBookingByID(String Json){
-        String temp = "";
-        String returnf = "";
-        IO instance = IO.GetInstance("");
-        try{
-            temp = instance.execute("http://markb.pythonanywhere.com/bookingbyid/",Json).get();
-            //temp = instance.doInBackground("http://markb.pythonanywhere.com/availableslot/",Json);
-        }catch(Exception e){}finally{
-            returnf = temp;
-        }
-
-        return returnf;
-    }
-
-    static public String RequestBookingByRoom(String Json){
-        String temp = "";
-        String returnf = "";
-        IO instance = IO.GetInstance("");
-        try{
-            temp = instance.execute("http://markb.pythonanywhere.com/bookingbyroom/",Json).get();
-            //temp = instance.doInBackground("http://markb.pythonanywhere.com/availableslot/",Json);
-        }catch(Exception e){}finally{
-            returnf = temp;
-        }
-
-        return returnf;
-    }
-
-    static public String BookRoom(String Json){
-        String temp = "";
-        String returnf = "";
-        IO instance = IO.GetInstance("");
-        try{
-            temp = instance.execute("http://markb.pythonanywhere.com/bookroom/",Json).get();
-            //temp = instance.doInBackground("http://markb.pythonanywhere.com/availableslot/",Json);
-        }catch(Exception e){}finally{
-            returnf = temp;
-        }
-
-        return returnf;
     }
 
 
@@ -101,7 +45,4 @@ public final class GetData {
         return HardCodedTimeSlots.get(TimeslotToConvert);
 
     }
-//    static public String DoPostOnAPIserver(String rawJsonToSend,String ApiURL){
-//
-//    }
 }

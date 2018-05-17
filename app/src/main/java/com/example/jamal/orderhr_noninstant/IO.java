@@ -57,15 +57,15 @@ public class IO extends AsyncTask<String,String, String> {
     //Singleton
     private static IO _instance = null;
 
-    private IO(String apiUrl)
+    private IO()
     {
         super();
 
     }
 
-    public static IO GetInstance(String apiUrl)
+    public static IO GetInstance()
     {
-       _instance = new IO(apiUrl);
+       _instance = new IO();
         return _instance;
     }
 
@@ -141,16 +141,17 @@ public class IO extends AsyncTask<String,String, String> {
     public String DoPostRequestToAPIServer(String RawJsonStringToInput, String ApiURL, Activity context) {
 //        GetInstance("");
         String temp = "";
+        String returnf = "";
 
         try{
             temp = this.execute(ApiURL,RawJsonStringToInput).get();
-            //temp = instance.doInBackground("http://markb.pythonanywhere.com/availableslot/",Json);
         }catch(ExecutionException | InterruptedException e){
             Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
         }finally{
+            returnf = temp;
         }
 
-        return temp;
+        return returnf;
     }
 
 }

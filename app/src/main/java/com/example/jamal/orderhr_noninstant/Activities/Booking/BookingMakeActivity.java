@@ -77,7 +77,7 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
 
     //Does a call to the server to get the required data on the availability of these slots, then returns compares true if available and false if not.
     private boolean CheckIfSlotsInRoomAvailable(Booking databooking, IO IOInstance) {
-        IOInstance = IO.GetInstance("");
+        IOInstance = IO.GetInstance();
         String textreturnedfromserver = "";
 
             DateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
@@ -156,7 +156,7 @@ public class BookingMakeActivity extends AppCompatActivity implements IDataStruc
                     databooking.getWeeknummer()+"\"}";
 
             //THIS LINE CALLS THE METHODS THAT DO THE ACTUAL API CALL AND RETURNING
-            IOInstance = IO.GetInstance("");
+            IOInstance = IO.GetInstance();
             returnmessage = IOInstance.DoPostRequestToAPIServer(rawrjson,"http://markb.pythonanywhere.com/bookroom/",this);
 
         return returnmessage;

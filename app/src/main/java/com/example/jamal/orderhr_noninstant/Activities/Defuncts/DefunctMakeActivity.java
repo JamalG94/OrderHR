@@ -67,7 +67,7 @@ public class DefunctMakeActivity extends AppCompatActivity implements IDataStruc
         if((! descriptionedit.getText().toString().equals(""))){
 //            String status = saveBooking();
             String status = "Error";
-            IO ioisntance = IO.GetInstance("");
+            IO ioisntance = IO.GetInstance();
             String jsonsending = "{ \"room\":\"" + receiveddefunct.getRoom() +"\",\"description\":\""+descriptionedit.getText()+"\",\"type\":\""+defuncttypeedit.getSelectedItem()+"\"}";
 
                 status = ioisntance.DoPostRequestToAPIServer(jsonsending,"http://markb.pythonanywhere.com/makedefunct/",this);
