@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.jamal.orderhr_noninstant.IO;
 import com.example.jamal.orderhr_noninstant.R;
 import com.example.jamal.orderhr_noninstant.Session;
 
@@ -101,6 +102,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+
+
         DUMMY_CREDENTIALS.put("0880633@hr.nl", "test123");
 
         mLoginFormView = findViewById(R.id.login_form);
@@ -161,6 +164,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return;
         }
 
+
+
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -190,9 +195,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
+        //  mEmailView.setError(getString(R.string.error_invalid_email));
+        //  focusView = mEmailView;
+        //  cancel = true;
         }
 
         if (cancel) {
@@ -216,12 +221,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isEmailValid(String email) {
         boolean containsEmail = DUMMY_CREDENTIALS.containsKey(email);
-        boolean isCorrectEmail = email.contains("@hr.nl");
-        return containsEmail && isCorrectEmail;
+        //boolean isCorrectEmail = email.contains("@hr.nl");
+        return containsEmail; //&& isCorrectEmail;
     }
 
     private boolean isPasswordValid(String email, String password) {
-        return password.equals(DUMMY_CREDENTIALS.get(email));
+
+        IO _IO = IO.GetInstance();
+        String json = String.format("{\"username\":\"%s\", \"password\":\"%s\"}", email, password);
+        String result = _IO.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/loginauth/", this);
+        return result.equals("Succesfully authenticated");
     }
 
     /**
