@@ -19,6 +19,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="119dp"
+            android:layout_height="43dp"
+            android:backgroundTint="@android:color/background_light"
+            android:drawableTop="?android:attr/actionModeCloseDrawable"
+            android:onClick="loadMainDefunctListToView"
+            android:text="Button" />
+
         <TextView
             android:id="@+id/DefunctDetails"
             android:layout_width="match_parent"
@@ -50,5 +59,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Description:" />
+
+        <TextView
+            android:id="@+id/textviewhandled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Handled :" />
+
+        <Button
+            android:id="@+id/buttonsetHandled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="set Handled" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
