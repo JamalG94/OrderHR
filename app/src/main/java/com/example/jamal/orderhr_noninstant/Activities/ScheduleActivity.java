@@ -79,6 +79,7 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
         // testBooking.setDate(new GregorianCalendar(2018, Calendar.JUNE, 5).getTime());
     }
 
+    //This function is used for the reserve button and transforms each booking object into a jsonobject.
     public void ClickReserve(View view){
         ArrayList<String> jsonObjects = new ArrayList<String>();
         for(Booking b : selectedBookings){
@@ -93,6 +94,7 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
 
     }
 
+    //This function posts all bookings to the api
     private void ParseReservations(ArrayList<String> jsonObjects){
         for (String booking: jsonObjects)
         {
@@ -101,6 +103,7 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
         }
     }
 
+    //this is the function that each cell uses and we give to the onclick of each cell
     private void MarkBookings(Booking booking){
         Log.d("SelectBookingCell", booking.getLesson());
         if(selectedBookings.contains(booking)){
@@ -111,6 +114,7 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
         }
     }
 
+    //we created the base table though the means of the superclass's method tablecreator, with this method we fill the cells with bookingobjects
     private void FillRows(BookingWrapper booking){
         String cell_id;
         String lesson = booking.getFields().getLesson();
@@ -133,17 +137,17 @@ public class ScheduleActivity extends TableBuilder implements IDataStructure {
         }
     }
 
+
     @Override
     public void IFillDataStructures(ObjectMapper objectMapper, String json) {
-        //new TypeReference<List<Booking>>(){}
         try{
             bookingWrapper = objectMapper.readValue(json, BookingWrapper[].class);
-            Log.d("", "check");
         }
         catch(Exception e ){
             Log.d(e.toString(), e.toString());
         }
     }
+
 
     public void OnItemSelectedInSpinner(String room){
         _IO = IO.GetInstance();
