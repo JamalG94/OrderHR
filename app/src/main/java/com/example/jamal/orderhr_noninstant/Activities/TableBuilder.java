@@ -40,8 +40,8 @@ public class TableBuilder extends AppCompatActivity {
 
 
                 TextView dayTimeslot = new TextView(this);
-                dayTimeslot.setText("timeslot"+j + "\n" + "day"+ z);
                 dayTimeslot.setTextSize(10);
+                dayTimeslot.setText("timeslot"+j + "\n" + "day"+ z);
                 dayTimeslot.setLayoutParams(layoutParams);
 
 

@@ -8,8 +8,8 @@
 
     <TableLayout
         android:id="@+id/fragment_schedule"
-        android:layout_width="343dp"
-        android:layout_height="364dp"
+        android:layout_width="match_parent"
+        android:layout_height="374dp"
         android:orientation="horizontal"
         android:stretchColumns="1"
         android:weightSum="6">
@@ -80,7 +80,10 @@
             android:layout_height="2dip"
             android:background="#FF909090" />
 
-        <TableRow android:id="@+id/timeslot_3">
+        <TableRow
+            android:id="@+id/timeslot_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <TextView
                 android:layout_column="0"
@@ -210,8 +213,6 @@
                 android:padding="3dip"
                 android:text="@string/timeslot_fifteen" />
         </TableRow>
-
-        <Button />
 
     </TableLayout>
 </LinearLayout>

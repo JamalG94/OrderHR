@@ -1,56 +1,78 @@
 package com.example.jamal.orderhr_noninstant;
-import android.app.Activity;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
+import com.example.jamal.orderhr_noninstant.Activities.IDataStructure;
+import com.example.jamal.orderhr_noninstant.Activities.ScheduleActivity;
+import com.example.jamal.orderhr_noninstant.Datastructures.ClassRooms;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 /**
  * Created by jamal on 5/16/2018.
  */
 
-public class ClassroomSpinner{
+public class ClassroomSpinner implements IDataStructure{
 
-    private Activity activity;
-    private String[][][] classrooms = new String[2][5][];
+    private ScheduleActivity activity;
+    private ClassRooms CurrentListClassrooms;
+    private Spinner dropdown;
+    String[] items;
 
-    public ClassroomSpinner(Activity activity){
+    public ClassroomSpinner(ScheduleActivity activity){
         this.activity = activity;
-        classrooms[0] = new String[5][];
-        classrooms[0][0] = new String[6];
-        classrooms[0][1] = new String[3];
-        classrooms[1][1] = new String[3];
-        classrooms[1][0] = new String[3];
-        classrooms[0][0][0] = "H.1.110";
-        classrooms[0][0][1] = "H.1.112";
-        classrooms[0][0][2] = "H.1.114";
-        classrooms[0][0][3] = "H.1.206";
-        classrooms[0][0][4] = "H.1.1306";
-        classrooms[0][0][5] = "H.1.1308";
-        classrooms[0][1][0] = "H.2.111";
-        classrooms[0][1][1] = "H.2.204";
-        classrooms[0][1][2] = "H.2.306";
-
-        classrooms[1][0][0] = "WD.01.003";
-        classrooms[1][0][1] = "WD.01.016";
-        classrooms[1][0][1] = "WD.01.019";
-        classrooms[1][1][0] = "WD.02.002";
-        classrooms[1][1][1] = "WD.02.016";
-        classrooms[1][1][2] = "WD.02.019";
-
+        this.CurrentListClassrooms = new ClassRooms();
+        this.CurrentListClassrooms.setResults(new String[]{"Choose", "A", "Building"});
     }
 
     public void FillSpinner(){
-        Spinner dropdown = this.activity.findViewById(R.id.classroom_spinner);
+        dropdown = this.activity.findViewById(R.id.classroom_spinner);
+
         //create a list of items for the spinner.
-        String[] items = SelectContent(1, 1);
+        items = CurrentListClassrooms.getResults();
+
         //create an adapter to describe how the items are displayed, adapters are used in several places in android.
-        //There are multiple variations of this, but this is the basic variant.
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.activity, android.R.layout.simple_spinner_dropdown_item, items);
         //set the spinners adapter to the previously created one.
         dropdown.setAdapter(adapter);
     }
 
-    private String[] SelectContent(int building, int level){
-        return classrooms[building][level];
+    private void SelectItem(final ScheduleActivity activity){
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                Toast.makeText(parentView.getContext(),
+                        "OnItemSelectedListener : " + parentView.getItemAtPosition(position).toString(),
+                        Toast.LENGTH_SHORT).show();
+                        activity.OnItemSelectedInSpinner(parentView.getItemAtPosition(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+            }
+        });
+
+
 
     }
+
+    //Is used to display all available classrooms in the chosen building
+    @Override
+    public void IFillDataStructures(ObjectMapper objectMapper, String json) {
+        IO _IO = IO.GetInstance();
+        String result = _IO.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/rooms/", activity);
+        try {
+            CurrentListClassrooms = objectMapper.readValue(result, ClassRooms.class);
+        }
+        catch(Exception e){
+            Log.d("ClassroomSpinner", "IFillDataStructures: failed");
+        }
+        this.FillSpinner();
+    }
+
+
+
 }
