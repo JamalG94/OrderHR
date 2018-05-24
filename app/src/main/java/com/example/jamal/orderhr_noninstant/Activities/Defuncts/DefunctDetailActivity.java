@@ -1,6 +1,8 @@
 package com.example.jamal.orderhr_noninstant.Activities.Defuncts;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -10,8 +12,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jamal.orderhr_noninstant.Activities.IDataStructure;
+import com.example.jamal.orderhr_noninstant.Activities.MainActivity;
 import com.example.jamal.orderhr_noninstant.Datastructures.DefunctWrapper;
 import com.example.jamal.orderhr_noninstant.IO;
 import com.example.jamal.orderhr_noninstant.R;
@@ -63,14 +67,22 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
         screenlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                DefunctWrapper p = (DefunctWrapper) screenlistview.getItemAtPosition(i);
+                final DefunctWrapper p = (DefunctWrapper) screenlistview.getItemAtPosition(i);
                 setContentView(R.layout.activity_defunct);
                 TextView tvid = (TextView)findViewById(R.id.textviewID);
                 TextView tvdescription = (TextView)findViewById(R.id.textviewdescription);
                 TextView tvtype = (TextView)findViewById(R.id.textviewtype);
                 TextView tvhandled = (TextView)findViewById(R.id.textviewhandled);
                 Button buttonsethandled = (Button)findViewById(R.id.buttonsetHandled);
-                buttonsethandled.setVisibility(GONE);
+//                buttonsethandled.setVisibility(GONE);
+                buttonsethandled.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        setDefunctHandles(p);
+                    }
+                });
+
+
                 tvhandled.setText("Handled : " + p.getFields().isHandled());
                 tvid.setText(tvid.getText()+" " + p.getPk());
                 tvdescription.setText(tvdescription.getText() +" " + p.getFields().getDescription());
@@ -79,6 +91,18 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
         });
     }
 
+    public void setDefunctHandles(DefunctWrapper inputdefunct){
+        new AlertDialog.Builder(this)
+                .setTitle("Title")
+                .setMessage("Do you really want to whatever?" + inputdefunct.getPk())
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Toast.makeText(DefunctDetailActivity.this, "Yaay", Toast.LENGTH_SHORT).show();
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
+    }
 
     public List<DefunctWrapper> FillListWithFilteredItems(String type, final boolean showhandled){
         List<DefunctWrapper> filtereddefunctlist = new ArrayList<>();
