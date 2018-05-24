@@ -38,7 +38,12 @@ import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import com.example.jamal.orderhr_noninstant.Datastructures.Admin;
+import com.example.jamal.orderhr_noninstant.Datastructures.Student;
+import com.example.jamal.orderhr_noninstant.Datastructures.SuperUser;
+import com.example.jamal.orderhr_noninstant.Datastructures.Teacher;
 import com.example.jamal.orderhr_noninstant.IO;
 import com.example.jamal.orderhr_noninstant.R;
 import com.example.jamal.orderhr_noninstant.Session;
@@ -213,6 +218,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             session.setUsername(email);
             session.setPassword(password);
+            session.setUser(this.RandomTypeUser());
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -223,6 +229,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         boolean containsEmail = DUMMY_CREDENTIALS.containsKey(email);
         //boolean isCorrectEmail = email.contains("@hr.nl");
         return containsEmail; //&& isCorrectEmail;
+    }
+
+    private SuperUser RandomTypeUser(){
+        Random random = new Random();
+        int r = random.nextInt(3);
+        if(r == 1){
+            return new Admin();
+        }
+        else if(r == 2){
+            return new Teacher();
+        }
+        else{
+            return new Student();
+        }
     }
 
     private boolean isPasswordValid(String email, String password) {
