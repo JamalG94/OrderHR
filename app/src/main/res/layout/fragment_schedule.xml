@@ -9,7 +9,7 @@
     <TableLayout
         android:id="@+id/fragment_schedule"
         android:layout_width="match_parent"
-        android:layout_height="374dp"
+        android:layout_height="522dp"
         android:orientation="horizontal"
         android:stretchColumns="1"
         android:weightSum="6">
@@ -63,7 +63,7 @@
             <TextView
                 android:layout_column="0"
                 android:padding="3dip"
-                android:text="@string/timeslot_one" />
+                android:text="@string/timeslot_1" />
 
         </TableRow>
 
@@ -73,7 +73,7 @@
             <TextView
                 android:layout_column="0"
                 android:padding="3dip"
-                android:text="@string/timeslot_two" />
+                android:text="@string/timeslot_2" />
         </TableRow>
 
         <View
@@ -88,14 +88,14 @@
             <TextView
                 android:layout_column="0"
                 android:padding="3dip"
-                android:text="@string/timeslot_three" />
+                android:text="@string/timeslot_3" />
         </TableRow>
 
         <TableRow android:id="@+id/timeslot_4">
 
             <TextView
                 android:padding="3dip"
-                android:text="@string/timeslot_four" />
+                android:text="@string/timeslot_4" />
         </TableRow>
 
         <View
@@ -106,7 +106,7 @@
 
             <TextView
                 android:padding="3dip"
-                android:text="@string/timeslot_five" />
+                android:text="@string/timeslot_5" />
 
         </TableRow>
 
@@ -115,7 +115,7 @@
             <TextView
                 android:layout_column="0"
                 android:padding="3dip"
-                android:text="@string/timeslot_six" />
+                android:text="@string/timeslot_6" />
         </TableRow>
 
         <View
@@ -127,7 +127,7 @@
             <TextView
                 android:layout_column="0"
                 android:padding="3dip"
-                android:text="@string/timeslot_seven" />
+                android:text="@string/timeslot_7" />
         </TableRow>
 
 
@@ -136,7 +136,7 @@
             <TextView
                 android:layout_column="0"
                 android:padding="3dip"
-                android:text="@string/timeslot_eight" />
+                android:text="@string/timeslot_8" />
         </TableRow>
 
         <View
@@ -148,7 +148,7 @@
             <TextView
                 android:layout_column="0"
                 android:padding="3dip"
-                android:text="@string/timeslot_nine" />
+                android:text="@string/timeslot_9" />
         </TableRow>
 
         <TableRow android:id="@+id/timeslot_10">
@@ -156,63 +156,63 @@
             <TextView
                 android:layout_column="0"
                 android:padding="3dip"
-                android:text="@string/timeslot_ten" />
+                android:text="@string/timeslot_10" />
         </TableRow>
 
         <View
             android:layout_height="2dip"
             android:background="#FF909090" />
 
-        <TableRow android:id="@+id/timeslot_11">
+        <!--<TableRow android:id="@+id/timeslot_11">-->
 
-            <TextView
-                android:layout_column="0"
-                android:padding="3dip"
-                android:text="@string/timeslot_eleven" />
-        </TableRow>
+        <!--<TextView-->
+        <!--android:layout_column="0"-->
+        <!--android:padding="3dip"-->
+        <!--android:text="@string/timeslot_11" />-->
+        <!--</TableRow>-->
 
-        <TableRow android:id="@+id/timeslot_12">
+        <!--<TableRow android:id="@+id/timeslot_12">-->
 
-            <TextView
-                android:layout_column="0"
-                android:padding="3dip"
-                android:text="@string/timeslot_twelve" />
-        </TableRow>
+        <!--<TextView-->
+        <!--android:layout_column="0"-->
+        <!--android:padding="3dip"-->
+        <!--android:text="@string/timeslot_12" />-->
+        <!--</TableRow>-->
 
-        <View
-            android:layout_height="2dip"
-            android:background="#FF909090" />
+        <!--<View-->
+        <!--android:layout_height="2dip"-->
+        <!--android:background="#FF909090" />-->
 
-        <TableRow android:id="@+id/timeslot_13">
+        <!--<TableRow android:id="@+id/timeslot_13">-->
 
-            <TextView
-                android:layout_column="0"
-                android:padding="3dip"
-                android:text="@string/timeslot_thirteen" />
-        </TableRow>
+        <!--<TextView-->
+        <!--android:layout_column="0"-->
+        <!--android:padding="3dip"-->
+        <!--android:text="@string/timeslot_13" />-->
+        <!--</TableRow>-->
 
-        <TableRow android:id="@+id/timeslot_14">
+        <!--<TableRow android:id="@+id/timeslot_14">-->
 
-            <TextView
-                android:layout_column="0"
-                android:padding="3dip"
-                android:text="@string/timeslot_fourteen" />
-        </TableRow>
+        <!--<TextView-->
+        <!--android:layout_column="0"-->
+        <!--android:padding="3dip"-->
+        <!--android:text="@string/timeslot_14" />-->
+        <!--</TableRow>-->
 
-        <View
-            android:layout_height="2dip"
-            android:background="#FF909090" />
+        <!--<View-->
+        <!--android:layout_height="2dip"-->
+        <!--android:background="#FF909090" />-->
 
-        <TableRow
-            android:id="@+id/timeslot_15"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <!--<TableRow-->
+        <!--android:id="@+id/timeslot_15"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
 
-            <TextView
-                android:layout_column="0"
-                android:padding="3dip"
-                android:text="@string/timeslot_fifteen" />
-        </TableRow>
+        <!--<TextView-->
+        <!--android:layout_column="0"-->
+        <!--android:padding="3dip"-->
+        <!--android:text="@string/timeslot_15" />-->
+        <!--</TableRow>-->
 
     </TableLayout>
 </LinearLayout>

@@ -10,7 +10,7 @@
         android:id="@+id/list"
         android:name="com.example.jamal.orderhr_noninstant.ScheduleFragment"
         android:layout_width="374dp"
-        android:layout_height="433dp"
+        android:layout_height="417dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -26,21 +26,20 @@
 
     <Spinner
         android:id="@+id/classroom_spinner"
-        android:layout_width="74dp"
+        android:layout_width="149dp"
         android:layout_height="32dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.972"
+        app:layout_constraintHorizontal_bias="0.963"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.788" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/button2"
@@ -50,46 +49,61 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:onClick="ClickReserve"
+        android:text="Reserve"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.028"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
+    <EditText
+        android:id="@+id/lesson"
+        android:layout_width="91dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        android:id="@+id/radio_buildings"
+        android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.028"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list"
+        app:layout_constraintVertical_bias="0.142" />
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/radio_buildings"
+        android:layout_width="150dp"
+        android:layout_height="21dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.979">
+        app:layout_constraintVertical_bias="0.932">
 
         <RadioButton
-            android:id="@+id/radio_pirates"
+            android:id="@+id/radio_H"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"
-            android:text="RULES" />
+            android:text="H" />
 
         <RadioButton
-            android:id="@+id/radio_ninjas"
+            android:id="@+id/radio_WN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"
-            android:text="BREAK" />
+            android:text="WN" />
 
         <RadioButton
-            android:id="@+id/radio_vikings"
+            android:id="@+id/radio_WD"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"
-            android:text="PORN" />
+            android:text="WD" />
     </RadioGroup>
 
 </android.support.constraint.ConstraintLayout>

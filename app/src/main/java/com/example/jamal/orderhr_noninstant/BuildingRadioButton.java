@@ -21,31 +21,40 @@ public class BuildingRadioButton {
         radioGroup = scheduleActivity.findViewById(R.id.radio_buildings);
     }
 
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-        String chosenBuilding = "H";
-
-        // Check which radio button was clicked
-        switch(view.getId()) {
-
-            case R.id.radio_pirates:
-                if (checked){
-                    chosenBuilding = "H";
-                    break;
-                }
-            case R.id.radio_ninjas:
-                if (checked){
-                    chosenBuilding = "WN";
-                    break;
-                }
-            case R.id.radio_vikings:
-                if(checked){
-                    chosenBuilding = "WD";
-                }
+    public void AssignOnClickRadioButton(){
+        for (int i = 0; i < radioGroup.getChildCount(); i++
+             ) {
+            radioGroup.getChildAt(i).setOnClickListener(onRadioButtonClicked);
         }
-
-        scheduleActivity.getClassroomSpinner().IFillDataStructures(new ObjectMapper(), String.format("{\"building\":\"%s\"}", chosenBuilding));
     }
 
+    private View.OnClickListener onRadioButtonClicked = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            // Is the button now checked?
+            boolean checked = ((RadioButton) v).isChecked();
+            String chosenBuilding = "H";
+
+            // Check which radio button was clicked
+            switch(v.getId()) {
+
+                case R.id.radio_H:
+                    if (checked){
+                        chosenBuilding = "H";
+                        break;
+                    }
+                case R.id.radio_WN:
+                    if (checked){
+                        chosenBuilding = "WN";
+                        break;
+                    }
+                case R.id.radio_WD:
+                    if(checked){
+                        chosenBuilding = "WD";
+                    }
+            }
+
+            scheduleActivity.getClassroomSpinner().JsonToClassroomList(new ObjectMapper(), String.format("{\"building\":\"%s\"}", chosenBuilding));
+        }
+    };
 }
