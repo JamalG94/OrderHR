@@ -16,3 +16,4 @@ public class SuperUser {
         return concreteUser;
     }
 }
+
