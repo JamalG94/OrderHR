@@ -21,5 +21,5 @@ public class TimeDay {
     public int getTimeslot() {
         return timeslot;
     }
-
+    
 }

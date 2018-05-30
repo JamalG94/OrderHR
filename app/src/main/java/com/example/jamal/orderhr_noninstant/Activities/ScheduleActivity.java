@@ -1,27 +1,25 @@
 package com.example.jamal.orderhr_noninstant.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.jamal.orderhr_noninstant.BuildingRadioButton;
 import com.example.jamal.orderhr_noninstant.ClassroomSpinner;
-import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
 import com.example.jamal.orderhr_noninstant.Datastructures.BookingWrapper;
 import com.example.jamal.orderhr_noninstant.Datastructures.TimeDay;
 import com.example.jamal.orderhr_noninstant.IO;
 import com.example.jamal.orderhr_noninstant.R;
-import com.example.jamal.orderhr_noninstant.ScheduleUtility;
-import com.example.jamal.orderhr_noninstant.Session;
+import com.example.jamal.orderhr_noninstant.ReserveActivity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,17 +28,17 @@ import java.util.List;
 
 public class ScheduleActivity extends TableBuilder{
 
-    EditText editText;//Reserve
+    private ArrayList<TimeDay> selectedBookings = new ArrayList<>();
+    private List<String> reservedSlots = new ArrayList<>();
 
-    private List<TimeDay> selectedBookings = new ArrayList<>(); //Reserve
-    private List<String> reservedSlots;
+    private IO _IO;
     private BookingWrapper[] bookingWrapper;
     private ObjectMapper objectMapper;//Both
 
     private String currentRoom;//Both
-    private int currentWeek;//Schedule
+    private int currentWeek;
 
-    private IO _IO;//Both
+
     private ClassroomSpinner classroomSpinner;
     private BuildingRadioButton buildingRadioButton;//Schedule
 
@@ -48,13 +46,7 @@ public class ScheduleActivity extends TableBuilder{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        reservedSlots = new ArrayList<>();
-
         setContentView(R.layout.activity_schedule);
-
-        editText = findViewById(R.id.lesson);
-
 
         this.setOnSelectCell(onSelectCell);
         super.CreateTable(5, 10, "timeslot_", true);
@@ -69,50 +61,19 @@ public class ScheduleActivity extends TableBuilder{
 
         buildingRadioButton = new BuildingRadioButton(this);
         buildingRadioButton.AssignOnClickRadioButton();
-
-        // testBooking.setDate(new GregorianCalendar(2018, Calendar.JUNE, 5).getTime());
     }
 
     //This function is used for the reserve button and transforms each booking object into a jsonobject.
     public void ClickReserve(View view){
+
+        //TODO check if user selected timeslots
         Collections.sort(selectedBookings, new CustomComparator());
 
-        Booking booking = this.CreateBookings(selectedBookings);
-        try {
-            ParseReservations(objectMapper.writeValueAsString(booking));
-        }
-        catch (Exception e){}
-
-    }
-
-    public Booking CreateBookings(List<TimeDay> timeDayList){
-        Booking createdBooking = new Booking();
-
-        ScheduleUtility scheduleUtility = new ScheduleUtility();
-
-        if(timeDayList.size() > 0){
-            TimeDay first = timeDayList.get(0);
-            TimeDay last = timeDayList.get(timeDayList.size() - 1);
-
-            createdBooking.setTimeslotfrom(first.getTimeslot());
-            createdBooking.setTimeslotto(last.getTimeslot());
-            createdBooking.setRoom(currentRoom);
-
-            createdBooking.setDate(new Date());
-            createdBooking.setUsername(Session.getUsername());
-            createdBooking.setLesson(editText.getText().toString());
-            createdBooking.setWeeknummer(1);
-            createdBooking.setTimefrom(scheduleUtility.TimeSlotToTimeString(first.getTimeslot()));
-            createdBooking.setTimeto(scheduleUtility.TimeSlotToTimeString(last.getTimeslot()));
-        }
-        
-        return createdBooking;
-    }
-
-    //This function posts all bookings to the api
-    private void ParseReservations(String jsonObject){
-        _IO = IO.GetInstance();
-        _IO.DoPostRequestToAPIServer(jsonObject, "http://markb.pythonanywhere.com/bookroom/", this);
+        Intent mIntent = new Intent(this, ReserveActivity.class);
+        mIntent.putExtra("currentRoom", currentRoom);
+        mIntent.putExtra("TimeslotFrom",  selectedBookings.get(0).getTimeslot());
+        mIntent.putExtra("TimeslotTo", selectedBookings.get(selectedBookings.size() - 1).getTimeslot());
+        startActivity(mIntent);
     }
 
     private View.OnClickListener onSelectCell = new View.OnClickListener() {
@@ -180,8 +141,6 @@ public class ScheduleActivity extends TableBuilder{
             cell.setText("");
         }
     }
-
-
 
     public void JsonToBookingWrapper(ObjectMapper objectMapper, String json) {
         try{

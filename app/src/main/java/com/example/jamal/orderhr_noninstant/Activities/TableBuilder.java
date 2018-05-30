@@ -72,6 +72,7 @@ public class TableBuilder extends AppCompatActivity {
     }
 
     public int DatetoColumn(Date date){
+        // testBooking.setDate(new GregorianCalendar(2018, Calendar.JUNE, 5).getTime());
         //date = new GregorianCalendar(2018, Calendar.JUNE, 20).getTime();
         //testBooking.setDate(new GregorianCalendar(2018, Calendar.JUNE, 5).getTime());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
