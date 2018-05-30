@@ -3,9 +3,7 @@ package com.example.jamal.orderhr_noninstant.Activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -31,10 +29,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,9 +41,13 @@ import com.example.jamal.orderhr_noninstant.Datastructures.Admin;
 import com.example.jamal.orderhr_noninstant.Datastructures.Student;
 import com.example.jamal.orderhr_noninstant.Datastructures.SuperUser;
 import com.example.jamal.orderhr_noninstant.Datastructures.Teacher;
+import com.example.jamal.orderhr_noninstant.Datastructures.UnauthenticatedUser;
 import com.example.jamal.orderhr_noninstant.IO;
 import com.example.jamal.orderhr_noninstant.R;
 import com.example.jamal.orderhr_noninstant.Session;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -181,6 +182,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         boolean cancel = false;
         View focusView = null;
+        SuperUser userrole = null;
 
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password) ) {
@@ -188,11 +190,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             focusView = mPasswordView;
             cancel = true;
         }
-//        else if(!isPasswordValid(email, password)){
-//            mPasswordView.setError("This is the wrong password");
-//            focusView = mPasswordView;
-//            cancel = true;
-//        }
+        else {
+            userrole = checkUserAuthentication(email,password);
+            if(userrole == null){
+                focusView = mPasswordView;
+                cancel = true;
+            }
+            else if(userrole.TypeOfUser().equals("UnauthenticatedUser")){
+                mPasswordView.setError("Unrecognized username/password combination!");
+                focusView = mPasswordView;
+                cancel = true;
+            }
+        }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
@@ -205,7 +214,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //  cancel = true;
         }
 
-        if (cancel) {
+        if (cancel || userrole == null) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
@@ -218,7 +227,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             session.setUsername(email);
             session.setPassword(password);
-            session.setUser(this.RandomTypeUser());
+            session.setUser(userrole);
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -245,12 +254,36 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private boolean isPasswordValid(String email, String password) {
-
+    private SuperUser checkUserAuthentication(String email, String password) {
+        SuperUser returneduser = null;
         IO _IO = IO.GetInstance();
         String json = String.format("{\"username\":\"%s\", \"password\":\"%s\"}", email, password);
         String result = _IO.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/loginauth/", this);
-        return result.equals("Succesfully authenticated");
+        try{
+            if(result.equals("This user could not be found")){
+                returneduser = new UnauthenticatedUser();
+            }
+            else{
+                JSONObject convertedresult = new JSONObject(result);
+                boolean resultingequation = convertedresult.getBoolean("isauthenticated");
+                if(resultingequation ){
+                    if(convertedresult.getBoolean("issuperuser")){
+                        returneduser=new Admin();
+                    }
+                    else if(convertedresult.getBoolean("isstaff")){
+                        returneduser=new Teacher();
+                    }
+                    else{
+                        returneduser = new Student();
+                    }
+                }
+            }
+
+        }catch(JSONException jsonexception){
+            Toast test = Toast.makeText(this,"SERVER RETURN ERROR",Toast.LENGTH_LONG);
+            test.show();
+        }
+        return returneduser;
     }
 
     /**
