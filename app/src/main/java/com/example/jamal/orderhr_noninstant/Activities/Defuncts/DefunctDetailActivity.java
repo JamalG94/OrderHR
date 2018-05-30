@@ -46,23 +46,20 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        receiveddefuncts = new ArrayList<>();
+
 
         //DUE TO LIMITS IN OUR API CALL, WE NEED TO DO 2 API CALLS, ONE TO GET ALL THE HANDLED DEFUNCTS
         //AND ONE TO GET THE UNHANDLED DEFUNCTS.
-        this.IFillDataStructures(new ObjectMapper(),getdatafromio(true));
-        this.IFillDataStructures(new ObjectMapper(),getdatafromio(false));
-
+        LoadNShowData();
         loadMainDefunctListToView(findViewById(android.R.id.content));
     }
 
     public void loadMainDefunctListToView(View view){
         setContentView(R.layout.activity_defunctlist);
         screenlistview = (ListView)findViewById(R.id.listviewDefuncts);
-
         typeselectionfilter = (Spinner)findViewById(R.id.spinnertypefiler);
         switchhandled = (Switch)findViewById(R.id.switch1);
-        ModifyAllReceivedBookingsToListView2(typeselectionfilter.getSelectedItem().toString(),switchhandled.isChecked());
+        ModifyAllReceivedBookingsToListView2(typeselectionfilter.getSelectedItem().toString(),!switchhandled.isChecked());
 
         screenlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -81,8 +78,6 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
                         setDefunctHandles(p);
                     }
                 });
-
-
                 tvhandled.setText("Handled : " + p.getFields().isHandled());
                 tvid.setText(tvid.getText()+" " + p.getPk());
                 tvdescription.setText(tvdescription.getText() +" " + p.getFields().getDescription());
@@ -91,54 +86,47 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
         });
     }
 
-    public void setDefunctHandles(DefunctWrapper inputdefunct){
+    public void setDefunctHandles(final DefunctWrapper inputdefunct){
         new AlertDialog.Builder(this)
-                .setTitle("Title")
-                .setMessage("Do you really want to whatever?" + inputdefunct.getPk())
+                .setTitle("Defunct Handled?")
+                .setMessage("Do you really want to save this defunct as handled?" + inputdefunct.getPk())
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        Toast.makeText(DefunctDetailActivity.this, "Yaay", Toast.LENGTH_SHORT).show();
+                        ioinstance = IO.GetInstance();
+                        ioinstance.DoPostRequestToAPIServer("{\"id\":"+inputdefunct.getPk()+",\"handled\":\"True\"}","http://markb.pythonanywhere.com/alterdefunct/",DefunctDetailActivity.this);
+                        Toast.makeText(DefunctDetailActivity.this, "Defunct Updated", Toast.LENGTH_SHORT).show();
+                        DefunctDetailActivity.this.LoadNShowData();
+                        loadMainDefunctListToView(findViewById(R.id.buttonsetHandled));
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
     }
 
-    public List<DefunctWrapper> FillListWithFilteredItems(String type, final boolean showhandled){
-        List<DefunctWrapper> filtereddefunctlist = new ArrayList<>();
-        for(DefunctWrapper receiveddefunct: receiveddefuncts){
-            if(!receiveddefunct.getFields().isHandled() || !showhandled){
-                if(!type.equals("view all")){
-                    if(receiveddefunct.getFields().getType().toUpperCase().equals(type.toUpperCase())){
-                        filtereddefunctlist.add(receiveddefunct);
-                    }
-                }else{
-                    filtereddefunctlist.add(receiveddefunct);
 
-                }
-            }
-        }
-        return filtereddefunctlist;
-    }
+
     //NEED TO SPLIT FUNCTIONALITIES HERE:
     public void ModifyAllReceivedBookingsToListView2(String type, boolean showhandled){
-        List<DefunctWrapper> filtereddefunctlist = FillListWithFilteredItems(type,showhandled);
+        List<DefunctWrapper> filtereddefunctlist = FillListWithFilteredItems(type,showhandled,receiveddefuncts);
 
         defunctarrayadapt = new DefunctViewAdapter(this,R.layout.defunct_list_view_item,filtereddefunctlist);
         screenlistview.setAdapter(defunctarrayadapt);
         defunctarrayadapt.notifyDataSetChanged();
     }
 
-    //Updates the shown defuncts
+    //Updates the shown defuncts USED FOR onCLICK HANDLER FOR A BUTTON
     public void OnClickSearch(View view){
-        ModifyAllReceivedBookingsToListView2(typeselectionfilter.getSelectedItem().toString(),switchhandled.isChecked());
+        ModifyAllReceivedBookingsToListView2(typeselectionfilter.getSelectedItem().toString(),!switchhandled.isChecked());
     }
-
+    public void LoadNShowData(){
+        receiveddefuncts = new ArrayList<>();
+        this.IFillDataStructures(new ObjectMapper(),getdatafromio(true));
+        this.IFillDataStructures(new ObjectMapper(),getdatafromio(false));
+    }
     //Does an API call to get data from the server
     public String getdatafromio(boolean handled){
         String returnjson = "";
         ioinstance = IO.GetInstance();
-
         returnjson  = ioinstance.DoPostRequestToAPIServer("{\"handled\":"+handled+"}","http://markb.pythonanywhere.com/alldefuncts/",this);
         return returnjson;
     }
@@ -157,4 +145,21 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
             Log.i("hello?",e.getMessage());
         }
     }
+    //complex for loops to filter a list of defuncts based on 2 parameters (showhandled, type), no linq or streaming in this api level so ugly for loops :c
+    public static List<DefunctWrapper> FillListWithFilteredItems(String type, final boolean showhandled, List<DefunctWrapper> inputreceiveddefuncts){
+        List<DefunctWrapper> filtereddefunctlist = new ArrayList<>();
+        for(DefunctWrapper receiveddefunct: inputreceiveddefuncts){
+            if(!receiveddefunct.getFields().isHandled() || showhandled){
+                if(!type.equals("view all")){
+                    if(receiveddefunct.getFields().getType().toUpperCase().equals(type.toUpperCase())){
+                        filtereddefunctlist.add(receiveddefunct);
+                    }
+                }else{
+                    filtereddefunctlist.add(receiveddefunct);
+                }
+            }
+        }
+        return filtereddefunctlist;
+    }
+
 }
