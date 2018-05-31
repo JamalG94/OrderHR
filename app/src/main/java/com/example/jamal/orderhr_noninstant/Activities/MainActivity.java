@@ -26,6 +26,11 @@ public class MainActivity extends TableBuilder {
         startActivity(intent);
     }
 
+    public void ClickGoToUserDetails(View view){
+        Intent intent = new Intent(this, UserDetailsActivity.class);
+        startActivity(intent);
+    }
+
     public void ClickDefunctList(View view){
         Intent intent = new Intent(this, DefunctDetailActivity.class);
         startActivity(intent);

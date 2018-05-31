@@ -45,7 +45,6 @@ public class DefunctMakeActivity extends AppCompatActivity implements IDataStruc
 
         roomview.setText(roomview.getText() + " " +receiveddefunct.getRoom());
         defuncttypeedit.setSelection(((ArrayAdapter)defuncttypeedit.getAdapter()).getPosition(receiveddefunct.getType()));
-
     }
 
     @Override

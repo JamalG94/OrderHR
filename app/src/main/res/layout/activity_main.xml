@@ -10,12 +10,14 @@
         android:id="@+id/list"
         android:name="com.example.jamal.orderhr_noninstant.ScheduleFragment"
         android:layout_width="392dp"
-        android:layout_height="422dp"
+        android:layout_height="401dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginTop="24dp"
         android:layout_weight="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/activity_schedule" />
 
     <Button
@@ -64,6 +66,18 @@
         app:layout_constraintEnd_toStartOf="@+id/button"
         app:layout_constraintTop_toBottomOf="@+id/list"
         tools:text="Defuncts" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="132dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="10dp"
+        android:onClick="ClickGoToUserDetails"
+        android:text="User details"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/list"
+        tools:layout_editor_absoluteY="0dp" />
 
 
 </android.support.constraint.ConstraintLayout>
