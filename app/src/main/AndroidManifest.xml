@@ -34,6 +34,8 @@
         </activity>
         <activity android:name=".Activities.Defuncts.DefunctDetailActivity">
         </activity>
+        <activity android:name=".Activities.UserDetailsActivity">
+        </activity>
         <activity android:name=".Activities.EasyScanActivity">
         </activity>
         <activity android:name=".Activities.Booking.BookingMakeActivity">

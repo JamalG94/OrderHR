@@ -38,9 +38,9 @@ import java.util.Map;
 import java.util.Random;
 
 import com.example.jamal.orderhr_noninstant.Datastructures.Admin;
+import com.example.jamal.orderhr_noninstant.Datastructures.Staff;
 import com.example.jamal.orderhr_noninstant.Datastructures.Student;
 import com.example.jamal.orderhr_noninstant.Datastructures.SuperUser;
-import com.example.jamal.orderhr_noninstant.Datastructures.Teacher;
 import com.example.jamal.orderhr_noninstant.Datastructures.UnauthenticatedUser;
 import com.example.jamal.orderhr_noninstant.IO;
 import com.example.jamal.orderhr_noninstant.R;
@@ -228,6 +228,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             session.setUsername(email);
             session.setPassword(password);
             session.setUser(userrole);
+            session.setIsAdmin(userrole.TypeOfUser().equals("Admin"));
+            session.setIsStaff(userrole.TypeOfUser().equals("Staff"));
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -247,7 +249,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return new Admin();
         }
         else if(r == 2){
-            return new Teacher();
+            return new Staff();
         }
         else{
             return new Student();
@@ -271,7 +273,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         returneduser=new Admin();
                     }
                     else if(convertedresult.getBoolean("isstaff")){
-                        returneduser=new Teacher();
+                        returneduser=new Staff();
                     }
                     else{
                         returneduser = new Student();

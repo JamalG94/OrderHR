@@ -103,8 +103,6 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
                 .setNegativeButton(android.R.string.no, null).show();
     }
 
-
-
     //NEED TO SPLIT FUNCTIONALITIES HERE:
     public void ModifyAllReceivedBookingsToListView2(String type, boolean showhandled){
         List<DefunctWrapper> filtereddefunctlist = FillListWithFilteredItems(type,showhandled,receiveddefuncts);
