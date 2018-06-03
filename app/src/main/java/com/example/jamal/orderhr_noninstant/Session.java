@@ -15,7 +15,6 @@ public class Session {
     private static SharedPreferences prefs;
 
     public Session(Context cntx) {
-        // TODO Auto-generated constructor stub
         prefs = PreferenceManager.getDefaultSharedPreferences(cntx);
     }
 

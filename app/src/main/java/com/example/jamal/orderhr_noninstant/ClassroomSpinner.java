@@ -46,7 +46,8 @@ public class ClassroomSpinner{
     }
 
 
-    //This method is attached to the spinner, it causes the spinner to only react when it actually get's pressed. Without this method, OnItemSelect will get called
+    //This method is attached to the spinner, it causes the spinner to only react when it actually get's pressed.
+    //Without this method, OnItemSelect will get called each time the ScheduleActivity starts
     private View.OnTouchListener Spinner_OnTouch = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
             v.performClick();
@@ -57,6 +58,7 @@ public class ClassroomSpinner{
         }
     };
 
+    //TODO MAKE THIS CLEAN
     //This method is also attached to the spinner, when an item is selected from the spinner this method gets triggered and calls the API call in scheduleactivity
     private AdapterView.OnItemSelectedListener Spinner_OnItemSelect = new AdapterView.OnItemSelectedListener() {
         @Override
@@ -65,14 +67,16 @@ public class ClassroomSpinner{
 
             if(isTouched){
                 Toast.makeText(parentView.getContext(), "OnItemSelectedListener : " + parentView.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
-                activity.OnItemSelectedInSpinner(parentView.getItemAtPosition(position).toString());
+                activity.ClassRoomSelected(parentView.getItemAtPosition(position).toString());
             }
         }
+        //This method needed to be implemented, but I have no use case for it
         @Override
         public void onNothingSelected(AdapterView<?> parentView) {
         }
     };
 
+    //TODO TAKE CARE OF PROPER EXEPTION HANDLING
     //Is used to display all available classrooms in the chosen building
     public void JsonToClassroomList(ObjectMapper objectMapper, String json) {
         IO _IO = IO.GetInstance();

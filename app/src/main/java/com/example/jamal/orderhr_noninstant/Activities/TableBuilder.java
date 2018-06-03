@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.example.jamal.orderhr_noninstant.Datastructures.TimeDay;
 import com.example.jamal.orderhr_noninstant.R;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,8 +24,6 @@ import java.util.TimeZone;
 public class TableBuilder extends AppCompatActivity {
 
     private View.OnClickListener OnSelectCell;
-
-
 
     public void setOnSelectCell(View.OnClickListener onSelectCell) {
         OnSelectCell = onSelectCell;
@@ -71,25 +70,14 @@ public class TableBuilder extends AppCompatActivity {
         setOnSelectCell(null);
     }
 
-    public int DatetoColumn(Date date){
-        // testBooking.setDate(new GregorianCalendar(2018, Calendar.JUNE, 5).getTime());
-        //date = new GregorianCalendar(2018, Calendar.JUNE, 20).getTime();
-        //testBooking.setDate(new GregorianCalendar(2018, Calendar.JUNE, 5).getTime());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        sdf.setCalendar(Calendar.getInstance());
+    //TODO TEST
+    public static int DatetoColumn(Date date){
+        Calendar calendar = DateFormat.getDateInstance().getCalendar();
+        calendar.setTime(date);
 
-        sdf.format(date);
-        //Here you set to your timezone
-        sdf.setTimeZone(TimeZone.getDefault());
-        //Will print on your default Timezone
-        System.out.println(sdf.format(sdf.getCalendar().getTime()));
-
-        int day = sdf.getCalendar().get(Calendar.DAY_OF_WEEK);
-        //We return -1 because the Calendar.DAY_OF_WEEK method starts at sunday, and my week schedule starts counting from monday
-        return day;
+        //JAVA's CALENDAR STARTS COUNTING FROM SUNDAY
+        return calendar.get(Calendar.DAY_OF_WEEK) -1;
     }
-
-
 
 
 }

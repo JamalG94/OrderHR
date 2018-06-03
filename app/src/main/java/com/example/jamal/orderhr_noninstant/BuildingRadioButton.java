@@ -54,7 +54,7 @@ public class BuildingRadioButton {
                     }
             }
 
-            scheduleActivity.getClassroomSpinner().JsonToClassroomList(new ObjectMapper(), String.format("{\"building\":\"%s\"}", chosenBuilding));
+            scheduleActivity.BuildingSelected(chosenBuilding);
         }
     };
 }
