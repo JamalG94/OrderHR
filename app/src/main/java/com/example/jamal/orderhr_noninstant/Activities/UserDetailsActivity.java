@@ -2,6 +2,7 @@ package com.example.jamal.orderhr_noninstant.Activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.jamal.orderhr_noninstant.R;
@@ -27,14 +28,18 @@ public class UserDetailsActivity extends AppCompatActivity {
         textviewisadmin.setText(textviewisadmin.getText() + " " + Session.getIsAdmin());
 
         Bundle extras = getIntent().getExtras();
-        if(extras.containsKey("permissionhighlight")){
-            switch(extras.getString("permissionhighlight")){
-                case("bookingmake"):
-                    textviewisadmin.setError("You need one of these permissions");
-                    textviewisstaff.setError("");
+        try{
+            if(extras.containsKey("permissionhighlight")){
+                switch(extras.getString("permissionhighlight")){
+                    case("bookingmake"):
+                        textviewisadmin.setError("You need one of these permissions");
+                        textviewisstaff.setError("");
+                }
             }
-
+        }catch(NullPointerException e){
+            Log.d("user", "No permission found to highlight!");
         }
+
 
     }
 }
