@@ -25,5 +25,16 @@ public class UserDetailsActivity extends AppCompatActivity {
         textviewusername.setText(textviewusername.getText() + " " + Session.getUsername());
         textviewisstaff.setText(textviewisstaff.getText() + " " + Session.getIsStaff());
         textviewisadmin.setText(textviewisadmin.getText() + " " + Session.getIsAdmin());
+
+        Bundle extras = getIntent().getExtras();
+        if(extras.containsKey("permissionhighlight")){
+            switch(extras.getString("permissionhighlight")){
+                case("bookingmake"):
+                    textviewisadmin.setError("You need one of these permissions");
+                    textviewisstaff.setError("");
+            }
+
+        }
+
     }
 }

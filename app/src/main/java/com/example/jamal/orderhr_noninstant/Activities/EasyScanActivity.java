@@ -1,14 +1,17 @@
 package com.example.jamal.orderhr_noninstant.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.jamal.orderhr_noninstant.Activities.Booking.BookingMakeActivity;
 import com.example.jamal.orderhr_noninstant.Activities.Defuncts.DefunctMakeActivity;
+import com.example.jamal.orderhr_noninstant.Session;
 
 
 import org.json.JSONException;
@@ -36,7 +39,8 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
 
         //If this is a json text in the json QR, then start a new activity based on the information within.Else retry
         if(ValidateIfJsonInputIsValid(textreadfromQR)){
-            startActivity(GetNextIntentFromInputJson(textreadfromQR));
+            startActivity( GetNextIntentFromInputJson(textreadfromQR,this));
+
         }
         else{
             Toast.makeText(this,"Please scan a valid easy scan QR code!",Toast.LENGTH_LONG).show();
@@ -45,7 +49,7 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
     }
 
     //Checks if this json string returns any errors or so. Translates it into a boolean.
-    private boolean ValidateIfJsonInputIsValid(String jsonresult){
+    static public boolean ValidateIfJsonInputIsValid(String jsonresult){
         boolean resultvalue = true;
         try {
             JSONObject ob = new JSONObject(jsonresult);
@@ -56,30 +60,41 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
     }
 
     //Based on the type of the input jsonstring, this decides that logical path will be progressed.
-    private Intent GetNextIntentFromInputJson(String jsonresult){
+    static public Intent GetNextIntentFromInputJson(String jsonresult, Context thiscontext){
         Intent resultingint = new Intent();
         try {
             JSONObject jsonparser = new JSONObject(jsonresult);
 
             if(jsonparser.has("defunct")){
-                resultingint.setClass(this, DefunctMakeActivity.class);
+                resultingint.setClass(thiscontext, DefunctMakeActivity.class);
 
             }
             else if(jsonparser.has("reservation")){
-
-                resultingint.setClass(this, BookingMakeActivity.class);
-
+                //If a reservation is found, check if user is staff or admin, else go to user permissions and show the lacking permissions
+                if(Session.getIsStaff() || Session.getIsAdmin()){
+                    resultingint.setClass(thiscontext, BookingMakeActivity.class);
+                }
+                else{
+                    Toast.makeText(thiscontext,"No permissions for bookings found!",Toast.LENGTH_LONG).show();
+                    resultingint.setClass(thiscontext, UserDetailsActivity.class);
+                    resultingint.putExtra("permissionhighlight","bookingmake");
+                }
             }
             else{
-                Toast.makeText(this,"JSON FORMAT WITH QR NOT RECOGNIZED",Toast.LENGTH_LONG).show();
+                Toast.makeText(thiscontext,"JSON FORMAT WITH QR NOT RECOGNIZED",Toast.LENGTH_LONG).show();
             }
-        }catch(Exception e){resultingint.setClass(this, EasyScanActivity.class);}
+        }catch(JSONException e){
+            Toast error = Toast.makeText(thiscontext,"Something went wrong with reading this QR code!",Toast.LENGTH_LONG);
+            Log.d(e.getClass().toString(), e.getMessage());
+            error.show();
+            resultingint.setClass(thiscontext, MainActivity.class);
+        }
 
         resultingint.putExtra("jsonparser",jsonresult);
         return resultingint;
     }
 
-    //Finds the appriopiate camera and opens it.
+    //Finds the appropriate camera and opens it.
     public void FindOpenAndLaunchCamera(){
         int frontId = 0, backId = 0;
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
