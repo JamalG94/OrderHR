@@ -63,8 +63,6 @@ public class ClassroomSpinner{
     private AdapterView.OnItemSelectedListener Spinner_OnItemSelect = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-            Toast.makeText(parentView.getContext(), "Dafuq : " + isTouched.toString(), Toast.LENGTH_SHORT).show();
-
             if(isTouched){
                 Toast.makeText(parentView.getContext(), "OnItemSelectedListener : " + parentView.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
                 activity.ClassRoomSelected(parentView.getItemAtPosition(position).toString());
