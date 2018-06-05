@@ -46,7 +46,7 @@ public class TableBuilder extends AppCompatActivity {
 
 
                 TextView dayTimeslot = new TextView(this);
-                dayTimeslot.setText("timeslot"+j + "\n" + "day"+ z);
+                dayTimeslot.setText(" ");//timeslot"+j + "\n" + "day"+ z);
                 dayTimeslot.setTag(new TimeDay(z, j));
                 dayTimeslot.setLayoutParams(layoutParams);
                 dayTimeslot.setBackgroundResource(R.drawable.label_bg);

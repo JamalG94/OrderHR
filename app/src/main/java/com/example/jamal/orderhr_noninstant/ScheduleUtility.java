@@ -29,6 +29,7 @@ public class ScheduleUtility {
         timeSlots.put(8, "15:00");
         timeSlots.put(9, "15:50");
         timeSlots.put(10, "17:00");
+        timeSlots.put(11, "");
     }
 
 
@@ -72,4 +73,23 @@ public class ScheduleUtility {
             // ...
         }
     }
+
+    //This is an unused method ready for usage if we ever use Year as parameter for our bookings
+    public static Calendar PassYear(){
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, 1);
+        cal.set(Calendar.WEEK_OF_YEAR, 1);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        return cal;
+    }
+
+    //This is an unused method ready for usage if we ever use Year as parameter for our bookings
+    public static Calendar YearBack(){
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, -1);
+        cal.set(Calendar.WEEK_OF_YEAR, 1);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        return cal;
+    }
+
 }

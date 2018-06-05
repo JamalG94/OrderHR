@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.jamal.orderhr_noninstant.BuildingRadioButton;
 import com.example.jamal.orderhr_noninstant.ClassroomSpinner;
+import com.example.jamal.orderhr_noninstant.Datastructures.AvailableSlot;
 import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
 import com.example.jamal.orderhr_noninstant.Datastructures.BookingWrapper;
 import com.example.jamal.orderhr_noninstant.Datastructures.TimeDay;
@@ -86,23 +87,29 @@ public class ScheduleActivity extends TableBuilder{
         Collections.sort(selectedBookings, new TimeSlotComparator());
         int timeslotFrom = selectedBookings.get(0).getTimeslot();
         int timeslotTo = selectedBookings.get(selectedBookings.size() - 1).getTimeslot();
-        Booking b = ReservationProcess.CreateBooking(timeslotFrom, timeslotTo, scheduleUtility.TimeSlotToTimeString(timeslotFrom), scheduleUtility.TimeSlotToTimeString( timeslotTo),
+
+        Booking booking = ReservationProcess.CreateBooking(timeslotFrom, timeslotTo, scheduleUtility.TimeSlotToTimeString(timeslotFrom), scheduleUtility.TimeSlotToTimeString( timeslotTo),
                 currentRoom, selectedDate, lesson.getText().toString(),  currentWeek);
 
-        ReservationProcess.ParseReservations(ReservationProcess.CreateBookingJson(b, objectMapper), this);
+        AvailableSlot availableSlot = ReservationProcess.CreateAvailableSlot(timeslotFrom, timeslotTo, currentRoom, selectedDate);
+
+        if(ReservationProcess.CheckAvailability(ReservationProcess.CreateAvailabilityJson(availableSlot), this))
+            ReservationProcess.ParseReservations(ReservationProcess.CreateBookingJson(booking), this);
     }
 
     private View.OnClickListener onSelectCell = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v.getTag() != null) {
-                TimeDay booking = (TimeDay) (v.getTag());
-                if (SameDayCheck(scheduleUtility.DayToDate(booking.getDay()))) {
-                    MarkTimedays(booking);
+            if(!reservedSlots.contains(Integer.toString(v.getId()))){
+                if (v.getTag() != null) {
+                    TimeDay booking = (TimeDay) (v.getTag());
+                    if (SameDayCheck(scheduleUtility.DayToDate(booking.getDay()))) {
+                        MarkTimedays(booking);
+                        }
+                    }
                 }
             }
-        }
-    };
+        };
 
     //TODO TEST
     private Boolean SameDayCheck(Date date){
@@ -205,20 +212,30 @@ public class ScheduleActivity extends TableBuilder{
     }
 
     public void onClickNextWeek(View view){
-        //TODO FIND a way to make these two methods combined
-        currentWeek += 1;
-        ClassRoomSelected(currentRoom);
-        Toast.makeText(this, "" + currentWeek, Toast.LENGTH_SHORT).show();
-        scheduleUtility.AddDatesToHashMap(ScheduleUtility.GetCalendarSetAtWeek(currentWeek), 5);
-        scheduleUtility.PrintDates();
+        if(currentWeek + 1 < 57)
+        {
+            currentWeek += 1;
+        }
+        else{
+            currentWeek = 1;
+        }
+        ChangeWeek();
     }
 
     public void onClickPreviousWeek(View view){
-        currentWeek -=1;
+        if(currentWeek -1 > 1){
+            currentWeek -= 1;
+        }
+        else{
+            currentWeek = 56;
+        }
+        ChangeWeek();
+    }
+
+    private void ChangeWeek(){
         ClassRoomSelected(currentRoom);
         Toast.makeText(this, "" + currentWeek, Toast.LENGTH_SHORT).show();
         scheduleUtility.AddDatesToHashMap(ScheduleUtility.GetCalendarSetAtWeek(currentWeek), 5);
-        scheduleUtility.PrintDates();
     }
 
 }
