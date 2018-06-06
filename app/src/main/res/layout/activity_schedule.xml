@@ -16,6 +16,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:inputType="text"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.004"
@@ -23,7 +24,7 @@
         app:layout_constraintTop_toBottomOf="@+id/list" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/clickNext"
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:onClick="onClickNextWeek"
@@ -33,6 +34,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/previousWeek"
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:onClick="onClickPreviousWeek"
@@ -72,13 +74,14 @@
         app:layout_constraintTop_toBottomOf="@+id/radio_buildings" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/reserveButton"
         android:layout_width="88dp"
         android:layout_height="46dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:onClick="ClickReserve"
         android:text="Reserve"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

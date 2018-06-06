@@ -3,6 +3,7 @@ package com.example.jamal.orderhr_noninstant.Activities;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import com.example.jamal.orderhr_noninstant.IO;
 import com.example.jamal.orderhr_noninstant.R;
 import com.example.jamal.orderhr_noninstant.ReservationProcess;
 import com.example.jamal.orderhr_noninstant.ScheduleUtility;
+import com.example.jamal.orderhr_noninstant.Session;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -50,6 +52,8 @@ public class ScheduleActivity extends TableBuilder{
     private ClassroomSpinner classroomSpinner;
     private BuildingRadioButton buildingRadioButton;
     private EditText lesson;
+    private Button reserveButton;
+
     private ScheduleUtility scheduleUtility;
 
     @Override
@@ -69,6 +73,7 @@ public class ScheduleActivity extends TableBuilder{
         objectMapper.setDateFormat(simpleDateFormat);
 
         lesson = findViewById(R.id.lesson);
+        reserveButton = findViewById(R.id.reserveButton);
 
         buildingRadioButton = new BuildingRadioButton(this);
         buildingRadioButton.AssignOnClickRadioButton();
@@ -76,6 +81,12 @@ public class ScheduleActivity extends TableBuilder{
         scheduleUtility = new ScheduleUtility();
         currentWeek = ScheduleUtility.GetWeek();
         scheduleUtility.AddDatesToHashMap(ScheduleUtility.GetCalendarSetAtWeek(currentWeek), 5);
+
+        //Disables reserve feature if not a staff member
+        if(Session.getIsStaff()){
+            lesson.setVisibility(View.VISIBLE);
+            reserveButton.setVisibility(View.VISIBLE);
+        }
     }
 
     //TODO ORDER THESE METHODS BY THERE USE
@@ -93,6 +104,7 @@ public class ScheduleActivity extends TableBuilder{
 
         AvailableSlot availableSlot = ReservationProcess.CreateAvailableSlot(timeslotFrom, timeslotTo, currentRoom, selectedDate);
 
+        //Checks the availability based upon the api, if so a user can now truly book.
         if(ReservationProcess.CheckAvailability(ReservationProcess.CreateAvailabilityJson(availableSlot), this))
             ReservationProcess.ParseReservations(ReservationProcess.CreateBookingJson(booking), this);
     }
