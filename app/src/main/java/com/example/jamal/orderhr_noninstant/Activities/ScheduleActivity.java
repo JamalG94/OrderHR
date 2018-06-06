@@ -79,14 +79,17 @@ public class ScheduleActivity extends TableBuilder{
         buildingRadioButton.AssignOnClickRadioButton();
 
         scheduleUtility = new ScheduleUtility();
+        scheduleUtility.FillTimeSlots(this);
         currentWeek = ScheduleUtility.GetWeek();
         scheduleUtility.AddDatesToHashMap(ScheduleUtility.GetCalendarSetAtWeek(currentWeek), 5);
 
         //Disables reserve feature if not a staff member
-        if(Session.getIsStaff()){
-            lesson.setVisibility(View.VISIBLE);
-            reserveButton.setVisibility(View.VISIBLE);
-        }
+//        if(Session.getIsStaff()){
+//            lesson.setVisibility(View.VISIBLE);
+//            reserveButton.setVisibility(View.VISIBLE);
+//        }
+
+
     }
 
     //TODO ORDER THESE METHODS BY THERE USE
@@ -191,7 +194,7 @@ public class ScheduleActivity extends TableBuilder{
     }
 
     //TODO TEST
-    public void JsonToBookingWrapper(ObjectMapper objectMapper, String json){
+    private void JsonToBookingWrapper(ObjectMapper objectMapper, String json){
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         try {
             objectMapper.setDateFormat(format);
@@ -220,7 +223,7 @@ public class ScheduleActivity extends TableBuilder{
 
     //TODO TEST
     public void BuildingSelected(String chosenBuilding){
-        classroomSpinner.JsonToClassroomList(new ObjectMapper(), String.format("{\"building\":\"%s\"}", chosenBuilding));
+        classroomSpinner.GetClassRooms(String.format("{\"building\":\"%s\"}", chosenBuilding));
     }
 
     public void onClickNextWeek(View view){

@@ -1,5 +1,6 @@
 package com.example.jamal.orderhr_noninstant;
 
+import android.app.Activity;
 import android.util.Log;
 import android.util.Pair;
 
@@ -19,17 +20,24 @@ public class ScheduleUtility {
     private HashMap<Integer, Date> dateDays = new HashMap<>();
 
     public ScheduleUtility(){
-        timeSlots.put(1, "8:30");
-        timeSlots.put(2, "9:20");
-        timeSlots.put(3, "10:30");
-        timeSlots.put(4, "11:20");
-        timeSlots.put(5, "12:10");
-        timeSlots.put(6, "13:00");
-        timeSlots.put(7, "13:50");
-        timeSlots.put(8, "15:00");
-        timeSlots.put(9, "15:50");
-        timeSlots.put(10, "17:00");
-        timeSlots.put(11, "");
+    }
+
+    public void FillTimeSlots(Activity context){
+        timeSlots.put(1,  context.getResources().getString(R.string.timeslot_1));
+        timeSlots.put(2,  context.getResources().getString(R.string.timeslot_2));
+        timeSlots.put(3,  context.getResources().getString(R.string.timeslot_3));
+        timeSlots.put(4,  context.getResources().getString(R.string.timeslot_4));
+        timeSlots.put(5,  context.getResources().getString(R.string.timeslot_5));
+        timeSlots.put(6,  context.getResources().getString(R.string.timeslot_6));
+        timeSlots.put(7,  context.getResources().getString(R.string.timeslot_7));
+        timeSlots.put(8,  context.getResources().getString(R.string.timeslot_8));
+        timeSlots.put(9,  context.getResources().getString(R.string.timeslot_9));
+        timeSlots.put(10, context.getResources().getString(R.string.timeslot_10));
+        timeSlots.put(11, context.getResources().getString(R.string.timeslot_11));
+        timeSlots.put(12, context.getResources().getString(R.string.timeslot_12));
+        timeSlots.put(13, context.getResources().getString(R.string.timeslot_13));
+        timeSlots.put(14, context.getResources().getString(R.string.timeslot_14));
+        timeSlots.put(15, context.getResources().getString(R.string.timeslot_15));
     }
 
 
