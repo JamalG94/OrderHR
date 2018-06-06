@@ -62,7 +62,7 @@ public class ClassroomSpinner{
     public void GetClassRooms(String building){
         IO _IO = IO.GetInstance();
         String classrooms =  _IO.DoPostRequestToAPIServer(building, "http://markb.pythonanywhere.com/rooms/", activity);
-        if(!classrooms.equals("")){
+        if(!classrooms.isEmpty()){
             JsonToClassroomList(new ObjectMapper(), classrooms);
         }
     }

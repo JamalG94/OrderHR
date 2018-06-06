@@ -36,13 +36,12 @@ import java.util.Locale;
  */
 
 //TODO IMPLEMENT FILLROWS INTERFACE
-public class ScheduleActivity extends TableBuilder{
+public class ScheduleActivity extends TableBuilder implements IDataFiller<Booking>{
 
     private ArrayList<TimeDay> selectedBookings = new ArrayList<>();
     private List<String> reservedSlots = new ArrayList<>();
 
     private IO _IO;
-    private BookingWrapper[] bookingWrapper;
     private ObjectMapper objectMapper;
 
     private String currentRoom;
@@ -92,7 +91,7 @@ public class ScheduleActivity extends TableBuilder{
 
     }
 
-    //TODO ORDER THESE METHODS BY THERE USE
+    //TODO Click Button
 
     //This function is used for the reserve button and transforms each booking object into a jsonobject.
     public void ClickReserve(View view){
@@ -112,6 +111,7 @@ public class ScheduleActivity extends TableBuilder{
             ReservationProcess.ParseReservations(ReservationProcess.CreateBookingJson(booking), this);
     }
 
+    //TODO ClickButton
     private View.OnClickListener onSelectCell = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -126,7 +126,48 @@ public class ScheduleActivity extends TableBuilder{
             }
         };
 
+    //TODO CLICK BUTTON
+    //this is the function that each cell uses and we give to the onclick of each cell
+    private void MarkTimedays(TimeDay timeDay){
+        if(selectedBookings.contains(timeDay)){
+            selectedBookings.remove(timeDay);
+        }
+        else {
+            selectedBookings.add(timeDay);
+        }
+    }
+
+    //TODO CLICK BUTTON
     //TODO TEST
+    public void BuildingSelected(String chosenBuilding){
+        classroomSpinner.GetClassRooms(String.format("{\"building\":\"%s\"}", chosenBuilding));
+    }
+
+
+    //TODO CLICK BUTTON
+    public void onClickNextWeek(View view){
+        if(currentWeek + 1 <= 52)
+        {
+            currentWeek += 1;
+        }
+        else{
+            currentWeek = 1;
+        }
+        ChangeWeek();
+    }
+
+    //TODO CLICK BUTTON
+    public void onClickPreviousWeek(View view){
+        if(currentWeek -1 > 1){
+            currentWeek -= 1;
+        }
+        else{
+            currentWeek = 52;
+        }
+        ChangeWeek();
+    }
+
+    //TODO Dates
     private Boolean SameDayCheck(Date date){
         if(selectedDate == null) {
             selectedDate = date;
@@ -140,32 +181,24 @@ public class ScheduleActivity extends TableBuilder{
         return false;
     }
 
-    //TODO TEST
-    private class TimeSlotComparator implements Comparator<TimeDay> {
-        @Override
-        public int compare(TimeDay o1, TimeDay o2) {
-            return Integer.compare(o1.getTimeslot(),(o2.getTimeslot()));
-        }
+    //TODO DATES
+    private void ChangeWeek(){
+        ClassRoomSelected(currentRoom);
+        Toast.makeText(this, "" + currentWeek, Toast.LENGTH_SHORT).show();
+        scheduleUtility.AddDatesToHashMap(ScheduleUtility.GetCalendarSetAtWeek(currentWeek), 5);
     }
 
-    //this is the function that each cell uses and we give to the onclick of each cell
-    private void MarkTimedays(TimeDay timeDay){
-        if(selectedBookings.contains(timeDay)){
-            selectedBookings.remove(timeDay);
-        }
-        else {
-            selectedBookings.add(timeDay);
-        }
-    }
 
+    //TODO FILLSCHEDULE
     //we created the base table though the means of the superclass's method tablecreator, with this method we fill the cells with bookingobjects
-    private void FillRows(BookingWrapper booking){
+    @Override
+    public void FillView(Booking booking) {
         String cell_id;
-        String lesson = booking.getFields().getLesson();
-        String teacher = booking.getFields().getUsername();
-        int day = DatetoColumn(booking.getFields().getDate());
-        int timeslotfrom = booking.getFields().getTimeslotfrom();
-        int timeslotto = booking.getFields().getTimeslotto();
+        String lesson = booking.getLesson();
+        String teacher = booking.getUsername();
+        int day = DatetoColumn(booking.getDate());
+        int timeslotfrom = booking.getTimeslotfrom();
+        int timeslotto = booking.getTimeslotto();
 
         TextView cell;
 
@@ -184,73 +217,46 @@ public class ScheduleActivity extends TableBuilder{
         }
     }
 
+    //TODO FILLSCHEDULE
     private void ClearRows(){
         TextView cell;
-        for (String cell_id: reservedSlots
-             ) {
+        for (String cell_id: reservedSlots) {
             cell = findViewById(getResources().getIdentifier(cell_id, "id", getPackageName()));
             cell.setText("");
         }
     }
 
+    //TODO FILLSCHEDULE
     //TODO TEST
-    private void JsonToBookingWrapper(ObjectMapper objectMapper, String json){
+    private BookingWrapper[] JsonToBookingWrapper(ObjectMapper objectMapper, String json){
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         try {
             objectMapper.setDateFormat(format);
-            bookingWrapper = objectMapper.readValue(json, BookingWrapper[].class);
-            throw new IOException();
+            return objectMapper.readValue(json, BookingWrapper[].class);
         } catch(IOException exception){
             Log.d("BookingWrapper", "JsonToBookingWrapper: " + exception.getMessage());
         }
+        return new BookingWrapper[]{};
     }
 
+    //TODO FILLSCHEDULE
     public void ClassRoomSelected(String room) {
-        //TODO REFRACTOR JSONBOOKINGWRAPPER INTO THIS METHOD
         _IO = IO.GetInstance();
-        JsonToBookingWrapper(objectMapper, _IO.DoPostRequestToAPIServer(String.format("{\"room\":\"%s\",  \"weeknummer\":\"%s\"}", room, currentWeek),
-                "http://markb.pythonanywhere.com/bookingbyroom/", this));
+        BookingWrapper[] bookingWrapper = new BookingWrapper[]{};
 
-        currentRoom = room;
+        String weekSchedule = _IO.DoPostRequestToAPIServer(String.format("{\"room\":\"%s\",  \"weeknummer\":\"%s\"}", room, currentWeek),
+                "http://markb.pythonanywhere.com/bookingbyroom/", this);
+        if(!weekSchedule.isEmpty()){
+            bookingWrapper = JsonToBookingWrapper(objectMapper, weekSchedule);
+        }
+
         ClearRows();
-
-        if (bookingWrapper != null) {
+        if (bookingWrapper.length > 0) {
+            currentRoom = room;
             for (BookingWrapper b : bookingWrapper) {
-                FillRows(b);
+                FillView(b.getFields());
             }
         }
-    }
-
-    //TODO TEST
-    public void BuildingSelected(String chosenBuilding){
-        classroomSpinner.GetClassRooms(String.format("{\"building\":\"%s\"}", chosenBuilding));
-    }
-
-    public void onClickNextWeek(View view){
-        if(currentWeek + 1 < 57)
-        {
-            currentWeek += 1;
-        }
-        else{
-            currentWeek = 1;
-        }
-        ChangeWeek();
-    }
-
-    public void onClickPreviousWeek(View view){
-        if(currentWeek -1 > 1){
-            currentWeek -= 1;
-        }
-        else{
-            currentWeek = 56;
-        }
-        ChangeWeek();
-    }
-
-    private void ChangeWeek(){
-        ClassRoomSelected(currentRoom);
-        Toast.makeText(this, "" + currentWeek, Toast.LENGTH_SHORT).show();
-        scheduleUtility.AddDatesToHashMap(ScheduleUtility.GetCalendarSetAtWeek(currentWeek), 5);
     }
 
 }
