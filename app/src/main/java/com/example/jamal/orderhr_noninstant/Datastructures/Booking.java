@@ -1,11 +1,13 @@
 package com.example.jamal.orderhr_noninstant.Datastructures;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.Date;
 
-
+@Entity
 public class Booking implements Serializable{
-
     private String room;
     private String lesson;
     private String username;

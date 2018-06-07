@@ -1,10 +1,10 @@
 package com.example.jamal.orderhr_noninstant.Activities.Defuncts;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -14,11 +14,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.jamal.orderhr_noninstant.Activities.IDataStructure;
-import com.example.jamal.orderhr_noninstant.Activities.MainActivity;
 import com.example.jamal.orderhr_noninstant.Datastructures.DefunctWrapper;
 import com.example.jamal.orderhr_noninstant.IO;
+import com.example.jamal.orderhr_noninstant.LocalDBControllers.LocalDatabaseRepository;
 import com.example.jamal.orderhr_noninstant.R;
+import com.example.jamal.orderhr_noninstant.Session;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONArray;
@@ -29,37 +29,45 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.view.View.GONE;
-
 /**
  * Created by Robin on 3/22/2018.
  */
 
-public class DefunctDetailActivity extends AppCompatActivity implements IDataStructure{
+public class DefunctDetailActivity extends AppCompatActivity{
+    LocalDatabaseRepository db;
     List<DefunctWrapper> receiveddefuncts;
     ListView screenlistview;
     IO ioinstance;
     Spinner typeselectionfilter;
     Switch switchhandled;
     DefunctViewAdapter defunctarrayadapt;
-
+    Boolean synchronizedwithdb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        db = new LocalDatabaseRepository(getApplication());
+//        receiveddefuncts = db.getmAllDefuncts();
         //DUE TO LIMITS IN OUR API CALL, WE NEED TO DO 2 API CALLS, ONE TO GET ALL THE HANDLED DEFUNCTS
         //AND ONE TO GET THE UNHANDLED DEFUNCTS.
-        LoadNShowData();
+//        LoadNShowData();
         loadMainDefunctListToView(findViewById(android.R.id.content));
+
+
     }
 
     public void loadMainDefunctListToView(View view){
         setContentView(R.layout.activity_defunctlist);
+
         screenlistview = (ListView)findViewById(R.id.listviewDefuncts);
         typeselectionfilter = (Spinner)findViewById(R.id.spinnertypefiler);
         switchhandled = (Switch)findViewById(R.id.switch1);
-        ModifyAllReceivedBookingsToListView2(typeselectionfilter.getSelectedItem().toString(),!switchhandled.isChecked());
+
+        attemptUpdateData();
+        if(! synchronizedwithdb){
+            ListView list = (ListView)findViewById(R.id.listviewDefuncts);
+            list.setBackgroundColor(Color.GRAY);
+        }
+        loadLocalDatabyFiltersIntoArrayAdapter(typeselectionfilter.getSelectedItem().toString(),!switchhandled.isChecked());
 
         screenlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -70,14 +78,19 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
                 TextView tvdescription = (TextView)findViewById(R.id.textviewdescription);
                 TextView tvtype = (TextView)findViewById(R.id.textviewtype);
                 TextView tvhandled = (TextView)findViewById(R.id.textviewhandled);
+                TextView tvroom = (TextView)findViewById(R.id.textviewDefunctRoom);
                 Button buttonsethandled = (Button)findViewById(R.id.buttonsetHandled);
-//                buttonsethandled.setVisibility(GONE);
+                if(p.getFields().isHandled() || ( !Session.getIsAdmin() || !Session.getIsAdmin())){
+                    buttonsethandled.setVisibility(View.GONE);
+                }
+
                 buttonsethandled.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         setDefunctHandles(p);
                     }
                 });
+                tvroom.setText(tvroom.getText()+ " " + p.getFields().getRoom());
                 tvhandled.setText("Handled : " + p.getFields().isHandled());
                 tvid.setText(tvid.getText()+" " + p.getPk());
                 tvdescription.setText(tvdescription.getText() +" " + p.getFields().getDescription());
@@ -94,17 +107,18 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        ioinstance = IO.GetInstance();
-                        ioinstance.DoPostRequestToAPIServer("{\"id\":"+inputdefunct.getPk()+",\"handled\":\"True\"}","http://markb.pythonanywhere.com/alterdefunct/",DefunctDetailActivity.this);
-                        Toast.makeText(DefunctDetailActivity.this, "Defunct Updated", Toast.LENGTH_SHORT).show();
-                        DefunctDetailActivity.this.LoadNShowData();
                         loadMainDefunctListToView(findViewById(R.id.buttonsetHandled));
+                        ioinstance = IO.GetInstance();
+                        if(ioinstance.DoPostRequestToAPIServer("{\"id\":"+inputdefunct.getPk()+",\"handled\":\"True\"}","http://markb.pythonanywhere.com/alterdefunct/",DefunctDetailActivity.this).equals("")){
+                            Toast.makeText(DefunctDetailActivity.this,"Defunct Handled!",Toast.LENGTH_LONG).show();
+                        };
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
     }
 
     //NEED TO SPLIT FUNCTIONALITIES HERE:
-    public void ModifyAllReceivedBookingsToListView2(String type, boolean showhandled){
+    public void loadLocalDatabyFiltersIntoArrayAdapter(String type, boolean showhandled){
+        receiveddefuncts = db.getmAllDefuncts();
         List<DefunctWrapper> filtereddefunctlist = FillListWithFilteredItems(type,showhandled,receiveddefuncts);
 
         defunctarrayadapt = new DefunctViewAdapter(this,R.layout.defunct_list_view_item,filtereddefunctlist);
@@ -114,12 +128,7 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
 
     //Updates the shown defuncts USED FOR onCLICK HANDLER FOR A BUTTON
     public void OnClickSearch(View view){
-        ModifyAllReceivedBookingsToListView2(typeselectionfilter.getSelectedItem().toString(),!switchhandled.isChecked());
-    }
-    public void LoadNShowData(){
-        receiveddefuncts = new ArrayList<>();
-        this.IFillDataStructures(new ObjectMapper(),getdatafromio(true));
-        this.IFillDataStructures(new ObjectMapper(),getdatafromio(false));
+        loadLocalDatabyFiltersIntoArrayAdapter(typeselectionfilter.getSelectedItem().toString(),!switchhandled.isChecked());
     }
     //Does an API call to get data from the server
     public String getdatafromio(boolean handled){
@@ -129,20 +138,6 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
         return returnjson;
     }
 
-    @Override
-    public void IFillDataStructures(ObjectMapper objectMapper, String json) {
-        //TODO JSONException
-        try{
-            JSONArray jsonstuff = new JSONArray(json);
-            //Add all defucnts found in the json to the list.
-            for (int i=0; i < jsonstuff.length(); i++) {
-                JSONObject jsonobjectparser = jsonstuff.getJSONObject(i);
-                receiveddefuncts.add( objectMapper.readValue(jsonobjectparser.toString(), DefunctWrapper.class));
-            }
-        }catch(JSONException|IOException e){
-            Log.i("hello?",e.getMessage());
-        }
-    }
     //complex for loops to filter a list of defuncts based on 2 parameters (showhandled, type), no linq or streaming in this api level so ugly for loops :c
     public static List<DefunctWrapper> FillListWithFilteredItems(String type, final boolean showhandled, List<DefunctWrapper> inputreceiveddefuncts){
         List<DefunctWrapper> filtereddefunctlist = new ArrayList<>();
@@ -159,5 +154,37 @@ public class DefunctDetailActivity extends AppCompatActivity implements IDataStr
         }
         return filtereddefunctlist;
     }
+    //Returns a list of Defunct Wrappers from a Json file
+    public static List<DefunctWrapper> fromJsontoListOfDefunctDataWrappers(String jsonstring, ObjectMapper objectmapperjson) throws JSONException,IOException{
+        List<DefunctWrapper> listtofill = new ArrayList<>();
+        JSONArray jsonarray = new JSONArray(jsonstring);
+        //Add all defucnts found in the json to the list.
+        for (int i=0; i < jsonarray.length(); i++) {
+            JSONObject jsonobjectparser = jsonarray.getJSONObject(i);
+            listtofill.add(  objectmapperjson.readValue(jsonobjectparser.toString(), DefunctWrapper.class));
+        }
+        return  listtofill;
+    }
 
+    public static List<DefunctWrapper> fromApiServerConvertAllDefunctDataToList(DefunctDetailActivity thisactivity) throws JSONException,IOException{
+        String jsonhandled = thisactivity.getdatafromio(true);
+        String jsonunhandled = thisactivity.getdatafromio(false);
+        ObjectMapper mapper= new ObjectMapper();
+        List<DefunctWrapper> totallistofwrappers = new ArrayList<>();
+        totallistofwrappers.addAll(fromJsontoListOfDefunctDataWrappers(jsonhandled,mapper));
+        totallistofwrappers.addAll(fromJsontoListOfDefunctDataWrappers(jsonunhandled,mapper));
+        return totallistofwrappers;
+    }
+    //Attempts to get a list of defuncts data from the server, if failed, load latest local database.
+    public void attemptUpdateData(){
+        synchronizedwithdb = false;
+        List<DefunctWrapper> listOfDefunctsWrapper;
+        try{
+            listOfDefunctsWrapper = fromApiServerConvertAllDefunctDataToList(this);
+            db.synchronizeDatabaseWithNewDataAfterDelete(listOfDefunctsWrapper);
+            synchronizedwithdb = true;
+        }catch(JSONException|IOException e){
+            Toast.makeText(this,"Data could not have been synchronized! Connection?",Toast.LENGTH_LONG).show();
+        }
+    }
 }

@@ -145,6 +145,7 @@ public class IO extends AsyncTask<String,String, String> {
 
         try{
             temp = this.execute(ApiURL,RawJsonStringToInput).get();
+//            Toast.makeText(context, temp, Toast.LENGTH_SHORT).show();
         }catch(ExecutionException | InterruptedException e){
             Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
         }finally{
