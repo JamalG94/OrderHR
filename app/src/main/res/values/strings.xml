@@ -44,6 +44,9 @@
         completions."
     </string>
 
+    <string name="greetMessage">Greetings, we notice this is your first time logging in. Please login with your google account below.</string>
+
+
     <!--Defuncts-->
     <string-array name="defunctypes">
         <item>broken</item>
@@ -58,4 +61,5 @@
         <item>software</item>
         <item>notype</item>
     </string-array>
+    <string name="title_activity_google_login">GoogleLoginActivity</string>
 </resources>
