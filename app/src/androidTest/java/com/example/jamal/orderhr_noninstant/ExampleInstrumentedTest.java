@@ -1,8 +1,11 @@
 package com.example.jamal.orderhr_noninstant;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+
+import com.example.jamal.orderhr_noninstant.Activities.UserDetailsActivity;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +23,7 @@ public class ExampleInstrumentedTest {
     public void useAppContext() throws Exception {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
+        Intent test = new Intent(appContext, UserDetailsActivity.class);
 
         assertEquals("com.example.jamal.orderhr_noninstant", appContext.getPackageName());
     }

@@ -1,23 +1,26 @@
 package com.example.jamal.orderhr_noninstant.Activities;
 
+import android.arch.lifecycle.Transformations;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.jamal.orderhr_noninstant.Activities.Defuncts.DefunctDetailActivity;
+import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
+import com.example.jamal.orderhr_noninstant.Datastructures.BookingWrapper;
+import com.example.jamal.orderhr_noninstant.LocalDBControllers.appDataBaseLocal;
+import com.example.jamal.orderhr_noninstant.Datastructures.Defunct;
+import com.example.jamal.orderhr_noninstant.Datastructures.DefunctWrapper;
+import com.example.jamal.orderhr_noninstant.LocalDBControllers.LocalDatabaseRepository;
 import com.example.jamal.orderhr_noninstant.R;
-import com.example.jamal.orderhr_noninstant.ScheduleUtility;
 
-import java.io.Console;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class MainActivity extends TableBuilder {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

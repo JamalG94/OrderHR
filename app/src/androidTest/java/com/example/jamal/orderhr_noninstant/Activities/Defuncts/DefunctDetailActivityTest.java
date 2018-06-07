@@ -62,7 +62,6 @@ public class DefunctDetailActivityTest {
     @Test
     public void fillListWithFilteredItems() throws Exception {
         assertEquals(2,DefunctDetailActivity.FillListWithFilteredItems("MiSSinG",true,listofwraps).size());
-
     }
 
     @Test

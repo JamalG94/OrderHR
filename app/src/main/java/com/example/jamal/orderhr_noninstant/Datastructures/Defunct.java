@@ -1,13 +1,19 @@
 package com.example.jamal.orderhr_noninstant.Datastructures;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverter;
+import android.arch.persistence.room.TypeConverters;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Robin on 4/5/2018.
  */
-
+@Entity
 public class Defunct implements Serializable {
+    @PrimaryKey
     private int defunctid;
     private String room,type,description;
     private Date date;
@@ -61,4 +67,6 @@ public class Defunct implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
 }
