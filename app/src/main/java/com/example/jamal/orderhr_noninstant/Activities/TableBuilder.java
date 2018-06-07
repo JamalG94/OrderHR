@@ -42,11 +42,11 @@ public class TableBuilder extends AppCompatActivity {
 
             for(int z = 1; z <= daysAmount; z++){
                 TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(0,0,0,30);
+                layoutParams.setMargins(40,0,40,30);
 
 
                 TextView dayTimeslot = new TextView(this);
-                dayTimeslot.setText(" ");//timeslot"+j + "\n" + "day"+ z);
+                dayTimeslot.setText(" ");//"timeslot"+j + "\n" + "day"+ z);
                 dayTimeslot.setTag(new TimeDay(z, j));
                 dayTimeslot.setLayoutParams(layoutParams);
                 dayTimeslot.setBackgroundResource(R.drawable.label_bg);

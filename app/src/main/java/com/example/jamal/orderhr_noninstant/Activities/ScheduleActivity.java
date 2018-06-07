@@ -49,9 +49,7 @@ public class ScheduleActivity extends TableBuilder implements IDataFiller<Bookin
     private Date selectedDate;
 
     private ClassroomSpinner classroomSpinner;
-    private BuildingRadioButton buildingRadioButton;
     private EditText lesson;
-    private Button reserveButton;
 
     private ScheduleUtility scheduleUtility;
 
@@ -72,9 +70,9 @@ public class ScheduleActivity extends TableBuilder implements IDataFiller<Bookin
         objectMapper.setDateFormat(simpleDateFormat);
 
         lesson = findViewById(R.id.lesson);
-        reserveButton = findViewById(R.id.reserveButton);
+        Button reserveButton = findViewById(R.id.reserveButton);
 
-        buildingRadioButton = new BuildingRadioButton(this);
+        BuildingRadioButton buildingRadioButton = new BuildingRadioButton(this);
         buildingRadioButton.AssignOnClickRadioButton();
 
         scheduleUtility = new ScheduleUtility();
@@ -92,7 +90,6 @@ public class ScheduleActivity extends TableBuilder implements IDataFiller<Bookin
     }
 
     //TODO Click Button
-
     //This function is used for the reserve button and transforms each booking object into a jsonobject.
     public void ClickReserve(View view){
 
@@ -231,6 +228,7 @@ public class ScheduleActivity extends TableBuilder implements IDataFiller<Bookin
     private BookingWrapper[] JsonToBookingWrapper(ObjectMapper objectMapper, String json){
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         try {
+            //Set the objectmapper's date format in the try otherwise it doesn't register
             objectMapper.setDateFormat(format);
             return objectMapper.readValue(json, BookingWrapper[].class);
         } catch(IOException exception){

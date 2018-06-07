@@ -6,5 +6,5 @@ package com.example.jamal.orderhr_noninstant.Activities;
 
 public interface IDataFiller<T> {
 
-    public void FillView(T data);
+    void FillView(T data);
 }
