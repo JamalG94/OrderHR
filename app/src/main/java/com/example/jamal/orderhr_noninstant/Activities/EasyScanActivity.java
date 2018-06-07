@@ -1,9 +1,13 @@
 package com.example.jamal.orderhr_noninstant.Activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -29,7 +33,18 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FindOpenAndLaunchCamera();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    1);
+
+            // Permission is not granted
+        }
+        else{
+            FindOpenAndLaunchCamera();
+        }
+
     }
 
     //THIS HANDLES THE RESULT OUTPUT BY THE QR SCANNER:
