@@ -1,10 +1,12 @@
-package com.example.jamal.orderhr_noninstant;
+package com.example.jamal.orderhr_noninstant.Activities.Schedule;
 
 import android.app.Activity;
 import android.util.Log;
 
+import com.example.jamal.orderhr_noninstant.API.IO;
 import com.example.jamal.orderhr_noninstant.Datastructures.AvailableSlot;
 import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
+import com.example.jamal.orderhr_noninstant.Session.Session;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

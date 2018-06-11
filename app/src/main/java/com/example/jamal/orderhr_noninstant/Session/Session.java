@@ -1,4 +1,4 @@
-package com.example.jamal.orderhr_noninstant;
+package com.example.jamal.orderhr_noninstant.Session;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -46,6 +46,14 @@ public class Session {
         return prefs.getBoolean("IsAdmin",false);
     }
 
+    public void setEmail(String email){
+        prefs.edit().putString("Email", email).apply();
+    }
+
+    public String getEmail(){
+        String email = prefs.getString("Email", "");
+        return email;
+    }
 
     public void setUser(SuperUser user){
         prefs.edit().putString("User", user.TypeOfUser()).apply();

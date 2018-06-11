@@ -85,7 +85,7 @@
 
             <fragment
                 android:id="@+id/list"
-                android:name="com.example.jamal.orderhr_noninstant.ScheduleFragment"
+                android:name="com.example.jamal.orderhr_noninstant.Activities.Schedule.ScheduleFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"

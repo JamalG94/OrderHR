@@ -1,8 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+    }
     compileSdkVersion 26
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.example.jamal.orderhr_noninstant"
         minSdkVersion 23
         targetSdkVersion 26
@@ -11,7 +14,6 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -21,29 +23,24 @@ android {
 }
 
 dependencies {
-    def room_version = "1.1.0" // or, for latest rc, use "1.1.1-rc1"
-    def archLifecycleVersion  = '1.1.0'
+    def room_version = "1.1.0"
+    // or, for latest rc, use "1.1.1-rc1"
+    def archLifecycleVersion = '1.1.0'
     // Lifecycle components
     implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
-
-
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
-
     // optional - RxJava support for Room
     implementation "android.arch.persistence.room:rxjava2:$room_version"
-
     // optional - Guava support for Room, including Optional and ListenableFuture
     implementation "android.arch.persistence.room:guava:$room_version"
-
     // Test helpers
     testImplementation "android.arch.persistence.room:testing:$room_version"
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-
     implementation 'com.android.support:design:26.1.0'
     compile 'com.fasterxml.jackson.core:jackson-core:2.7.3'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.7.3'
@@ -52,16 +49,13 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:15.0.1'
     // Required for local unit tests (JUnit 4 framework)
     testCompile 'junit:junit:4.12'
-
     // Required for instrumented tests
     androidTestCompile 'com.android.support:support-annotations:24.0.0'
     androidTestCompile 'com.android.support.test:runner:0.5'
-
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1') {
         exclude group: 'com.google.code.findbugs'
     }
     compile 'me.dm7.barcodescanner:zxing:1.8.4'
-
 }

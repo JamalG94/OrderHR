@@ -1,4 +1,4 @@
-package com.example.jamal.orderhr_noninstant.Activities;
+package com.example.jamal.orderhr_noninstant.Activities.UserDetails;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,7 +6,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.jamal.orderhr_noninstant.R;
-import com.example.jamal.orderhr_noninstant.Session;
+import com.example.jamal.orderhr_noninstant.Session.Session;
 
 /**
  * Created by Robin on 5/31/2018.

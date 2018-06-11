@@ -1,6 +1,8 @@
-package com.example.jamal.orderhr_noninstant;
+package com.example.jamal.orderhr_noninstant.Utility.Schedule;
 
 import android.util.Pair;
+
+import com.example.jamal.orderhr_noninstant.API.IO;
 
 import java.util.HashMap;
 
@@ -9,21 +11,6 @@ import java.util.HashMap;
  */
 
 public final class GetData {
-    static public String CheckBooking(String Json){
-        String temp = "";
-//        String returnf = "";
-        IO instance = IO.GetInstance();
-        try{
-            temp = instance.execute("http://markb.pythonanywhere.com/availableslot/",Json).get();
-            //temp = instance.doInBackground("http://markb.pythonanywhere.com/availableslot/",Json);
-        }catch(Exception e){}finally{
-//            returnf = temp;
-        }
-
-        return temp;
-    }
-
-
     static public Pair<String,String> CovertTimeslotToTime(int TimeslotToConvert) throws IndexOutOfBoundsException{
         //TODO:
         if(TimeslotToConvert <= 0 || TimeslotToConvert > 15){

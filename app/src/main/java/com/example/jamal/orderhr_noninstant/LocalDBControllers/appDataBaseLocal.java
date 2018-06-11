@@ -13,7 +13,7 @@ import com.example.jamal.orderhr_noninstant.Datastructures.DefunctWrapper;
  * Created by Robin on 6/5/2018.
  */
 
-@Database(entities = {DefunctWrapper.class, BookingWrapper.class},version = 1)
+@Database(entities = {DefunctWrapper.class, BookingWrapper.class},version = 1,exportSchema = false)
 @TypeConverters({LocalDatabaseConverts.class})
 public abstract class appDataBaseLocal extends RoomDatabase {
     public abstract DefunctDao defunctDao();

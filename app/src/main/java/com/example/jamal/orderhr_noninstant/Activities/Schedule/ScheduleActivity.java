@@ -1,4 +1,4 @@
-package com.example.jamal.orderhr_noninstant.Activities;
+package com.example.jamal.orderhr_noninstant.Activities.Schedule;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,17 +8,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.jamal.orderhr_noninstant.BuildingRadioButton;
-import com.example.jamal.orderhr_noninstant.ClassroomSpinner;
+import com.example.jamal.orderhr_noninstant.Interfaces.Activity.IDataFiller;
+import com.example.jamal.orderhr_noninstant.Activities.SuperClass.TableBuilder;
+import com.example.jamal.orderhr_noninstant.Session.Session;
+import com.example.jamal.orderhr_noninstant.Utility.Schedule.TimeSlotComparator;
 import com.example.jamal.orderhr_noninstant.Datastructures.AvailableSlot;
 import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
 import com.example.jamal.orderhr_noninstant.Datastructures.BookingWrapper;
 import com.example.jamal.orderhr_noninstant.Datastructures.TimeDay;
-import com.example.jamal.orderhr_noninstant.IO;
+import com.example.jamal.orderhr_noninstant.API.IO;
+import com.example.jamal.orderhr_noninstant.LocalDBControllers.LocalDatabaseRepository;
 import com.example.jamal.orderhr_noninstant.R;
-import com.example.jamal.orderhr_noninstant.ReservationProcess;
-import com.example.jamal.orderhr_noninstant.ScheduleUtility;
-import com.example.jamal.orderhr_noninstant.Session;
+import com.example.jamal.orderhr_noninstant.Utility.Schedule.ScheduleUtility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -26,7 +27,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -36,13 +36,14 @@ import java.util.Locale;
  */
 
 //TODO IMPLEMENT FILLROWS INTERFACE
-public class ScheduleActivity extends TableBuilder implements IDataFiller<Booking>{
+public class ScheduleActivity extends TableBuilder implements IDataFiller<Booking> {
 
     private ArrayList<TimeDay> selectedBookings = new ArrayList<>();
     private List<String> reservedSlots = new ArrayList<>();
 
     private IO _IO;
     private ObjectMapper objectMapper;
+    LocalDatabaseRepository localDB;
 
     private String currentRoom;
     private int currentWeek;
@@ -62,6 +63,8 @@ public class ScheduleActivity extends TableBuilder implements IDataFiller<Bookin
         super.CreateTable(5, 15, "timeslot_", true);
 
         _IO = IO.GetInstance();
+        localDB = new LocalDatabaseRepository(getApplication());
+
         classroomSpinner = new ClassroomSpinner(this);
         classroomSpinner.FillSpinner();
 
@@ -80,11 +83,12 @@ public class ScheduleActivity extends TableBuilder implements IDataFiller<Bookin
         currentWeek = ScheduleUtility.GetWeek();
         scheduleUtility.AddDatesToHashMap(ScheduleUtility.GetCalendarSetAtWeek(currentWeek), 5);
 
+
         //Disables reserve feature if not a staff member
-//        if(Session.getIsStaff()){
-//            lesson.setVisibility(View.VISIBLE);
-//            reserveButton.setVisibility(View.VISIBLE);
-//        }
+        if(Session.getIsStaff()){
+            lesson.setVisibility(View.VISIBLE);
+            reserveButton.setVisibility(View.VISIBLE);
+        }
 
 
     }
@@ -237,23 +241,36 @@ public class ScheduleActivity extends TableBuilder implements IDataFiller<Bookin
         return new BookingWrapper[]{};
     }
 
+
     //TODO FILLSCHEDULE
     public void ClassRoomSelected(String room) {
-        _IO = IO.GetInstance();
         BookingWrapper[] bookingWrapper = new BookingWrapper[]{};
+        String weekSchedule = GetBookingsAtRoom(room);
 
-        String weekSchedule = _IO.DoPostRequestToAPIServer(String.format("{\"room\":\"%s\",  \"weeknummer\":\"%s\"}", room, currentWeek),
-                "http://markb.pythonanywhere.com/bookingbyroom/", this);
         if(!weekSchedule.isEmpty()){
             bookingWrapper = JsonToBookingWrapper(objectMapper, weekSchedule);
         }
+        ResetSchedule(bookingWrapper, room);
 
+    }
+
+    private String GetBookingsAtRoom(String room){
+        _IO = IO.GetInstance();
+        String weekSchedule = _IO.DoPostRequestToAPIServer(String.format("{\"room\":\"%s\",  \"weeknummer\":\"%s\"}", room, currentWeek),
+                "http://markb.pythonanywhere.com/bookingbyroom/", this);
+        return weekSchedule;
+    }
+
+    private void ResetSchedule(BookingWrapper[] bookingWrapper, String room){
         ClearRows();
         if (bookingWrapper.length > 0) {
             currentRoom = room;
             for (BookingWrapper b : bookingWrapper) {
                 FillView(b.getFields());
             }
+        }
+        else{
+            Toast.makeText(this, "The room you selected has no bookings this week!", Toast.LENGTH_SHORT).show();
         }
     }
 

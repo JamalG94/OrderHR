@@ -1,4 +1,4 @@
-package com.example.jamal.orderhr_noninstant.Activities;
+package com.example.jamal.orderhr_noninstant.Activities.Login;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -37,14 +37,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import com.example.jamal.orderhr_noninstant.Activities.Main.MainActivity;
 import com.example.jamal.orderhr_noninstant.Datastructures.Admin;
 import com.example.jamal.orderhr_noninstant.Datastructures.Staff;
 import com.example.jamal.orderhr_noninstant.Datastructures.Student;
 import com.example.jamal.orderhr_noninstant.Datastructures.SuperUser;
 import com.example.jamal.orderhr_noninstant.Datastructures.UnauthenticatedUser;
-import com.example.jamal.orderhr_noninstant.IO;
+import com.example.jamal.orderhr_noninstant.API.IO;
 import com.example.jamal.orderhr_noninstant.R;
-import com.example.jamal.orderhr_noninstant.Session;
+import com.example.jamal.orderhr_noninstant.Session.Session;
 
 import org.json.JSONException;
 import org.json.JSONObject;

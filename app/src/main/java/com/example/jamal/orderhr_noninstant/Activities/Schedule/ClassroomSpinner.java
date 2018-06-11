@@ -1,4 +1,4 @@
-package com.example.jamal.orderhr_noninstant;
+package com.example.jamal.orderhr_noninstant.Activities.Schedule;
 
 import android.util.Log;
 import android.view.View;
@@ -7,8 +7,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.jamal.orderhr_noninstant.Activities.ScheduleActivity;
 import com.example.jamal.orderhr_noninstant.Datastructures.ClassRooms;
+import com.example.jamal.orderhr_noninstant.API.IO;
+import com.example.jamal.orderhr_noninstant.R;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

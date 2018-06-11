@@ -1,4 +1,4 @@
-package com.example.jamal.orderhr_noninstant.Activities;
+package com.example.jamal.orderhr_noninstant.Activities.EasyScan;
 
 import android.Manifest;
 import android.content.Context;
@@ -8,14 +8,15 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.jamal.orderhr_noninstant.Activities.Booking.BookingMakeActivity;
 import com.example.jamal.orderhr_noninstant.Activities.Defuncts.DefunctMakeActivity;
-import com.example.jamal.orderhr_noninstant.Session;
+import com.example.jamal.orderhr_noninstant.Activities.Main.MainActivity;
+import com.example.jamal.orderhr_noninstant.Activities.UserDetails.UserDetailsActivity;
+import com.example.jamal.orderhr_noninstant.Session.Session;
 
 
 import org.json.JSONException;

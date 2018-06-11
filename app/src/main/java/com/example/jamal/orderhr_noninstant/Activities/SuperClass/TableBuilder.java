@@ -1,4 +1,4 @@
-package com.example.jamal.orderhr_noninstant.Activities;
+package com.example.jamal.orderhr_noninstant.Activities.SuperClass;
 
 import android.support.annotation.DrawableRes;
 import android.support.v7.app.AppCompatActivity;

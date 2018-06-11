@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jamal.orderhr_noninstant.Activities.MainActivity">
+    tools:context="com.example.jamal.orderhr_noninstant.Activities.Main.MainActivity">
 
     <fragment
         android:id="@+id/list"
-        android:name="com.example.jamal.orderhr_noninstant.ScheduleFragment"
+        android:name="com.example.jamal.orderhr_noninstant.Activities.Schedule.ScheduleFragment"
         android:layout_width="392dp"
         android:layout_height="401dp"
         android:layout_marginEnd="8dp"
@@ -71,13 +71,17 @@
         android:id="@+id/button5"
         android:layout_width="132dp"
         android:layout_height="46dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:onClick="ClickGoToUserDetails"
         android:text="User details"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/list"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintHorizontal_bias="0.991"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </android.support.constraint.ConstraintLayout>

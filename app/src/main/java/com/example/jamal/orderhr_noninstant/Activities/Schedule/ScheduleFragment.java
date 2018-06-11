@@ -1,10 +1,12 @@
-package com.example.jamal.orderhr_noninstant;
+package com.example.jamal.orderhr_noninstant.Activities.Schedule;
 
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.jamal.orderhr_noninstant.R;
 
 /**
  * Created by jamal on 3/29/2018.

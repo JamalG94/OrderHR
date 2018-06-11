@@ -1,10 +1,11 @@
-package com.example.jamal.orderhr_noninstant;
+package com.example.jamal.orderhr_noninstant.Activities.Schedule;
 
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.example.jamal.orderhr_noninstant.Activities.ScheduleActivity;
+import com.example.jamal.orderhr_noninstant.Activities.Schedule.ScheduleActivity;
+import com.example.jamal.orderhr_noninstant.R;
 
 /**
  * Created by jamal on 5/22/2018.
