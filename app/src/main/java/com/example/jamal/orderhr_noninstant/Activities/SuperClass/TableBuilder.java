@@ -25,12 +25,12 @@ public class TableBuilder extends AppCompatActivity {
 
     private View.OnClickListener OnSelectCell;
 
-    public void setOnSelectCell(View.OnClickListener onSelectCell) {
+    protected void setOnSelectCell(View.OnClickListener onSelectCell) {
         OnSelectCell = onSelectCell;
     }
 
 
-    public void CreateTable(int daysAmount, int timeslots, String identifier, Boolean clickAble){
+    protected void CreateTable(int daysAmount, int timeslots, String identifier, Boolean clickAble){
         //weight of every cell which means how much space it gets from the screen
         float weight = 1 / timeslots;
 
@@ -71,7 +71,7 @@ public class TableBuilder extends AppCompatActivity {
     }
 
     //TODO TEST
-    public static int DatetoColumn(Date date){
+    protected static int DatetoColumn(Date date){
         Calendar calendar = DateFormat.getDateInstance().getCalendar();
         calendar.setTime(date);
 

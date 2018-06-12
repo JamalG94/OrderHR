@@ -20,6 +20,7 @@ public class ScheduleUtility {
 
     private HashMap<Integer, String> timeSlots = new HashMap<>();
     private HashMap<Integer, Date> dateDays = new HashMap<>();
+    private Calendar cal;
 
     public ScheduleUtility(){
     }
@@ -55,12 +56,15 @@ public class ScheduleUtility {
         return dateDays.get(i);
     }
 
+
+    //Used to retrieve the current week
     public static int GetWeek(){
         Calendar cal = Calendar.getInstance();
         int week = cal.get(Calendar.WEEK_OF_YEAR);
         return week;
     }
 
+    //
     public static Calendar GetCalendarSetAtWeek(int week){
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.WEEK_OF_YEAR, week);

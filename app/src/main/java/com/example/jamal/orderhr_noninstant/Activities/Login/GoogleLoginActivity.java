@@ -76,10 +76,10 @@ public class GoogleLoginActivity extends AppCompatActivity {
     private void UpDateUI(GoogleSignInAccount account){
         if(account!= null){
             SuperUser user = checkUserAuthentication(account.getEmail());
-//            if(user.TypeOfUser() == "UnauthenticatedUser"){
-//                user = CreateNewUser(account.getEmail(), account.getDisplayName(), account.getGivenName(), account.getFamilyName());
-//                session.setUser(user);
-//            }
+            if(user.TypeOfUser() == "UnauthenticatedUser"){
+                user = CreateNewUser(account.getEmail(), account.getDisplayName(), account.getGivenName(), account.getFamilyName());
+                session.setUser(user);
+            }
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }

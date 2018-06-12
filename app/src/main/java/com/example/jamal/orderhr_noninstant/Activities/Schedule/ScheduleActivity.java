@@ -5,11 +5,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.jamal.orderhr_noninstant.Interfaces.Activity.IDataFiller;
-import com.example.jamal.orderhr_noninstant.Activities.SuperClass.TableBuilder;
+import com.example.jamal.orderhr_noninstant.Activities.SuperClass.RowFiller;
 import com.example.jamal.orderhr_noninstant.Session.Session;
 import com.example.jamal.orderhr_noninstant.Utility.Schedule.TimeSlotComparator;
 import com.example.jamal.orderhr_noninstant.Datastructures.AvailableSlot;
@@ -22,21 +20,19 @@ import com.example.jamal.orderhr_noninstant.R;
 import com.example.jamal.orderhr_noninstant.Utility.Schedule.ScheduleUtility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by jamal on 3/19/2018.
  */
 
 //TODO IMPLEMENT FILLROWS INTERFACE
-public class ScheduleActivity extends TableBuilder implements IDataFiller<Booking> {
+public class ScheduleActivity extends RowFiller {
 
     private ArrayList<TimeDay> selectedBookings = new ArrayList<>();
     private List<String> reservedSlots = new ArrayList<>();
@@ -153,6 +149,7 @@ public class ScheduleActivity extends TableBuilder implements IDataFiller<Bookin
         }
         else{
             currentWeek = 1;
+            ScheduleUtility.PassYear();
         }
         ChangeWeek();
     }
@@ -164,16 +161,19 @@ public class ScheduleActivity extends TableBuilder implements IDataFiller<Bookin
         }
         else{
             currentWeek = 52;
+            ScheduleUtility.YearBack();
         }
         ChangeWeek();
     }
 
     //TODO Dates
     private Boolean SameDayCheck(Date date){
+        //First time user selects a date
         if(selectedDate == null) {
             selectedDate = date;
             return true;
         }
+        //Checks if dates are equal
         else if(selectedDate.getTime() == date.getTime())
         {
             return true;
@@ -182,7 +182,7 @@ public class ScheduleActivity extends TableBuilder implements IDataFiller<Bookin
         return false;
     }
 
-    //TODO DATES
+    //TODO FILLSCHEDULE
     private void ChangeWeek(){
         ClassRoomSelected(currentRoom);
         Toast.makeText(this, "" + currentWeek, Toast.LENGTH_SHORT).show();
@@ -190,88 +190,29 @@ public class ScheduleActivity extends TableBuilder implements IDataFiller<Bookin
     }
 
 
-    //TODO FILLSCHEDULE
-    //we created the base table though the means of the superclass's method tablecreator, with this method we fill the cells with bookingobjects
-    @Override
-    public void FillView(Booking booking) {
-        String cell_id;
-        String lesson = booking.getLesson();
-        String teacher = booking.getUsername();
-        int day = DatetoColumn(booking.getDate());
-        int timeslotfrom = booking.getTimeslotfrom();
-        int timeslotto = booking.getTimeslotto();
-
-        TextView cell;
-
-        for(int i = timeslotfrom; i <= timeslotto; i++ ){
-            //Each cell has a specific id
-            cell_id = Integer.toString(i) + Integer.toString(day);
-            cell = findViewById(getResources().getIdentifier(cell_id, "id", getPackageName()));
-            if(cell != null){
-                //Create a textview object to hold the lesson and teacher strings
-                cell.setText(lesson + "\n" + teacher);
-                //Put the booking object in our specific cell;
-                cell.setTag(new TimeDay(day, i));
-
-                reservedSlots.add(cell_id);
-            }
-        }
-    }
-
-    //TODO FILLSCHEDULE
-    private void ClearRows(){
-        TextView cell;
-        for (String cell_id: reservedSlots) {
-            cell = findViewById(getResources().getIdentifier(cell_id, "id", getPackageName()));
-            cell.setText("");
-        }
-    }
-
-    //TODO FILLSCHEDULE
-    //TODO TEST
-    private BookingWrapper[] JsonToBookingWrapper(ObjectMapper objectMapper, String json){
-        DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-        try {
-            //Set the objectmapper's date format in the try otherwise it doesn't register
-            objectMapper.setDateFormat(format);
-            return objectMapper.readValue(json, BookingWrapper[].class);
-        } catch(IOException exception){
-            Log.d("BookingWrapper", "JsonToBookingWrapper: " + exception.getMessage());
-        }
-        return new BookingWrapper[]{};
-    }
-
-
-    //TODO FILLSCHEDULE
+    //TODO ONCLICK
     public void ClassRoomSelected(String room) {
         BookingWrapper[] bookingWrapper = new BookingWrapper[]{};
-        String weekSchedule = GetBookingsAtRoom(room);
+        String weekSchedule = BookingAPI.GetBookingsAtRoom(room, currentWeek, this);
 
         if(!weekSchedule.isEmpty()){
-            bookingWrapper = JsonToBookingWrapper(objectMapper, weekSchedule);
+            bookingWrapper = BookingAPI.JsonToBookingWrapper(weekSchedule);
         }
         ResetSchedule(bookingWrapper, room);
-
     }
 
-    private String GetBookingsAtRoom(String room){
-        _IO = IO.GetInstance();
-        String weekSchedule = _IO.DoPostRequestToAPIServer(String.format("{\"room\":\"%s\",  \"weeknummer\":\"%s\"}", room, currentWeek),
-                "http://markb.pythonanywhere.com/bookingbyroom/", this);
-        return weekSchedule;
-    }
-
+    //TODO ONCLICK
     private void ResetSchedule(BookingWrapper[] bookingWrapper, String room){
-        ClearRows();
+        super.ClearRows();
         if (bookingWrapper.length > 0) {
             currentRoom = room;
             for (BookingWrapper b : bookingWrapper) {
-                FillView(b.getFields());
+                Booking booking = b.getFields();
+                super.FillRows(booking.getLesson() + "/n" + booking.getUsername(), booking.getDate(), booking.getTimeslotfrom(), booking.getTimeslotto());
             }
         }
         else{
             Toast.makeText(this, "The room you selected has no bookings this week!", Toast.LENGTH_SHORT).show();
         }
     }
-
 }
