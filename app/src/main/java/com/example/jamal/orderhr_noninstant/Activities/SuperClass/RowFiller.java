@@ -4,6 +4,7 @@ import android.widget.TextView;
 
 import com.example.jamal.orderhr_noninstant.Datastructures.TimeDay;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class RowFiller extends TableBuilder {
 
-    protected List<String> reservedSlots;
+    protected List<String> reservedSlots = new ArrayList<String>();
 
     protected void FillRows(String text, Date date, int timeslotfrom, int timeslotto){
         String cell_id;
@@ -37,9 +38,11 @@ public class RowFiller extends TableBuilder {
 
     protected void ClearRows(){
         TextView cell;
-        for (String cell_id: reservedSlots) {
-            cell = findViewById(getResources().getIdentifier(cell_id, "id", getPackageName()));
-            cell.setText("");
+        if(reservedSlots != null){
+            for (String cell_id: reservedSlots) {
+                cell = findViewById(getResources().getIdentifier(cell_id, "id", getPackageName()));
+                cell.setText("");
+            }
         }
     }
 

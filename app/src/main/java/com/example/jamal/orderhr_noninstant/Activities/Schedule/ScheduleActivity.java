@@ -17,7 +17,8 @@ import com.example.jamal.orderhr_noninstant.Datastructures.TimeDay;
 import com.example.jamal.orderhr_noninstant.API.IO;
 import com.example.jamal.orderhr_noninstant.LocalDBControllers.LocalDatabaseRepository;
 import com.example.jamal.orderhr_noninstant.R;
-import com.example.jamal.orderhr_noninstant.Utility.Schedule.ScheduleUtility;
+import com.example.jamal.orderhr_noninstant.Utility.Schedule.TimeSlotConverter;
+import com.example.jamal.orderhr_noninstant.Utility.Schedule.WeekDate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.text.DateFormat;
@@ -31,15 +32,12 @@ import java.util.List;
  * Created by jamal on 3/19/2018.
  */
 
-//TODO IMPLEMENT FILLROWS INTERFACE
 public class ScheduleActivity extends RowFiller {
 
     private ArrayList<TimeDay> selectedBookings = new ArrayList<>();
-    private List<String> reservedSlots = new ArrayList<>();
 
     private IO _IO;
     private ObjectMapper objectMapper;
-    LocalDatabaseRepository localDB;
 
     private String currentRoom;
     private int currentWeek;
@@ -48,7 +46,7 @@ public class ScheduleActivity extends RowFiller {
     private ClassroomSpinner classroomSpinner;
     private EditText lesson;
 
-    private ScheduleUtility scheduleUtility;
+    private WeekDate weekDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +57,6 @@ public class ScheduleActivity extends RowFiller {
         super.CreateTable(5, 15, "timeslot_", true);
 
         _IO = IO.GetInstance();
-        localDB = new LocalDatabaseRepository(getApplication());
-
-        classroomSpinner = new ClassroomSpinner(this);
-        classroomSpinner.FillSpinner();
 
         objectMapper = new ObjectMapper();
         DateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy");
@@ -74,19 +68,28 @@ public class ScheduleActivity extends RowFiller {
         BuildingRadioButton buildingRadioButton = new BuildingRadioButton(this);
         buildingRadioButton.AssignOnClickRadioButton();
 
-        scheduleUtility = new ScheduleUtility();
-        scheduleUtility.FillTimeSlots(this);
-        currentWeek = ScheduleUtility.GetWeek();
-        scheduleUtility.AddDatesToHashMap(ScheduleUtility.GetCalendarSetAtWeek(currentWeek), 5);
-
+        weekDate = new WeekDate();
 
         //Disables reserve feature if not a staff member
-        if(Session.getIsStaff()){
+//        if(Session.getIsStaff()){
             lesson.setVisibility(View.VISIBLE);
             reserveButton.setVisibility(View.VISIBLE);
-        }
+//        }
 
 
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+        classroomSpinner = new ClassroomSpinner(this);
+        classroomSpinner.FillSpinner();
+
+
+        currentRoom = "";
+        currentWeek = weekDate.GetWeek();
+        weekDate.AddDatesToHashMap(weekDate.GetCalendarSetAtWeek(currentWeek), 5);
     }
 
     //TODO Click Button
@@ -94,18 +97,36 @@ public class ScheduleActivity extends RowFiller {
     public void ClickReserve(View view){
 
         //TODO TRY THIS
-        Collections.sort(selectedBookings, new TimeSlotComparator());
-        int timeslotFrom = selectedBookings.get(0).getTimeslot();
-        int timeslotTo = selectedBookings.get(selectedBookings.size() - 1).getTimeslot();
+        if(selectedBookings.size() > 0){
+            Collections.sort(selectedBookings, new TimeSlotComparator());
+            int timeslotFrom = selectedBookings.get(0).getTimeslot();
+            int timeslotTo = selectedBookings.get(selectedBookings.size() - 1).getTimeslot();
 
-        Booking booking = ReservationProcess.CreateBooking(timeslotFrom, timeslotTo, scheduleUtility.TimeSlotToTimeString(timeslotFrom), scheduleUtility.TimeSlotToTimeString( timeslotTo),
-                currentRoom, selectedDate, lesson.getText().toString(),  currentWeek);
+            if(!lesson.getText().toString().isEmpty()){
+                if(ReservationProcess.CheckCorrectRoomFormat(currentRoom)){
+                Booking booking = ReservationProcess.CreateBooking(timeslotFrom, timeslotTo, TimeSlotConverter.TimeSlotToTimeString(timeslotFrom).first, TimeSlotConverter.TimeSlotToTimeString( timeslotTo).second,
+                        currentRoom, selectedDate, lesson.getText().toString(),  currentWeek);
 
-        AvailableSlot availableSlot = ReservationProcess.CreateAvailableSlot(timeslotFrom, timeslotTo, currentRoom, selectedDate);
+                AvailableSlot availableSlot = ReservationProcess.CreateAvailableSlot(timeslotFrom, timeslotTo, currentRoom, selectedDate);
 
-        //Checks the availability based upon the api, if so a user can now truly book.
-        if(ReservationProcess.CheckAvailability(ReservationProcess.CreateAvailabilityJson(availableSlot), this))
-            ReservationProcess.ParseReservations(ReservationProcess.CreateBookingJson(booking), this);
+                //Checks the availability based upon the api, if so a user can now truly book.
+                if(ReservationProcess.CheckAvailability(ReservationProcess.CreateAvailabilityJson(availableSlot), this))
+                    ReservationProcess.ParseReservations(ReservationProcess.CreateBookingJson(booking), this);
+                }
+                else{
+                    Toast.makeText(this, "Choose a room", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(this, "Fill in a lesson code", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else{
+            Toast.makeText(this, "Select Timeslots", Toast.LENGTH_SHORT).show();
+            Log.d("No Timeslots", "ClickReserve: User hasn't selected any timeslots");
+        }
+
+
     }
 
     //TODO ClickButton
@@ -115,7 +136,7 @@ public class ScheduleActivity extends RowFiller {
             if(!reservedSlots.contains(Integer.toString(v.getId()))){
                 if (v.getTag() != null) {
                     TimeDay booking = (TimeDay) (v.getTag());
-                    if (SameDayCheck(scheduleUtility.DayToDate(booking.getDay()))) {
+                    if (SameDayCheck(weekDate.DayToDate(booking.getDay()))) {
                         MarkTimedays(booking);
                         }
                     }
@@ -149,7 +170,7 @@ public class ScheduleActivity extends RowFiller {
         }
         else{
             currentWeek = 1;
-            ScheduleUtility.PassYear();
+            weekDate.PassYear();
         }
         ChangeWeek();
     }
@@ -161,7 +182,7 @@ public class ScheduleActivity extends RowFiller {
         }
         else{
             currentWeek = 52;
-            ScheduleUtility.YearBack();
+            weekDate.YearBack();
         }
         ChangeWeek();
     }
@@ -186,29 +207,36 @@ public class ScheduleActivity extends RowFiller {
     private void ChangeWeek(){
         ClassRoomSelected(currentRoom);
         Toast.makeText(this, "" + currentWeek, Toast.LENGTH_SHORT).show();
-        scheduleUtility.AddDatesToHashMap(ScheduleUtility.GetCalendarSetAtWeek(currentWeek), 5);
+        weekDate.AddDatesToHashMap(weekDate.GetCalendarSetAtWeek(currentWeek), 5);
+        weekDate.GetYear();
     }
 
 
     //TODO ONCLICK
     public void ClassRoomSelected(String room) {
         BookingWrapper[] bookingWrapper = new BookingWrapper[]{};
-        String weekSchedule = BookingAPI.GetBookingsAtRoom(room, currentWeek, this);
+        if(ReservationProcess.CheckCorrectRoomFormat(room)){
+            String weekSchedule = BookingAPI.GetBookingsAtRoom(room, currentWeek, this);
 
-        if(!weekSchedule.isEmpty()){
-            bookingWrapper = BookingAPI.JsonToBookingWrapper(weekSchedule);
+            if(!weekSchedule.isEmpty()){
+                bookingWrapper = BookingAPI.JsonToBookingWrapper(weekSchedule);
+            }
+            ResetSchedule(bookingWrapper, room);
         }
-        ResetSchedule(bookingWrapper, room);
     }
 
     //TODO ONCLICK
     private void ResetSchedule(BookingWrapper[] bookingWrapper, String room){
         super.ClearRows();
+        currentRoom = room;
         if (bookingWrapper.length > 0) {
-            currentRoom = room;
             for (BookingWrapper b : bookingWrapper) {
                 Booking booking = b.getFields();
-                super.FillRows(booking.getLesson() + "/n" + booking.getUsername(), booking.getDate(), booking.getTimeslotfrom(), booking.getTimeslotto());
+                Date date = booking.getDate();
+                
+                //This if is needed because of database design, without it bookings from 2018 will show in years that are not 2018
+                if(weekDate.CompareYears(date))
+                    super.FillRows(booking.getLesson() + "\n" + booking.getUsername(), date , booking.getTimeslotfrom(), booking.getTimeslotto());
             }
         }
         else{

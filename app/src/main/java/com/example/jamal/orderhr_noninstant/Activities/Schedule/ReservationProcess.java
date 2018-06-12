@@ -95,5 +95,18 @@ public class ReservationProcess {
         io.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/bookroom/", context);
     }
 
+    public static boolean CheckCorrectRoomFormat(String room){
+        if (room.length() >= 2) {
+            String wBuildingFormat = room.substring(0, 3);
+            String hBuildingFromat = room.substring(0, 2);
+            if(wBuildingFormat.equals("WD.") || wBuildingFormat.equals("WN.")){
+                return true;
+            }
+            else if(hBuildingFromat.equals("H.")){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

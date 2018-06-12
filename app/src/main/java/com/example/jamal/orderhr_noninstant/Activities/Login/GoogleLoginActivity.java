@@ -76,10 +76,10 @@ public class GoogleLoginActivity extends AppCompatActivity {
     private void UpDateUI(GoogleSignInAccount account){
         if(account!= null){
             SuperUser user = checkUserAuthentication(account.getEmail());
-            if(user.TypeOfUser() == "UnauthenticatedUser"){
-                user = CreateNewUser(account.getEmail(), account.getDisplayName(), account.getGivenName(), account.getFamilyName());
-                session.setUser(user);
-            }
+//            if(user.TypeOfUser() == "UnauthenticatedUser"){
+//                user = CreateNewUser(account.getEmail(), account.getDisplayName(), account.getGivenName(), account.getFamilyName());
+//                session.setUser(user);
+//            }
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
@@ -142,7 +142,7 @@ public class GoogleLoginActivity extends AppCompatActivity {
     private SuperUser checkUserAuthentication(String email) {
         SuperUser returneduser = null;
         _IO = IO.GetInstance();
-        String json = String.format("{\"username\":\"%s\"}", email);
+        String json = String.format("{\"email\":\"%s\"}", email);
         String result = _IO.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/loginauth/", this);
         try{
             if(result.equals("This user could not be found")){
