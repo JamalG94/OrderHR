@@ -1,10 +1,12 @@
-package com.example.jamal.orderhr_noninstant;
+package com.example.jamal.orderhr_noninstant.Activities.Schedule;
 
 import android.app.Activity;
 import android.util.Log;
 
+import com.example.jamal.orderhr_noninstant.API.IO;
 import com.example.jamal.orderhr_noninstant.Datastructures.AvailableSlot;
 import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
+import com.example.jamal.orderhr_noninstant.Session.Session;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -93,5 +95,18 @@ public class ReservationProcess {
         io.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/bookroom/", context);
     }
 
+    public static boolean CheckCorrectRoomFormat(String room){
+        if (room.length() >= 2) {
+            String wBuildingFormat = room.substring(0, 3);
+            String hBuildingFromat = room.substring(0, 2);
+            if(wBuildingFormat.equals("WD.") || wBuildingFormat.equals("WN.")){
+                return true;
+            }
+            else if(hBuildingFromat.equals("H.")){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

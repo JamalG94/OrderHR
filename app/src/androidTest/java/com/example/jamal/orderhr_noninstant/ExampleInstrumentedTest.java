@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.jamal.orderhr_noninstant.Activities.UserDetailsActivity;
+import com.example.jamal.orderhr_noninstant.Activities.UserDetails.UserDetailsActivity;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package com.example.jamal.orderhr_noninstant.Activities;
+package com.example.jamal.orderhr_noninstant.Interfaces.Activity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

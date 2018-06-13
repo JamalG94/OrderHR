@@ -5,6 +5,8 @@ package com.example.jamal.orderhr_noninstant.Datastructures;
  */
 
 public class ClassRooms {
+
+    private String[] results;
     public String[] getResults() {
         return results;
     }
@@ -13,5 +15,5 @@ public class ClassRooms {
         this.results = results;
     }
 
-    private String[] results;
+
 }

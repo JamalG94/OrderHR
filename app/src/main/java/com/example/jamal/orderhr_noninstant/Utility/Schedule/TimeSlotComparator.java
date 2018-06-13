@@ -1,4 +1,4 @@
-package com.example.jamal.orderhr_noninstant.Activities;
+package com.example.jamal.orderhr_noninstant.Utility.Schedule;
 
 import com.example.jamal.orderhr_noninstant.Datastructures.TimeDay;
 

@@ -1,4 +1,4 @@
-package com.example.jamal.orderhr_noninstant.Activities;
+package com.example.jamal.orderhr_noninstant.Activities.Login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,14 +9,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jamal.orderhr_noninstant.Activities.Main.MainActivity;
 import com.example.jamal.orderhr_noninstant.Datastructures.Admin;
 import com.example.jamal.orderhr_noninstant.Datastructures.Staff;
 import com.example.jamal.orderhr_noninstant.Datastructures.Student;
 import com.example.jamal.orderhr_noninstant.Datastructures.SuperUser;
 import com.example.jamal.orderhr_noninstant.Datastructures.UnauthenticatedUser;
-import com.example.jamal.orderhr_noninstant.IO;
+import com.example.jamal.orderhr_noninstant.API.IO;
 import com.example.jamal.orderhr_noninstant.R;
-import com.example.jamal.orderhr_noninstant.Session;
+import com.example.jamal.orderhr_noninstant.Session.Session;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -32,6 +33,7 @@ public class GoogleLoginActivity extends AppCompatActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
     private Session session;
+    IO _IO;
     private static int RC_SING_IN = 1;
 
     SignInButton signInButton;
@@ -73,6 +75,11 @@ public class GoogleLoginActivity extends AppCompatActivity {
 
     private void UpDateUI(GoogleSignInAccount account){
         if(account!= null){
+            SuperUser user = checkUserAuthentication(account.getEmail());
+//            if(user.TypeOfUser() == "UnauthenticatedUser"){
+//                user = CreateNewUser(account.getEmail(), account.getDisplayName(), account.getGivenName(), account.getFamilyName());
+//                session.setUser(user);
+//            }
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
@@ -114,7 +121,7 @@ public class GoogleLoginActivity extends AppCompatActivity {
 
             // Signed in successfully, show authenticated UI.
             //TODO Parse this to the database as student account;
-            account.getEmail();
+            CreateNewUser(account.getEmail(), account.getDisplayName(), account.getGivenName(), account.getFamilyName());
             UpDateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
@@ -124,10 +131,18 @@ public class GoogleLoginActivity extends AppCompatActivity {
         }
     }
 
-    private SuperUser checkUserAuthentication(String email, String password) {
+
+    private SuperUser CreateNewUser(String email, String username, String firstname, String lastname){
+        _IO = IO.GetInstance();
+        String json = String.format("{\"username\":\"%s\", \"email\":\"%s\", \"firstname\":\"%s\", \"lastname\":\"%s\"}", username, email, firstname, lastname);
+        _IO.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/loginauth/", this);
+        return new Student();
+    }
+
+    private SuperUser checkUserAuthentication(String email) {
         SuperUser returneduser = null;
-        IO _IO = IO.GetInstance();
-        String json = String.format("{\"username\":\"%s\", \"password\":\"%s\"}", email, password);
+        _IO = IO.GetInstance();
+        String json = String.format("{\"email\":\"%s\"}", email);
         String result = _IO.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/loginauth/", this);
         try{
             if(result.equals("This user could not be found")){

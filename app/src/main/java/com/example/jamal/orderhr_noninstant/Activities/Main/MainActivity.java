@@ -1,23 +1,15 @@
-package com.example.jamal.orderhr_noninstant.Activities;
+package com.example.jamal.orderhr_noninstant.Activities.Main;
 
-import android.arch.lifecycle.Transformations;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.jamal.orderhr_noninstant.Activities.Defuncts.DefunctDetailActivity;
-import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
-import com.example.jamal.orderhr_noninstant.Datastructures.BookingWrapper;
-import com.example.jamal.orderhr_noninstant.LocalDBControllers.appDataBaseLocal;
-import com.example.jamal.orderhr_noninstant.Datastructures.Defunct;
-import com.example.jamal.orderhr_noninstant.Datastructures.DefunctWrapper;
-import com.example.jamal.orderhr_noninstant.LocalDBControllers.LocalDatabaseRepository;
+import com.example.jamal.orderhr_noninstant.Activities.EasyScan.EasyScanActivity;
+import com.example.jamal.orderhr_noninstant.Activities.Schedule.ScheduleActivity;
+import com.example.jamal.orderhr_noninstant.Activities.SuperClass.TableBuilder;
+import com.example.jamal.orderhr_noninstant.Activities.UserDetails.UserDetailsActivity;
 import com.example.jamal.orderhr_noninstant.R;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 
 public class MainActivity extends TableBuilder {

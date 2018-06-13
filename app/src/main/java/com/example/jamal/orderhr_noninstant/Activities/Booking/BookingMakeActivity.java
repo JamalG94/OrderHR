@@ -12,13 +12,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.jamal.orderhr_noninstant.Activities.IDataStructure;
-import com.example.jamal.orderhr_noninstant.Activities.MainActivity;
+import com.example.jamal.orderhr_noninstant.Interfaces.Activity.IDataStructure;
+import com.example.jamal.orderhr_noninstant.Activities.Main.MainActivity;
 import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
-import com.example.jamal.orderhr_noninstant.GetData;
-import com.example.jamal.orderhr_noninstant.IO;
+import com.example.jamal.orderhr_noninstant.Utility.Schedule.GetData;
+import com.example.jamal.orderhr_noninstant.API.IO;
 import com.example.jamal.orderhr_noninstant.R;
-import com.example.jamal.orderhr_noninstant.Session;
+import com.example.jamal.orderhr_noninstant.Session.Session;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONArray;

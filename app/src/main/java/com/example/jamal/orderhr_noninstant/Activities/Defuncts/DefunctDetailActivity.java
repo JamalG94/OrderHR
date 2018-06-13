@@ -15,10 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jamal.orderhr_noninstant.Datastructures.DefunctWrapper;
-import com.example.jamal.orderhr_noninstant.IO;
+import com.example.jamal.orderhr_noninstant.API.IO;
 import com.example.jamal.orderhr_noninstant.LocalDBControllers.LocalDatabaseRepository;
 import com.example.jamal.orderhr_noninstant.R;
-import com.example.jamal.orderhr_noninstant.Session;
+import com.example.jamal.orderhr_noninstant.Session.Session;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONArray;

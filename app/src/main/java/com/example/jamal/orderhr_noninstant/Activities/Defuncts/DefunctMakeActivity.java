@@ -10,10 +10,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.jamal.orderhr_noninstant.Activities.IDataStructure;
-import com.example.jamal.orderhr_noninstant.Activities.MainActivity;
+import com.example.jamal.orderhr_noninstant.Interfaces.Activity.IDataStructure;
+import com.example.jamal.orderhr_noninstant.Activities.Main.MainActivity;
 import com.example.jamal.orderhr_noninstant.Datastructures.Defunct;
-import com.example.jamal.orderhr_noninstant.IO;
+import com.example.jamal.orderhr_noninstant.API.IO;
 import com.example.jamal.orderhr_noninstant.R;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
