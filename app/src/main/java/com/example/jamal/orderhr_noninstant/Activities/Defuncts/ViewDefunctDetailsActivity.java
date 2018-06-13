@@ -61,7 +61,6 @@ public class ViewDefunctDetailsActivity extends AppCompatActivity{
 
         attemptUpdateData();
         if(! synchronizedwithdb){
-            //ListView list = (ListView)findViewById(R.id.listviewDefuncts);
             screenlistview.setBackgroundColor(Color.GRAY);
         }
         loadLocalDatabyFiltersIntoArrayAdapter(typeselectionfilter.getSelectedItem().toString(),!switchhandled.isChecked());
@@ -114,7 +113,6 @@ public class ViewDefunctDetailsActivity extends AppCompatActivity{
                 .setNegativeButton(android.R.string.no, null).show();
     }
 
-    //NEED TO SPLIT FUNCTIONALITIES HERE:
     public void loadLocalDatabyFiltersIntoArrayAdapter(String type, boolean showhandled){
         receiveddefuncts = db.getmAllDefuncts();
         List<DefunctWrapper> filtereddefunctlist = FillListWithFilteredItems(type,showhandled,receiveddefuncts);

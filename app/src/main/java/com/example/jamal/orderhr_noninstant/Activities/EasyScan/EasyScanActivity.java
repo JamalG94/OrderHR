@@ -35,12 +35,8 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
         super.onCreate(savedInstanceState);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CAMERA},
-                    1);
-
-            // Permission is not granted
+                                                != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this,"You have no accepted the permissions to use your camera!",Toast.LENGTH_LONG).show();
         }
         else{
             FindOpenAndLaunchCamera();
@@ -75,6 +71,7 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
         return resultvalue;
     }
 
+    //TODO
     //Based on the type of the input jsonstring, this decides that logical path will be progressed.
     static public Intent GetNextIntentFromInputJson(String jsonresult, Context thiscontext){
         Intent resultingint = new Intent();

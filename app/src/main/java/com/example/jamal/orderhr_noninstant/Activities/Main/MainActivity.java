@@ -1,7 +1,11 @@
 package com.example.jamal.orderhr_noninstant.Activities.Main;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.example.jamal.orderhr_noninstant.Activities.Defuncts.ViewDefunctDetailsActivity;
@@ -18,6 +22,12 @@ public class MainActivity extends TableBuilder {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         super.CreateTable(5, 10, "timeslot_", false);
+
+        //ASK FOR PERMISSION (CAMERA) (of not yet given)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
+        }
     }
 
     public void ClickSchedule(View view){
