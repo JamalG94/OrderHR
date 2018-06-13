@@ -1,6 +1,7 @@
 package com.example.jamal.orderhr_noninstant.Activities.Login;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -75,14 +76,49 @@ public class GoogleLoginActivity extends AppCompatActivity {
 
     private void UpDateUI(GoogleSignInAccount account){
         if(account!= null){
-            SuperUser user = checkUserAuthentication(account.getEmail());
-//            if(user.TypeOfUser() == "UnauthenticatedUser"){
-//                user = CreateNewUser(account.getEmail(), account.getDisplayName(), account.getGivenName(), account.getFamilyName());
-//                session.setUser(user);
-//            }
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            String userEmail = account.getEmail();
+            if(EmailCheck(userEmail)){
+                SuperUser user = checkUserAuthentication(account);
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
+            else{
+                //Case for when a non-hr account has been selected
+                try{
+                    Toast.makeText(this, "Please enter an HR email adress", Toast.LENGTH_SHORT).show();
+                    AskEmailAgain();
+                }
+                catch (Resources.NotFoundException e){
+                    Log.d("ToastUpdateUI", "UpDateUI: " + e.getMessage());
+                }
+            }
         }
+    }
+
+    //Check for hr email address
+    private Boolean EmailCheck(String email){
+        try{
+            if(email.substring(email.lastIndexOf('@') + 1).equals("hr.nl")){
+                return true;
+            }
+        }
+        catch(StringIndexOutOfBoundsException e){
+            Log.d("EmailCheck", "EmailCheck: Not a valid email address");
+        }
+        return false;
+    }
+
+
+    //Needed to log in again
+    private void AskEmailAgain(){
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient.signOut();
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
 
@@ -139,24 +175,25 @@ public class GoogleLoginActivity extends AppCompatActivity {
         return new Student();
     }
 
-    private SuperUser checkUserAuthentication(String email) {
+    private SuperUser checkUserAuthentication(GoogleSignInAccount gAccount) {
         SuperUser returneduser = null;
         _IO = IO.GetInstance();
-        String json = String.format("{\"email\":\"%s\"}", email);
+        String json = String.format("{\"email\":\"%s\"}", gAccount.getEmail());
         String result = _IO.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/loginauth/", this);
         try{
-            if(result.equals("This user could not be found")){
-                returneduser = new UnauthenticatedUser();
+            if(result.substring(0, 19).equals("User does not exist")){
+                String displayNameWithoutSpace = gAccount.getDisplayName().replaceAll("\\s+","");
+                return CreateNewUser(gAccount.getEmail(), displayNameWithoutSpace, gAccount.getGivenName(), gAccount.getFamilyName());
             }
             else{
                 JSONObject convertedresult = new JSONObject(result);
                 boolean resultingequation = convertedresult.getBoolean("isauthenticated");
                 if(resultingequation ){
                     if(convertedresult.getBoolean("issuperuser")){
-                        returneduser=new Admin();
+                        returneduser = new Admin();
                     }
                     else if(convertedresult.getBoolean("isstaff")){
-                        returneduser=new Staff();
+                        returneduser = new Staff();
                     }
                     else{
                         returneduser = new Student();
@@ -164,7 +201,11 @@ public class GoogleLoginActivity extends AppCompatActivity {
                 }
             }
 
-        }catch(JSONException jsonexception){
+        }
+        catch(IndexOutOfBoundsException e){
+
+        }
+        catch(JSONException jsonexception){
             Toast test = Toast.makeText(this,"SERVER RETURN ERROR",Toast.LENGTH_LONG);
             test.show();
         }
