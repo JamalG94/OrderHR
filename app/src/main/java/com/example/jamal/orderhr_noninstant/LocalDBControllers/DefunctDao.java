@@ -11,6 +11,8 @@ import java.util.List;
 /**
  * Created by Robin on 6/7/2018.
  */
+
+//Interface for the defunct table of the local ROOM database
 @Dao
 public interface DefunctDao {
     @Query("SELECT * FROM defunctwrapper")

@@ -14,6 +14,8 @@ package com.example.jamal.orderhr_noninstant.LocalDBControllers;
 /**
  * Created by Robin on 6/5/2018.
  */
+
+//Interface for the booking table of the local ROOM database
 @Dao
 public interface BookingDao {
 

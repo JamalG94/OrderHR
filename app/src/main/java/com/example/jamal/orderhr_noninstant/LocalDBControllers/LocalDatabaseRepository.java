@@ -15,6 +15,7 @@ import java.util.List;
  * Created by Robin on 6/5/2018.
  */
 
+//This class binds all interfaces for our local database together, and implements async calls to the local database
 public class LocalDatabaseRepository {
     private DefunctDao mDefunctDao;
     private BookingDao mBookingDao;

@@ -13,7 +13,6 @@ import java.util.Date;
  */
 @Entity
 public class Defunct implements Serializable {
-    @PrimaryKey
     private int defunctid;
     private String room,type,description;
     private Date date;

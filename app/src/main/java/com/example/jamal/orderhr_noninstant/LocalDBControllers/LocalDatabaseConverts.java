@@ -8,6 +8,8 @@ import java.util.Date;
  * Created by Robin on 6/5/2018.
  */
 
+//These static methods describe how to convert certain fields not recognized by the ROOM system into
+//fields that it does recognize.
 public class LocalDatabaseConverts {
     @TypeConverter
     public static Date fromTimestamp(Long value) {
