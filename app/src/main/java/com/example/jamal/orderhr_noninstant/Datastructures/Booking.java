@@ -17,6 +17,7 @@ public class Booking implements Serializable{
     private int timeslotto;
     private int timeslotfrom;
     private int weeknummer;
+    private String studentgroup;
 
     public String getRoom() {
         return room;
@@ -88,6 +89,14 @@ public class Booking implements Serializable{
 
     public void setWeeknummer(int weeknummer) {
         this.weeknummer = weeknummer;
+    }
+
+    public String getStudentgroup() {
+        return studentgroup;
+    }
+
+    public void setStudentgroup(String studentgroup) {
+        this.studentgroup = studentgroup;
     }
 
 
