@@ -25,10 +25,10 @@ import java.util.List;
  * Created by Robin on 5/21/2018.
  */
 
+//an adapter to adapt a defunctwrapper into a view for a list.
 public class DefunctViewAdapter extends ArrayAdapter<DefunctWrapper> {
     int resource;
-    String response;
-    Context context;
+
     public DefunctViewAdapter(Context context, int resource, List<DefunctWrapper> items){
      super(context,resource,items);
      this.resource = resource ;
@@ -51,8 +51,6 @@ public class DefunctViewAdapter extends ArrayAdapter<DefunctWrapper> {
         }
         TextView title = (TextView)defunctview.findViewById(R.id.defuncttitle);
         title.setText(currentitem.getFields().getRoom()+ " " + currentitem.getFields().getType());
-        TextView data = (TextView)defunctview.findViewById(R.id.defunctdate);
-        data.setText(currentitem.getFields().getDate() + " (date)");
         TextView description = (TextView)defunctview.findViewById(R.id.defunctdescription);
         description.setText(currentitem.getFields().getDescription());
 

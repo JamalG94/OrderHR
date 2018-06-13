@@ -1,16 +1,9 @@
 package com.example.jamal.orderhr_noninstant.Activities.Defuncts;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Looper;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.ActivityUnitTestCase;
 
 import com.example.jamal.orderhr_noninstant.Datastructures.Defunct;
 import com.example.jamal.orderhr_noninstant.Datastructures.DefunctWrapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +18,7 @@ import static org.junit.Assert.*;
  */
 
 @RunWith(AndroidJUnit4.class)
-public class DefunctDetailActivityTest {
+public class ViewDefunctDetailsActivityTest {
     ArrayList<DefunctWrapper> listofwraps;
     @Before
     public void setUp() throws Exception {
@@ -61,13 +54,13 @@ public class DefunctDetailActivityTest {
 
     @Test
     public void fillListWithFilteredItems() throws Exception {
-        assertEquals(2,DefunctDetailActivity.FillListWithFilteredItems("MiSSinG",true,listofwraps).size());
+        assertEquals(2, ViewDefunctDetailsActivity.FillListWithFilteredItems("MiSSinG",true,listofwraps).size());
     }
 
     @Test
     public void IFillDataStructures() throws Exception {
 
-//        DefunctDetailActivity.IFillDataStructures(new ObjectMapper(),"[{\"model\": \"web.defuncts\", \"pk\": 1, \"fields\": {\"type\": \"Missing\", \"handled\": false, \"description\": \"De tafel is weg\", \"room\": \"WN.04.003\"}}, {\"model\": \"web.defuncts\", \"pk\": 2, \"fields\": {\"type\": \"notype\", \"handled\": false, \"description\": \"What am I doing\", \"room\": \"WD.03.116\"}}, {\"model\": \"web.defuncts\", \"pk\": 3, \"fields\": {\"type\": \"notype\", \"handled\": false, \"description\": \"test\", \"room\": \"WD.1.016\"}}, {\"model\": \"web.defuncts\", \"pk\": 4, \"fields\": {\"type\": \"missing\", \"handled\": false, \"description\": \"wat\", \"room\": \"WD.1.016\"}}]");
+//        ViewDefunctDetailsActivity.IFillDataStructures(new ObjectMapper(),"[{\"model\": \"web.defuncts\", \"pk\": 1, \"fields\": {\"type\": \"Missing\", \"handled\": false, \"description\": \"De tafel is weg\", \"room\": \"WN.04.003\"}}, {\"model\": \"web.defuncts\", \"pk\": 2, \"fields\": {\"type\": \"notype\", \"handled\": false, \"description\": \"What am I doing\", \"room\": \"WD.03.116\"}}, {\"model\": \"web.defuncts\", \"pk\": 3, \"fields\": {\"type\": \"notype\", \"handled\": false, \"description\": \"test\", \"room\": \"WD.1.016\"}}, {\"model\": \"web.defuncts\", \"pk\": 4, \"fields\": {\"type\": \"missing\", \"handled\": false, \"description\": \"wat\", \"room\": \"WD.1.016\"}}]");
 //        assertEquals(testtargetclass.receiveddefuncts.size(),4);
     }
 

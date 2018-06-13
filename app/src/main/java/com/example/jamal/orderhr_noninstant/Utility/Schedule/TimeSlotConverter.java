@@ -31,8 +31,11 @@ public class TimeSlotConverter {
         timeSlots.put(15,new Pair<String, String>("21:10","22:00"));
     }
 
-
+    //TODO: , UNIT TEST
     public static Pair<String, String> TimeSlotToTimeString(int i){
+        if(i <= 0 || i > 15){
+            throw new IndexOutOfBoundsException("INVALID TIMESLOT: " + i);
+        }
         try{
             return timeSlots.get(i);
         }

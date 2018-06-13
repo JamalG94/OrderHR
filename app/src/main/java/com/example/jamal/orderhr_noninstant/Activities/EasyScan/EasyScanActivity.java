@@ -12,8 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.jamal.orderhr_noninstant.Activities.Booking.BookingMakeActivity;
-import com.example.jamal.orderhr_noninstant.Activities.Defuncts.DefunctMakeActivity;
+import com.example.jamal.orderhr_noninstant.Activities.Booking.BookingMakeByQRJsonActivity;
+import com.example.jamal.orderhr_noninstant.Activities.Defuncts.DefunctMakeByQRJsonActivity;
 import com.example.jamal.orderhr_noninstant.Activities.Main.MainActivity;
 import com.example.jamal.orderhr_noninstant.Activities.UserDetails.UserDetailsActivity;
 import com.example.jamal.orderhr_noninstant.Session.Session;
@@ -82,13 +82,13 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
             JSONObject jsonparser = new JSONObject(jsonresult);
 
             if(jsonparser.has("defunct")){
-                resultingint.setClass(thiscontext, DefunctMakeActivity.class);
+                resultingint.setClass(thiscontext, DefunctMakeByQRJsonActivity.class);
 
             }
             else if(jsonparser.has("reservation")){
                 //If a reservation is found, check if user is staff or admin, else go to user permissions and show the lacking permissions
                 if(Session.getIsStaff() || Session.getIsAdmin()){
-                    resultingint.setClass(thiscontext, BookingMakeActivity.class);
+                    resultingint.setClass(thiscontext, BookingMakeByQRJsonActivity.class);
                 }
                 else{
                     Toast.makeText(thiscontext,"No permissions for bookings found!",Toast.LENGTH_LONG).show();

@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.jamal.orderhr_noninstant.Activities.Defuncts.DefunctDetailActivity;
+import com.example.jamal.orderhr_noninstant.Activities.Defuncts.ViewDefunctDetailsActivity;
 import com.example.jamal.orderhr_noninstant.Activities.EasyScan.EasyScanActivity;
 import com.example.jamal.orderhr_noninstant.Activities.Schedule.ScheduleActivity;
 import com.example.jamal.orderhr_noninstant.Activities.SuperClass.TableBuilder;
@@ -35,7 +35,7 @@ public class MainActivity extends TableBuilder {
     }
 
     public void ClickDefunctList(View view){
-        Intent intent = new Intent(this, DefunctDetailActivity.class);
+        Intent intent = new Intent(this, ViewDefunctDetailsActivity.class);
         startActivity(intent);
     }
 

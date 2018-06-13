@@ -25,11 +25,11 @@
         </activity>
         <activity android:name=".Activities.Main.MainActivity"></activity>
         <activity android:name=".Activities.Schedule.ScheduleActivity"></activity>
-        <activity android:name=".Activities.Defuncts.DefunctDetailActivity"></activity>
+        <activity android:name=".Activities.Defuncts.ViewDefunctDetailsActivity"></activity>
         <activity android:name=".Activities.UserDetails.UserDetailsActivity"></activity>
         <activity android:name=".Activities.EasyScan.EasyScanActivity"></activity>
-        <activity android:name=".Activities.Booking.BookingMakeActivity"></activity>
-        <activity android:name=".Activities.Defuncts.DefunctMakeActivity" />
+        <activity android:name=".Activities.Booking.BookingMakeByQRJsonActivity"></activity>
+        <activity android:name=".Activities.Defuncts.DefunctMakeByQRJsonActivity" />
         <activity
             android:name=".Activities.Login.GoogleLoginActivity"
             android:label="@string/title_activity_google_login"

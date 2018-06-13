@@ -33,7 +33,7 @@ import java.util.List;
  * Created by Robin on 3/22/2018.
  */
 
-public class DefunctDetailActivity extends AppCompatActivity{
+public class ViewDefunctDetailsActivity extends AppCompatActivity{
     LocalDatabaseRepository db;
     List<DefunctWrapper> receiveddefuncts;
     ListView screenlistview;
@@ -42,17 +42,14 @@ public class DefunctDetailActivity extends AppCompatActivity{
     Switch switchhandled;
     DefunctViewAdapter defunctarrayadapt;
     Boolean synchronizedwithdb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         db = new LocalDatabaseRepository(getApplication());
-//        receiveddefuncts = db.getmAllDefuncts();
-        //DUE TO LIMITS IN OUR API CALL, WE NEED TO DO 2 API CALLS, ONE TO GET ALL THE HANDLED DEFUNCTS
-        //AND ONE TO GET THE UNHANDLED DEFUNCTS.
-//        LoadNShowData();
+
         loadMainDefunctListToView(findViewById(android.R.id.content));
-
-
     }
 
     public void loadMainDefunctListToView(View view){
@@ -64,8 +61,8 @@ public class DefunctDetailActivity extends AppCompatActivity{
 
         attemptUpdateData();
         if(! synchronizedwithdb){
-            ListView list = (ListView)findViewById(R.id.listviewDefuncts);
-            list.setBackgroundColor(Color.GRAY);
+            //ListView list = (ListView)findViewById(R.id.listviewDefuncts);
+            screenlistview.setBackgroundColor(Color.GRAY);
         }
         loadLocalDatabyFiltersIntoArrayAdapter(typeselectionfilter.getSelectedItem().toString(),!switchhandled.isChecked());
 
@@ -99,6 +96,7 @@ public class DefunctDetailActivity extends AppCompatActivity{
         });
     }
 
+    //when clicking handle on a defunct, this opens a confirm box. When clicked, io attempts to set this defunct to handled.
     public void setDefunctHandles(final DefunctWrapper inputdefunct){
         new AlertDialog.Builder(this)
                 .setTitle("Defunct Handled?")
@@ -109,8 +107,8 @@ public class DefunctDetailActivity extends AppCompatActivity{
                     public void onClick(DialogInterface dialog, int whichButton) {
                         loadMainDefunctListToView(findViewById(R.id.buttonsetHandled));
                         ioinstance = IO.GetInstance();
-                        if(ioinstance.DoPostRequestToAPIServer("{\"id\":"+inputdefunct.getPk()+",\"handled\":\"True\"}","http://markb.pythonanywhere.com/alterdefunct/",DefunctDetailActivity.this).equals("")){
-                            Toast.makeText(DefunctDetailActivity.this,"Defunct Handled!",Toast.LENGTH_LONG).show();
+                        if(ioinstance.DoPostRequestToAPIServer("{\"id\":"+inputdefunct.getPk()+",\"handled\":\"True\"}","http://markb.pythonanywhere.com/alterdefunct/",ViewDefunctDetailsActivity.this).equals("")){
+                            Toast.makeText(ViewDefunctDetailsActivity.this,"Defunct Handled!",Toast.LENGTH_LONG).show();
                         };
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
@@ -121,7 +119,7 @@ public class DefunctDetailActivity extends AppCompatActivity{
         receiveddefuncts = db.getmAllDefuncts();
         List<DefunctWrapper> filtereddefunctlist = FillListWithFilteredItems(type,showhandled,receiveddefuncts);
 
-        defunctarrayadapt = new DefunctViewAdapter(this,R.layout.defunct_list_view_item,filtereddefunctlist);
+        defunctarrayadapt = new DefunctViewAdapter(this,R.layout.fragment_defunct_list_item,filtereddefunctlist);
         screenlistview.setAdapter(defunctarrayadapt);
         defunctarrayadapt.notifyDataSetChanged();
     }
@@ -130,6 +128,7 @@ public class DefunctDetailActivity extends AppCompatActivity{
     public void OnClickSearch(View view){
         loadLocalDatabyFiltersIntoArrayAdapter(typeselectionfilter.getSelectedItem().toString(),!switchhandled.isChecked());
     }
+
     //Does an API call to get data from the server
     public String getdatafromio(boolean handled){
         String returnjson = "";
@@ -154,6 +153,7 @@ public class DefunctDetailActivity extends AppCompatActivity{
         }
         return filtereddefunctlist;
     }
+
     //Returns a list of Defunct Wrappers from a Json file
     public static List<DefunctWrapper> fromJsontoListOfDefunctDataWrappers(String jsonstring, ObjectMapper objectmapperjson) throws JSONException,IOException{
         List<DefunctWrapper> listtofill = new ArrayList<>();
@@ -166,7 +166,10 @@ public class DefunctDetailActivity extends AppCompatActivity{
         return  listtofill;
     }
 
-    public static List<DefunctWrapper> fromApiServerConvertAllDefunctDataToList(DefunctDetailActivity thisactivity) throws JSONException,IOException{
+    //Gets all defuncts from the server through the io method, converts it into 1 list.
+    public static List<DefunctWrapper> fromApiServerConvertAllDefunctDataToList(ViewDefunctDetailsActivity thisactivity) throws JSONException,IOException{
+        //DUE TO LIMITS IN OUR API CALL, WE NEED TO DO 2 API CALLS, ONE TO GET ALL THE HANDLED DEFUNCTS
+        //AND ONE TO GET THE UNHANDLED DEFUNCTS.
         String jsonhandled = thisactivity.getdatafromio(true);
         String jsonunhandled = thisactivity.getdatafromio(false);
         ObjectMapper mapper= new ObjectMapper();
@@ -175,6 +178,7 @@ public class DefunctDetailActivity extends AppCompatActivity{
         totallistofwrappers.addAll(fromJsontoListOfDefunctDataWrappers(jsonunhandled,mapper));
         return totallistofwrappers;
     }
+
     //Attempts to get a list of defuncts data from the server, if failed, load latest local database.
     public void attemptUpdateData(){
         synchronizedwithdb = false;
