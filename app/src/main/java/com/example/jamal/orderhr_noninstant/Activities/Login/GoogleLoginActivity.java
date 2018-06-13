@@ -68,6 +68,7 @@ public class GoogleLoginActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
@@ -93,6 +94,10 @@ public class GoogleLoginActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private String GenerateUsername(String s){
+        return s.split("\\@")[0];
     }
 
     //Check for hr email address
@@ -182,8 +187,7 @@ public class GoogleLoginActivity extends AppCompatActivity {
         String result = _IO.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/loginauth/", this);
         try{
             if(result.substring(0, 19).equals("User does not exist")){
-                String displayNameWithoutSpace = gAccount.getDisplayName().replaceAll("\\s+","");
-                return CreateNewUser(gAccount.getEmail(), displayNameWithoutSpace, gAccount.getGivenName(), gAccount.getFamilyName());
+                return CreateNewUser(gAccount.getEmail(), GenerateUsername(gAccount.getEmail()), gAccount.getGivenName(), gAccount.getFamilyName());
             }
             else{
                 JSONObject convertedresult = new JSONObject(result);
