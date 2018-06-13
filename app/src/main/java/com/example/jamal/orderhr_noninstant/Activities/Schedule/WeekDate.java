@@ -1,15 +1,8 @@
-package com.example.jamal.orderhr_noninstant.Utility.Schedule;
+package com.example.jamal.orderhr_noninstant.Activities.Schedule;
 
-import android.app.Activity;
 import android.util.Log;
-import android.util.Pair;
-
-import com.example.jamal.orderhr_noninstant.R;
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +27,7 @@ public class WeekDate {
     }
 
 
+
     //Used to retrieve the current week
     public int GetWeek(){
         cal = Calendar.getInstance();
@@ -41,13 +35,14 @@ public class WeekDate {
         return week;
     }
 
+
     public int GetYear(){
         int year = cal.get(Calendar.YEAR);
         Log.d(" ", "GetYear:" + year);
         return year;
     }
 
-    //Used to compare
+    //Used to compare the date of a given booking with the year of our weekschedule'
     public Boolean CompareYears(Date date){
         //We substract 1900 because the java date class substracts 1900 from year integer.
         return (cal.get(Calendar.YEAR)- 1900) == (date.getYear());
@@ -65,7 +60,7 @@ public class WeekDate {
             this.PutDate(i, cal.getTime());
             cal.add(Calendar.DATE, 1);
         }
-        PrintDates();
+        //PrintDates();
     }
 
     //This is an unused method ready for usage if we ever use Year as parameter for our bookings
