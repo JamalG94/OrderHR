@@ -48,6 +48,7 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
     TextView textviewtimeslots;
     TextView textviewweeknumber;
     CheckBox checkboxavaliable;
+    String status_stringstatus;
 
     boolean initial_available = false;
 
@@ -63,6 +64,7 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
         texteditclass = (EditText) findViewById(R.id.editTextClass) ;
         texteditlesson = (EditText) findViewById(R.id.editTextLesson) ;
         checkboxavaliable = (CheckBox) findViewById(R.id.Available);
+        status_stringstatus = "";
 
         //LOAD QR FROM EXTRA BUNDLE, THEN EXTRACT ALL REQUIRED DATA FROM IT AND THE IO CALLS
         Bundle extras = getIntent().getExtras();
@@ -88,33 +90,11 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
             checkboxavaliable.setError("Not initial_available");
             Toast.makeText(this, "These slots are not initial_available!",
                     Toast.LENGTH_LONG).show();
+            status_stringstatus = "Not initial_available";
         }
 
         //Sets all the textviews to the data found in the model.
         SetInitialTexts(modelreceivedBooking);
-    }
-
-    //Does a call to the server to get the required data on the availability of these slots, then returns compares true if initial_available and false if not.
-    private boolean CheckIfSlotsInRoomAvailable(com.example.jamal.orderhr_noninstant.Datastructures.Booking databooking, IO IOInstance) {
-        IOInstance = IO.GetInstance();
-        String textreturnedfromserver = "";
-
-        DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-        String json = "{ \"room\":\"" + databooking.getRoom() + "\", \"timeslotfrom\":" + String.valueOf(databooking.getTimeslotfrom()) + ", \"timeslotto\":" + String.valueOf(databooking.getTimeslotto()) + ", \"date\":\"" + format.format(databooking.getDate()) + "\" }";
-        textreturnedfromserver = IOInstance.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/availableslot/",this);
-
-        //check if what server returns is json data, if not, it is an error message and we handle it as such.
-        try{
-            new JSONObject(textreturnedfromserver);
-        }catch(JSONException e){
-            try{
-                new JSONArray(textreturnedfromserver);
-            }catch(JSONException x){
-                Toast.makeText(this,"Server returned unreadable data!", Toast.LENGTH_LONG).show();
-                Log.d("Servererror", "returned server message: "+textreturnedfromserver);
-            }
-        }
-        return (textreturnedfromserver.equals("[]"));
     }
 
     //Sets the initial values of all the appropiate text views in this activity.
@@ -127,6 +107,7 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
         textviewtimeslots.setText(textviewtimeslots.getText() + String.valueOf(databooking.getTimeslotfrom()) + " to " + String.valueOf(databooking.getTimeslotto()));
     }
 
+    //TODO
     //Handler of the onClickButtonSave.
     public void onClickSaveBooking(View view){
         //If this slot WAS available, we can proceed, else it makes no sense to continue...
@@ -138,34 +119,32 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
                 //Check the CURRENT availablity, in case someone booked this slot in the meanwhile
                 AvailableSlot slots_to_book  = getAvaibilityCheckerModelClass();
                 if(ReservationProcess.CheckAvailability(ReservationProcess.CreateAvailabilityJson(slots_to_book),this)){
-                    String savingstatus = saveBooking(modelreceivedBooking);
-                    Toast.makeText(this,savingstatus, Toast.LENGTH_LONG).show();
+                    status_stringstatus = saveBooking(modelreceivedBooking);
 
                     //Check if the booking has actually been saved.
-                    if(savingstatus.equals("Saved your booking")){
+                    if(status_stringstatus.equals("Saved your booking")){
                         Intent returntomainactivity = new Intent(this, MainActivity.class);
                         startActivity(returntomainactivity);
                     }
-
                 }else{
                     initial_available = false;
                     checkboxavaliable.setError("!");
                     checkboxavaliable.setChecked(initial_available);
-                    Toast.makeText(this, "Failed! ReservationProcess no longer available!",
-                            Toast.LENGTH_LONG).show();
+                    status_stringstatus ="Failed! ReservationProcess no longer available!";
                 }
             }
             else{
-                Toast.makeText(this, "Please fill in Lesson and Class fields",
-                        Toast.LENGTH_LONG).show();
+                status_stringstatus =  "Please fill in Lesson and Class fields";
                 texteditclass.setError("!");
                 texteditlesson.setError("!");
             }
         }
         else{
-            Toast.makeText(this, "Please try generating on another timeslot",
-                    Toast.LENGTH_LONG).show();
+            status_stringstatus = "Please try generating on another timeslot";
         }
+
+        //finally,display a toast with the return status!
+        Toast.makeText(this, status_stringstatus, Toast.LENGTH_LONG).show();
     }
 
     public AvailableSlot getAvaibilityCheckerModelClass(){
@@ -213,8 +192,9 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
         return returnmessage;
     }
 
+    //TODO UNIT TESTABLE
     //Takes the json, parses it' s data into the model we are using for this booking!
-    public Booking initiateBookingDataFromJson(ObjectMapper objectMapper, String json) throws IndexOutOfBoundsException,JSONException,IOException{
+    public static Booking initiateBookingDataFromJson(ObjectMapper objectMapper, String json) throws IndexOutOfBoundsException,JSONException,IOException{
         JSONObject jsonobjectparser = new JSONObject(json);
         String gottenres = jsonobjectparser.getJSONObject("reservation").toString();
 
@@ -227,8 +207,8 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
         booking_data.setTimeto(timesofslotstop.second);
         booking_data.setTimefrom(timesofslotstart.first);
         Calendar timeconverter = new GregorianCalendar();
-        timeconverter.setTime(booking_data.getDate());
         int weeknum = timeconverter.get(Calendar.WEEK_OF_YEAR);
+        timeconverter.setTime(booking_data.getDate());
         booking_data.setWeeknummer(weeknum);
 
         return booking_data;
