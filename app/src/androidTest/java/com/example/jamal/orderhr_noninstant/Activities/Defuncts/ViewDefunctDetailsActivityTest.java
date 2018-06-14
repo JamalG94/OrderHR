@@ -74,7 +74,7 @@ public class ViewDefunctDetailsActivityTest {
         assertEquals(0, ViewDefunctDetailsActivity.FillListWithFilteredItems("soFtwArE",false,listofwraps).size());
 
         assertEquals(2, ViewDefunctDetailsActivity.FillListWithFilteredItems("No Type",true,listofwraps).size());
-        assertEquals(2, ViewDefunctDetailsActivity.FillListWithFilteredItems("No Type",false,listofwraps).size());
+        assertEquals(0, ViewDefunctDetailsActivity.FillListWithFilteredItems("No Type",false,listofwraps).size());
         assertEquals(0, ViewDefunctDetailsActivity.FillListWithFilteredItems("broken",true,listofwraps).size());
         assertEquals(0, ViewDefunctDetailsActivity.FillListWithFilteredItems("broken",false,listofwraps).size());
     }
