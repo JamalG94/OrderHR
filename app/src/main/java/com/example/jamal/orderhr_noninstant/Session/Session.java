@@ -31,11 +31,10 @@ public class Session {
         return usename;
     }
     public static boolean getIsStaff() {
-        return prefs.getBoolean("IsStaff",false);
+        return prefs.getString("Staff","").equals("Admin");
     }
     public static boolean getIsAdmin() {
-//        return prefs.getBoolean("IsAdmin");
-        return prefs.getBoolean("IsAdmin",false);
+        return prefs.getString("User","").equals("Admin");
     }
 
     public void setEmail(String email){

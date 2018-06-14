@@ -15,5 +15,7 @@ public class GeneralUser {
     public String TypeOfUser(){
         return concreteUser;
     }
+
+
 }
 
