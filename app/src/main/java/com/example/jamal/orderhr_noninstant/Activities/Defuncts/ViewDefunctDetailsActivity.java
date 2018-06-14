@@ -83,7 +83,7 @@ public class ViewDefunctDetailsActivity extends AppCompatActivity{
                 buttonsethandled.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        setDefunctHandles(p);
+                        setDefunctHandlesConfirmBox(p);
                     }
                 });
                 tvroom.setText(tvroom.getText()+ " " + p.getFields().getRoom());
@@ -96,7 +96,7 @@ public class ViewDefunctDetailsActivity extends AppCompatActivity{
     }
 
     //when clicking handle on a defunct, this opens a confirm box. When clicked, io attempts to set this defunct to handled.
-    public void setDefunctHandles(final DefunctWrapper inputdefunct){
+    public void setDefunctHandlesConfirmBox(final DefunctWrapper inputdefunct){
         new AlertDialog.Builder(this)
                 .setTitle("Defunct Handled?")
                 .setMessage("Do you really want to save this defunct as handled?" + inputdefunct.getPk())
@@ -105,12 +105,17 @@ public class ViewDefunctDetailsActivity extends AppCompatActivity{
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         loadMainDefunctListToView(findViewById(R.id.buttonsetHandled));
-                        ioinstance = IO.GetInstance();
-                        if(ioinstance.DoPostRequestToAPIServer("{\"id\":"+inputdefunct.getPk()+",\"handled\":\"True\"}","http://markb.pythonanywhere.com/alterdefunct/",ViewDefunctDetailsActivity.this).equals("")){
-                            Toast.makeText(ViewDefunctDetailsActivity.this,"Defunct Handled!",Toast.LENGTH_LONG).show();
-                        };
+                        Toast.makeText(ViewDefunctDetailsActivity.this,handleDefunct(inputdefunct),Toast.LENGTH_LONG).show();
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
+    }
+    public String handleDefunct(DefunctWrapper de){
+        ioinstance = IO.GetInstance();
+        String status = ioinstance.DoPostRequestToAPIServer("{\"id\":"+de.getPk()+",\"handled\":\"True\"}","http://markb.pythonanywhere.com/alterdefunct/",ViewDefunctDetailsActivity.this);
+        if(status.equals("Succesfully updated the defunct status")){
+            status = "Defunct Handled!";
+        };
+        return status;
     }
 
     public void loadLocalDatabyFiltersIntoArrayAdapter(String type, boolean showhandled){
