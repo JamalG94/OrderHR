@@ -14,8 +14,7 @@ import com.example.jamal.orderhr_noninstant.Activities.Main.MainActivity;
 import com.example.jamal.orderhr_noninstant.Datastructures.Admin;
 import com.example.jamal.orderhr_noninstant.Datastructures.Staff;
 import com.example.jamal.orderhr_noninstant.Datastructures.Student;
-import com.example.jamal.orderhr_noninstant.Datastructures.SuperUser;
-import com.example.jamal.orderhr_noninstant.Datastructures.UnauthenticatedUser;
+import com.example.jamal.orderhr_noninstant.Datastructures.GeneralUser;
 import com.example.jamal.orderhr_noninstant.API.IO;
 import com.example.jamal.orderhr_noninstant.R;
 import com.example.jamal.orderhr_noninstant.Session.Session;
@@ -78,8 +77,10 @@ public class GoogleLoginActivity extends AppCompatActivity {
     private void UpDateUI(GoogleSignInAccount account){
         if(account!= null){
             String userEmail = account.getEmail();
-            if(EmailCheck(userEmail)){
-                SuperUser user = checkUserAuthentication(account);
+            Boolean a = EmailCheck(userEmail);
+            if(a){
+                GeneralUser user = checkUserAuthentication(account);
+                Session.setUser(user);
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             }
@@ -106,6 +107,7 @@ public class GoogleLoginActivity extends AppCompatActivity {
             if(email.substring(email.lastIndexOf('@') + 1).equals("hr.nl")){
                 return true;
             }
+            return false;
         }
         catch(StringIndexOutOfBoundsException e){
             Log.d("EmailCheck", "EmailCheck: Not a valid email address");
@@ -162,7 +164,6 @@ public class GoogleLoginActivity extends AppCompatActivity {
 
             // Signed in successfully, show authenticated UI.
             //TODO Parse this to the database as student account;
-            CreateNewUser(account.getEmail(), account.getDisplayName(), account.getGivenName(), account.getFamilyName());
             UpDateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
@@ -173,15 +174,15 @@ public class GoogleLoginActivity extends AppCompatActivity {
     }
 
 
-    private SuperUser CreateNewUser(String email, String username, String firstname, String lastname){
+    private GeneralUser CreateNewUser(String email, String username, String firstname, String lastname){
         _IO = IO.GetInstance();
         String json = String.format("{\"username\":\"%s\", \"email\":\"%s\", \"firstname\":\"%s\", \"lastname\":\"%s\"}", username, email, firstname, lastname);
         _IO.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/loginauth/", this);
         return new Student();
     }
 
-    private SuperUser checkUserAuthentication(GoogleSignInAccount gAccount) {
-        SuperUser returneduser = null;
+    private GeneralUser checkUserAuthentication(GoogleSignInAccount gAccount) {
+        GeneralUser returneduser = null;
         _IO = IO.GetInstance();
         String json = String.format("{\"email\":\"%s\"}", gAccount.getEmail());
         String result = _IO.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/loginauth/", this);

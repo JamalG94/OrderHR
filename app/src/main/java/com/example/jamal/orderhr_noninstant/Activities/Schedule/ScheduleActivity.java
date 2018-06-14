@@ -1,5 +1,6 @@
 package com.example.jamal.orderhr_noninstant.Activities.Schedule;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.jamal.orderhr_noninstant.Activities.SuperClass.RowFiller;
+import com.example.jamal.orderhr_noninstant.Session.Session;
 import com.example.jamal.orderhr_noninstant.Utility.Schedule.TimeSlotComparator;
 import com.example.jamal.orderhr_noninstant.Datastructures.AvailableSlot;
 import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
@@ -67,10 +69,10 @@ public class ScheduleActivity extends RowFiller {
         weekDate = new WeekDate();
 
         //Disables reserve feature if not a staff member
-//        if(Session.getIsStaff()){
+        if(Session.getIsStaff()){
             lesson.setVisibility(View.VISIBLE);
             reserveButton.setVisibility(View.VISIBLE);
-//        }
+        }
 
 
     }
@@ -82,7 +84,8 @@ public class ScheduleActivity extends RowFiller {
         classroomSpinner = new ClassroomSpinner(this);
         classroomSpinner.FillSpinner();
 
-
+        //TODO CHECK FOR BUGS
+        ClearSelectedBookings();
         currentRoom = "";
         currentWeek = weekDate.GetWeek();
         weekDate.AddDatesToHashMap(weekDate.GetCalendarSetAtWeek(currentWeek), 5);
@@ -218,8 +221,15 @@ public class ScheduleActivity extends RowFiller {
     //TODO FILLSCHEDULE
     private void ChangeWeek(){
         ClassRoomSelected(currentRoom);
-        Toast.makeText(this, "" + String.valueOf(currentWeek), Toast.LENGTH_SHORT).show();
-
+        try {
+            Toast.makeText(this, "" + String.valueOf(currentWeek), Toast.LENGTH_SHORT).show();
+        }
+        catch (IllegalArgumentException e){
+            Log.d("ChangeWeekIllegal", "ChangeWeek: " + e.getMessage());
+        }
+        catch(Resources.NotFoundException e){
+            Log.d("ChangeWeek", "ChangeWeek: " + e.getMessage());
+        }
         //Everytime we change a week we update the weekschedule's cells to include the new dates
         weekDate.AddDatesToHashMap(weekDate.GetCalendarSetAtWeek(currentWeek), 5);
     }
@@ -243,7 +253,7 @@ public class ScheduleActivity extends RowFiller {
         super.ClearRows();
         currentRoom = room;
 
-        weekDate.GetYear();
+        //weekDate.GetYear();
         if (bookingWrapper.length > 0) {
             for (BookingWrapper bookingWrapperEntry : bookingWrapper) {
                 Booking booking = bookingWrapperEntry.getFields();

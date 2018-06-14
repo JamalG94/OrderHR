@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.example.jamal.orderhr_noninstant.Datastructures.SuperUser;
+import com.example.jamal.orderhr_noninstant.Datastructures.GeneralUser;
 
 /**
  * Created by jamal on 5/14/2018.
@@ -20,14 +20,6 @@ public class Session {
 
     public void setUsername(String username) {
         prefs.edit().putString("userN", username).apply();
-    }
-
-    public void setIsAdmin(boolean isadmin){
-        prefs.edit().putBoolean("IsAdmin",isadmin).apply();
-    }
-
-    public void setIsStaff(boolean isstaff){
-        prefs.edit().putBoolean("IsStaff",isstaff).apply();
     }
 
     public void setPassword(String password) {
@@ -55,7 +47,7 @@ public class Session {
         return email;
     }
 
-    public void setUser(SuperUser user){
+    public static void setUser(GeneralUser user){
         prefs.edit().putString("User", user.TypeOfUser()).apply();
     }
 
