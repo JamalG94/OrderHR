@@ -82,6 +82,7 @@ public class GoogleLoginActivity extends AppCompatActivity {
                 SuperUser user = checkUserAuthentication(account);
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
+                session.setUser(user);
             }
             else{
                 //Case for when a non-hr account has been selected

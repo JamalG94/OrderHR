@@ -69,7 +69,7 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
         //LOAD QR FROM EXTRA BUNDLE, THEN EXTRACT ALL REQUIRED DATA FROM IT AND THE IO CALLS
         Bundle extras = getIntent().getExtras();
         try{
-            modelreceivedBooking = initiateBookingDataFromJson(new ObjectMapper(), extras.getString("jsonparser"));
+            modelreceivedBooking = initiateBookingDataFromJson(extras.getString("jsonparser"));
         }
         catch (IndexOutOfBoundsException|JSONException|IOException e) {
             Intent test = new Intent(this,MainActivity.class);
@@ -130,17 +130,17 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
                     initial_available = false;
                     checkboxavaliable.setError("!");
                     checkboxavaliable.setChecked(initial_available);
-                    status_stringstatus ="Failed! ReservationProcess no longer available!";
+                    status_stringstatus ="Failed! Timeslots no longer available!";
                 }
             }
             else{
-                status_stringstatus =  "Please fill in Lesson and Class fields";
+                status_stringstatus =  "Failed! Fill in Lesson and Class fields!";
                 texteditclass.setError("!");
                 texteditlesson.setError("!");
             }
         }
         else{
-            status_stringstatus = "Please try generating on another timeslot";
+            status_stringstatus = "Failed! Try generating on another timeslot!";
         }
 
         //finally,display a toast with the return status!
@@ -194,7 +194,9 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
 
     //TODO UNIT TESTABLE
     //Takes the json, parses it' s data into the model we are using for this booking!
-    public static Booking initiateBookingDataFromJson(ObjectMapper objectMapper, String json) throws IndexOutOfBoundsException,JSONException,IOException{
+    public static Booking initiateBookingDataFromJson(String json) throws IndexOutOfBoundsException,JSONException,IOException{
+        ObjectMapper objectMapper = new ObjectMapper();
+
         JSONObject jsonobjectparser = new JSONObject(json);
         String gottenres = jsonobjectparser.getJSONObject("reservation").toString();
 

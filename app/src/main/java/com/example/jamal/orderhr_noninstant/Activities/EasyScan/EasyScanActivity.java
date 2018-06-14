@@ -49,26 +49,7 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
     public void handleResult(com.google.zxing.Result result) {
         String textreadfromQR = result.getText();
 
-        //If this is a json text in the json QR, then start a new activity based on the information within.Else retry
-        if(ValidateIfJsonInputIsValid(textreadfromQR)){
-            startActivity( GetNextIntentFromInputJson(textreadfromQR,this));
-
-        }
-        else{
-            Toast.makeText(this,"Please scan a valid easy scan QR code!",Toast.LENGTH_LONG).show();
-            FindOpenAndLaunchCamera();
-        }
-    }
-
-    //Checks if this json string returns any errors or so. Translates it into a boolean.
-    static public boolean ValidateIfJsonInputIsValid(String jsonresult){
-        boolean resultvalue = true;
-        try {
-            JSONObject ob = new JSONObject(jsonresult);
-        } catch (JSONException ex) {
-            resultvalue= false;
-        }
-        return resultvalue;
+        startActivity( GetNextIntentFromInputJson(textreadfromQR,this));
     }
 
     //TODO
@@ -97,7 +78,7 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
                 Toast.makeText(thiscontext,"JSON FORMAT WITH QR NOT RECOGNIZED",Toast.LENGTH_LONG).show();
             }
         }catch(JSONException e){
-            Toast error = Toast.makeText(thiscontext,"Something went wrong with reading this QR code!",Toast.LENGTH_LONG);
+            Toast error = Toast.makeText(thiscontext,"Is this a valid EasyScan QR code?",Toast.LENGTH_LONG);
             Log.d(e.getClass().toString(), e.getMessage());
             error.show();
             resultingint.setClass(thiscontext, MainActivity.class);

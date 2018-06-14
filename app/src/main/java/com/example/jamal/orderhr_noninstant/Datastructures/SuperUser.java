@@ -15,5 +15,7 @@ public class SuperUser {
     public String TypeOfUser(){
         return concreteUser;
     }
+
+
 }
 

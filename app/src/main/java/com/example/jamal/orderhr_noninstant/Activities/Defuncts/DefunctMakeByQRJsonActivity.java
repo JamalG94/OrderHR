@@ -30,9 +30,12 @@ public class DefunctMakeByQRJsonActivity extends AppCompatActivity {
     TextView textviewdescription;
     TextView textviewroom;
     Spinner spinnerdefuncttype;
+    String save_string_status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        save_string_status = "Not yet attempted!";
+
         setContentView(R.layout.activity_makedefunctreport);
         Bundle extras = getIntent().getExtras();
         modelreceiveddefunct = new Defunct();
@@ -56,6 +59,7 @@ public class DefunctMakeByQRJsonActivity extends AppCompatActivity {
 
         textviewroom.setText(textviewroom.getText() + " " + modelreceiveddefunct.getRoom());
         spinnerdefuncttype.setSelection(((ArrayAdapter) spinnerdefuncttype.getAdapter()).getPosition(modelreceiveddefunct.getType()));
+
     }
 
     //Parses the JSON and fils the model
@@ -69,27 +73,25 @@ public class DefunctMakeByQRJsonActivity extends AppCompatActivity {
     public void onClickSaveDefunct(View view){
         //Checks if all fields are filled in!
         if((! textviewdescription.getText().toString().equals(""))){
-            //Gets IO, constructs json string and does request to server through IO.
-            String status = "Error";
+            //Gets IO, constructs json string and does request to server through IO
             IO ioisntance = IO.GetInstance();
             String jsonsending = "{ \"room\":\"" + modelreceiveddefunct.getRoom() +"\",\"description\":\""+ textviewdescription.getText()+"\",\"type\":\""+ spinnerdefuncttype.getSelectedItem()+"\"}";
-            status = ioisntance.DoPostRequestToAPIServer(jsonsending,"http://markb.pythonanywhere.com/makedefunct/",this);
+            save_string_status = ioisntance.DoPostRequestToAPIServer(jsonsending,"http://markb.pythonanywhere.com/makedefunct/",this);
 
-            //Checks if the return status is none or error, return error, else go to main menu
-            if(status.equals("Error") || status.equals("")){
-                Toast.makeText(this, "Something went wrong with saving the data! (is all data correct and do you have connection?)",
-                        Toast.LENGTH_LONG).show();
-                Log.i("there you go:",jsonsending);
+            //Checks if the return save_string_status is none or error, return error, else go to main menu
+            if(save_string_status.equals("Error") || save_string_status.equals("")){
+
+                save_string_status = "Something went wrong with saving the data! Do you have a connection?";
             }else{
                 Intent dostuff = new Intent(this, MainActivity.class);
                 startActivity(dostuff);
             }
         }
         else{
-            Toast.makeText(this, "Please fill in Lesson and Class fields",
-                    Toast.LENGTH_LONG).show();
+            save_string_status = "Please fill in the Description field";
             textviewdescription.setError("!");
         }
+        Toast.makeText(this, save_string_status, Toast.LENGTH_LONG).show();
     }
 
 }
