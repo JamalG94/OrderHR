@@ -77,8 +77,7 @@ public class GoogleLoginActivity extends AppCompatActivity {
     private void UpDateUI(GoogleSignInAccount account){
         if(account!= null){
             String userEmail = account.getEmail();
-            Boolean a = EmailCheck(userEmail);
-            if(a){
+            if(EmailCheck(userEmail)){
                 GeneralUser user = checkUserAuthentication(account);
                 Session.setUser(user);
                 Intent intent = new Intent(this, MainActivity.class);
