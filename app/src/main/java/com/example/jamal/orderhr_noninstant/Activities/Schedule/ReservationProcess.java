@@ -90,9 +90,9 @@ public class ReservationProcess {
     }
 
     //This function posts all bookings to the api
-    public static void ParseReservations(String json, Activity context){
+    public static String ParseReservations(String json, Activity context){
         IO io = IO.GetInstance();
-        io.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/bookroom/", context);
+        return io.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/bookroom/", context);
     }
 
     public static boolean CheckCorrectRoomFormat(String room){
