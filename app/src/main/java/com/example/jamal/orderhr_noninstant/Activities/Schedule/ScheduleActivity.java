@@ -45,11 +45,13 @@ public class ScheduleActivity extends RowFiller {
     private EditText lesson;
 
     private WeekDate weekDate;
+    public String status_stringstatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
+        status_stringstatus = "Not yet saved";
 
         this.setOnSelectCell(onSelectCell);
         super.CreateTable(5, 15, "timeslot_", true);
@@ -110,21 +112,21 @@ public class ScheduleActivity extends RowFiller {
 
                 //Checks the availability based upon the api, if so a user can now truly book.
                 if(ReservationProcess.CheckAvailability(ReservationProcess.CreateAvailabilityJson(availableSlot), this))
-                    ReservationProcess.ParseReservations(ReservationProcess.CreateBookingJson(booking), this);
+                    status_stringstatus = ReservationProcess.ParseReservations(ReservationProcess.CreateBookingJson(booking), this);
                 }
                 else{
-                    Toast.makeText(this, "Choose a room", Toast.LENGTH_SHORT).show();
+                    status_stringstatus = "Choose a room";
                 }
             }
             else{
-                Toast.makeText(this, "Fill in a lesson code", Toast.LENGTH_SHORT).show();
+                status_stringstatus ="Fill in a lesson code";
             }
         }
         else{
-            Toast.makeText(this, "Select Timeslots", Toast.LENGTH_SHORT).show();
+            status_stringstatus = "Select Timeslots";
             Log.d("No Timeslots", "ClickReserve: User hasn't selected any timeslots");
         }
-
+        Toast.makeText(this, status_stringstatus, Toast.LENGTH_LONG).show();
         //We call SelectedRoom here again to refresh the Bookings after we pushed a reservation
         ClassRoomSelected(currentRoom);
     }
