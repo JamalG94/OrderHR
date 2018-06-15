@@ -31,7 +31,7 @@ public class Session {
         return usename;
     }
     public static boolean getIsStaff() {
-        return prefs.getString("Staff","").equals("Admin");
+        return prefs.getString("User","").equals("Staff");
     }
     public static boolean getIsAdmin() {
         return prefs.getString("User","").equals("Admin");

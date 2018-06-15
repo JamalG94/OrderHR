@@ -6,20 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.jamal.orderhr_noninstant.Activities.Main.MainActivity">
 
-    <fragment
-        android:id="@+id/list"
-        android:name="com.example.jamal.orderhr_noninstant.Activities.Schedule.ScheduleFragment"
-        android:layout_width="392dp"
-        android:layout_height="401dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_weight="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/activity_schedule" />
-
     <Button
         android:id="@+id/button_schedule"
         android:layout_width="87dp"
@@ -42,17 +28,15 @@
         android:id="@+id/button"
         android:layout_width="80dp"
         android:layout_height="62dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginEnd="31dp"
         android:layout_marginStart="152dp"
-        android:layout_marginTop="11dp"
         android:onClick="ClickEasyScan"
         android:text="Easy Scan!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_schedule"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list"
-        app:layout_constraintVertical_bias="0.0"
         tools:text="Easy Scan!" />
 
     <Button
@@ -60,11 +44,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="26dp"
-        android:layout_marginTop="24dp"
         android:onClick="ClickDefunctList"
         android:text="Defuncts"
         app:layout_constraintEnd_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/list"
         tools:text="Defuncts" />
 
     <Button
