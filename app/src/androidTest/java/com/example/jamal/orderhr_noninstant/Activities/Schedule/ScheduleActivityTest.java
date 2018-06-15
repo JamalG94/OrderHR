@@ -6,8 +6,11 @@ import android.os.Looper;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.view.View;
 
+import com.example.jamal.orderhr_noninstant.Activities.Defuncts.ViewDefunctDetailsActivity;
 import com.example.jamal.orderhr_noninstant.Datastructures.Staff;
+import com.example.jamal.orderhr_noninstant.Datastructures.TimeDay;
 import com.example.jamal.orderhr_noninstant.Session.Session;
 
 import org.junit.Assert;
@@ -15,6 +18,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import static org.junit.Assert.*;
 
@@ -40,16 +48,6 @@ public class ScheduleActivityTest {
     @Before
     public void setUp() throws Exception {
 
-//        // Context of the app under test.
-
-//
-//        try{
-//            Looper.prepare();
-//            Intent test = new Intent(appContext,ScheduleActivity.class);
-//            appContext.startActivity(test);
-//        }catch(Exception e){
-//
-//        }
     }
 
     @Test
@@ -57,5 +55,26 @@ public class ScheduleActivityTest {
         String getfromactivity = rule.getActivity().status_stringstatus;
         assertEquals(getfromactivity,"Not yet saved");
     }
+    @Test
+    public void clickedReserve() throws Exception{
+        try{
+            Looper.prepare();
 
+            Field method = ScheduleActivity.class.getDeclaredField("selectedBookings");
+            method.setAccessible(true);
+            ArrayList<TimeDay> test = new ArrayList<TimeDay>();
+            test.add(new TimeDay(2,2));
+            method.set(rule.getActivity(),test);
+            rule.getActivity().ClickReserve(new View(appContext));
+            String getfromactivity = rule.getActivity().status_stringstatus;
+            assertEquals(getfromactivity,"Fill in a lesson code");
+
+        }catch(Exception e){
+
+        }
+
+//        rule.getActivity().
+//        String getfromactivity = rule.getActivity().status_stringstatus;
+//        assertEquals(getfromactivity,"Not yet saved");
+    }
 }
