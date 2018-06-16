@@ -18,13 +18,6 @@ public class Session {
         prefs = PreferenceManager.getDefaultSharedPreferences(cntx);
     }
 
-    public void setUsername(String username) {
-        prefs.edit().putString("userN", username).apply();
-    }
-
-    public void setPassword(String password) {
-        prefs.edit().putString("pass", password).apply();
-    }
 
     public static String getUsername() {
         String usename = prefs.getString("userN","");
@@ -37,11 +30,11 @@ public class Session {
         return prefs.getString("User","").equals("Admin");
     }
 
-    public void setEmail(String email){
+    public static void setEmail(String email){
         prefs.edit().putString("Email", email).apply();
     }
 
-    public String getEmail(){
+    public static String getEmail(){
         String email = prefs.getString("Email", "");
         return email;
     }

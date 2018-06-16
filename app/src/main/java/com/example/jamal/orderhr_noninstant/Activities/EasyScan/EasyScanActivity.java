@@ -30,6 +30,8 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class EasyScanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
+    public static String pathStatus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,15 +62,18 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
             JSONObject jsonparser = new JSONObject(jsonresult);
 
             if(jsonparser.has("defunct")){
+                pathStatus = "defunct";
                 resultingint.setClass(thiscontext, DefunctMakeByQRJsonActivity.class);
 
             }
             else if(jsonparser.has("reservation")){
                 //If a reservation is found, check if user is staff or admin, else go to user permissions and show the lacking permissions
                 if(Session.getIsStaff() || Session.getIsAdmin()){
+                    pathStatus = "reservation";
                     resultingint.setClass(thiscontext, BookingMakeByQRJsonActivity.class);
                 }
                 else{
+                    pathStatus = "no permission";
                     Toast.makeText(thiscontext,"No permissions for bookings found!",Toast.LENGTH_LONG).show();
                     resultingint.setClass(thiscontext, UserDetailsActivity.class);
                     resultingint.putExtra("permissionhighlight","bookingmake");

@@ -6,9 +6,7 @@ import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
