@@ -93,6 +93,7 @@ public class ScheduleActivity extends RowFiller {
         weekDate.AddDatesToHashMap(weekDate.GetCalendarSetAtWeek(currentWeek), 5);
     }
 
+    //test case C4
     //TODO Click Button
     //This function is used for the reserve button and transforms each booking object into a jsonobject.
     public void ClickReserve(View view){
@@ -164,7 +165,6 @@ public class ScheduleActivity extends RowFiller {
     }
 
     //TODO CLICK BUTTON
-    //TODO TEST
     public void BuildingSelected(String chosenBuilding){
         classroomSpinner.GetClassRooms(String.format("{\"building\":\"%s\"}", chosenBuilding));
     }

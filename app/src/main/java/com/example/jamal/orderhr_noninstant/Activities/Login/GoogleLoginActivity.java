@@ -101,6 +101,7 @@ public class GoogleLoginActivity extends AppCompatActivity {
         return s.split("\\@")[0];
     }
 
+    //test case C5.1
     //Check for hr email address
     private Boolean EmailCheck(String email){
         try{
@@ -205,7 +206,6 @@ public class GoogleLoginActivity extends AppCompatActivity {
                     }
                 }
             }
-
         }
         catch(IndexOutOfBoundsException e){
 
