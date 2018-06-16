@@ -1,4 +1,4 @@
-package com.example.jamal.orderhr_noninstant.Activities;
+package com.example.jamal.orderhr_noninstant.Activities.EasyScan;
 
 import android.content.Context;
 import android.content.Intent;

@@ -1,20 +1,16 @@
-package com.example.jamal.orderhr_noninstant.Activities.Booking;
+package com.example.jamal.orderhr_noninstant.Activities.EasyScan;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Looper;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.jamal.orderhr_noninstant.Activities.Defuncts.DefunctMakeByQRJsonActivity;
 import com.example.jamal.orderhr_noninstant.Activities.EasyScan.EasyScanActivity;
 import com.example.jamal.orderhr_noninstant.Datastructures.Staff;
 import com.example.jamal.orderhr_noninstant.Datastructures.Student;
 import com.example.jamal.orderhr_noninstant.Session.Session;
 
 import junit.framework.Assert;
-
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
