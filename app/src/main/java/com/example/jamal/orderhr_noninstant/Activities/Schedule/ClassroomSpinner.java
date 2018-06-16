@@ -69,7 +69,7 @@ public class ClassroomSpinner{
     }
 
     //Is used to display all available classrooms in the chosen building
-    private void JsonToClassroomList(ObjectMapper objectMapper, String classrooms) {
+    public void JsonToClassroomList(ObjectMapper objectMapper, String classrooms) {
         try {
             CurrentListClassrooms = objectMapper.readValue(classrooms, ClassRooms.class);
         }

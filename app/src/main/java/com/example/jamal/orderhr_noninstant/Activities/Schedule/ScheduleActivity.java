@@ -71,7 +71,7 @@ public class ScheduleActivity extends RowFiller {
         weekDate = new WeekDate();
 
         //Disables reserve feature if not a staff member
-        if(Session.getIsStaff()){
+        if(Session.getIsStaff() | Session.getIsAdmin()){
             lesson.setVisibility(View.VISIBLE);
             reserveButton.setVisibility(View.VISIBLE);
         }
@@ -96,7 +96,6 @@ public class ScheduleActivity extends RowFiller {
     //TODO Click Button
     //This function is used for the reserve button and transforms each booking object into a jsonobject.
     public void ClickReserve(View view){
-        status_stringstatus = "Not yet saved";
         //TODO TRY THIS
         if(selectedBookings.size() > 0){
             Collections.sort(selectedBookings, new TimeSlotComparator());
@@ -111,8 +110,11 @@ public class ScheduleActivity extends RowFiller {
                 AvailableSlot availableSlot = ReservationProcess.CreateAvailableSlot(timeslotFrom, timeslotTo, currentRoom, selectedDate);
 
                 //Checks the availability based upon the api, if so a user can now truly book.
-                if(ReservationProcess.CheckAvailability(ReservationProcess.CreateAvailabilityJson(availableSlot), this))
+                if(ReservationProcess.CheckAvailability(ReservationProcess.CreateAvailabilityJson(availableSlot), this)){
                     status_stringstatus = ReservationProcess.ParseReservations(ReservationProcess.CreateBookingJson(booking), this);
+                    }else{
+                        status_stringstatus = "Already booked!";
+                    }
                 }
                 else{
                     status_stringstatus = "Choose a room";
@@ -232,8 +234,11 @@ public class ScheduleActivity extends RowFiller {
         catch(Resources.NotFoundException e){
             Log.d("ChangeWeek", "ChangeWeek: " + e.getMessage());
         }
+        Log.d("weekdate", weekDate.GetWeek() + " " + weekDate.GetYear());
+        Log.d("weekdate"," currentweekdate now is " + currentWeek + " updating...");
         //Everytime we change a week we update the weekschedule's cells to include the new dates
         weekDate.AddDatesToHashMap(weekDate.GetCalendarSetAtWeek(currentWeek), 5);
+        Log.d("weekdate", weekDate.GetWeek() + " " + weekDate.GetYear());
     }
 
 
