@@ -96,7 +96,7 @@ public class ScheduleActivity extends RowFiller {
     //TODO Click Button
     //This function is used for the reserve button and transforms each booking object into a jsonobject.
     public void ClickReserve(View view){
-
+        status_stringstatus = "Not yet saved";
         //TODO TRY THIS
         if(selectedBookings.size() > 0){
             Collections.sort(selectedBookings, new TimeSlotComparator());
