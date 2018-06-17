@@ -69,8 +69,7 @@ public class TableBuilder extends AppCompatActivity {
 
         setOnSelectCell(null);
     }
-
-    //TODO TEST
+    
     protected static int DatetoColumn(Date date){
         Calendar calendar = DateFormat.getDateInstance().getCalendar();
         calendar.setTime(date);
