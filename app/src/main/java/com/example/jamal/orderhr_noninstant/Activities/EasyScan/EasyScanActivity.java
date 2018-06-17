@@ -80,6 +80,7 @@ public class EasyScanActivity extends AppCompatActivity implements ZXingScannerV
                 }
             }
             else{
+                pathStatus = "JSON FORMAT WITH QR NOT RECOGNIZED";
                 Toast.makeText(thiscontext,"JSON FORMAT WITH QR NOT RECOGNIZED",Toast.LENGTH_LONG).show();
             }
         }catch(JSONException e){

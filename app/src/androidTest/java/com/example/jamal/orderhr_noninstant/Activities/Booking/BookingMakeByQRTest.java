@@ -19,9 +19,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 /**
  * Created by jamal on 6/16/2018.
@@ -57,10 +54,11 @@ public class BookingMakeByQRTest {
 
     }
 
+    //Test case for when a unrealistic timeslot gets passed in the json
     @Test
     public void TimeSlotOutOfRange(){
         try {
-            BookingMakeByQRJsonActivity.initiateBookingDataFromJson("{\"reservation\": {\"timeslotfrom\": 4, \"date\": \"17-6-2018\", \"room\": \"H.3.403\"}}");
+            BookingMakeByQRJsonActivity.initiateBookingDataFromJson("{\"reservation\": {\"timeslotfrom\": 4, \"timeslotto\": 17, \"date\": \"17-6-2018\", \"room\": \"H.3.403\"}}");
 
         }
         catch (IOException e){
@@ -69,7 +67,7 @@ public class BookingMakeByQRTest {
         catch(IndexOutOfBoundsException e){
             //We expect an indexOutofbounds since timeslotto is not filled in and automatically converted to 0, 0 is not a timeslot in TimeSlotConverter.
             Log.d("IndexOutofBounds", "wrongJson: IndexBoundsException");
-            assertEquals("INVALID TIMESLOT: " + 0, e.getMessage());
+            assertEquals("INVALID TIMESLOT: " + 17, e.getMessage());
         }
         catch (JSONException e){
             Log.d("JsonException", "wrongJson: JsonException");
@@ -79,6 +77,7 @@ public class BookingMakeByQRTest {
         }
     }
 
+    //Test case for when the json has additional fields
     @Test
     public void TooManyFields(){
         Boolean given = false;
@@ -104,6 +103,7 @@ public class BookingMakeByQRTest {
         assertEquals(true, given);
     }
 
+    //Test case for when the json doesn't have all required fields
     @Test
     public void NotAllFields(){
         Boolean given = false;
@@ -152,6 +152,7 @@ public class BookingMakeByQRTest {
         assertEquals(true, given);
     }
 
+    //Test case when a wrong json gets parsed to create a booking
     @Test
     public void wrongJson(){
         String no_json_format = " FDf335";
@@ -166,6 +167,7 @@ public class BookingMakeByQRTest {
         }
     }
 
+    //Test case when a user tries to book on a reserved slot
     @Test
     public void NoSlotAvailable(){
         activity.onClickSaveBooking(new View(appContext));
@@ -174,6 +176,7 @@ public class BookingMakeByQRTest {
         assertEquals("Failed! Try generating on another timeslot!",activity.getStatus_stringstatus());
     }
 
+    //Test case when a user hasn't filled in lesson and class
     @Test
     public void TextNotFilled(){
         activity.setInitial_available(true);
@@ -181,20 +184,20 @@ public class BookingMakeByQRTest {
         assertEquals("Failed! Fill in Lesson and Class fields!", activity.getStatus_stringstatus());
     }
 
-    @Test
-    public void SaveBooking(){
-        activity.setInitial_available(true);
-        activity.setTexteditclass("INF3C");
-        activity.setTexteditlesson("ICTLAB");
-        activity.onClickSaveBooking(new View(appContext));
-    }
-
-    @After
-    public void TearDown(){
-        IO _IO = IO.GetInstance();
-        String json = "{room\":\"H.3.306\",  \"weeknummer\":\"24}";
-        _IO.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/bookingbyroom/", activity);
-    }
+//    @Test
+//    public void SaveBooking(){
+//        activity.setInitial_available(true);
+//        activity.setTexteditclass("INF3C");
+//        activity.setTexteditlesson("ICTLAB");
+//        activity.onClickSaveBooking(new View(appContext));
+//    }
+//
+//    @After
+//    public void TearDown(){
+//        IO _IO = IO.GetInstance();
+//        String json = "{room\":\"H.3.306\",  \"weeknummer\":\"24}";
+//        _IO.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/bookingbyroom/", activity);
+//    }
 
 
 }
