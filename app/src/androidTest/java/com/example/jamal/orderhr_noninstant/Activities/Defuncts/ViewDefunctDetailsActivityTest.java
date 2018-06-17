@@ -65,7 +65,8 @@ public class ViewDefunctDetailsActivityTest {
         listofwraps.add(wrapwrap4);
         listofwraps.add(wrapwrap5);
     }
-    
+
+    //Case where defuncts get filtered with the handled between them
     @Test
     public void FilteredMissingWithHandled(){
         assertEquals(0, ViewDefunctDetailsActivity.FillListWithFilteredItems("broken",true,listofwraps).size());
@@ -75,6 +76,7 @@ public class ViewDefunctDetailsActivityTest {
         assertEquals(2, ViewDefunctDetailsActivity.FillListWithFilteredItems("MiSSinG",true,listofwraps).size());
     }
 
+    //Case where defuncts get filtered without the handled between them
     @Test
     public void FilteredMissingWithoutHandled(){
         assertEquals(1, ViewDefunctDetailsActivity.FillListWithFilteredItems("MiSSinG",false,listofwraps).size());
@@ -84,11 +86,13 @@ public class ViewDefunctDetailsActivityTest {
         assertEquals(0, ViewDefunctDetailsActivity.FillListWithFilteredItems("broken",false,listofwraps).size());
     }
 
+    //Case where defuncts dont get filtered with the handled between them
     @Test
     public void NoFilterWithHandled(){
         assertEquals(2, ViewDefunctDetailsActivity.FillListWithFilteredItems("No Type",true,listofwraps).size());
     }
 
+    //Case where defuncts dont get filtered without the handled between them
     @Test
     public void NoFilterWithoutHandled(){
         assertEquals(0, ViewDefunctDetailsActivity.FillListWithFilteredItems("No Type",false,listofwraps).size());
