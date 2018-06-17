@@ -30,6 +30,7 @@ public class DefunctMakeByQRJsonActivity extends AppCompatActivity {
     TextView textviewdescription;
     TextView textviewroom;
     Spinner spinnerdefuncttype;
+
     String save_string_status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +93,17 @@ public class DefunctMakeByQRJsonActivity extends AppCompatActivity {
             textviewdescription.setError("!");
         }
         Toast.makeText(this, save_string_status, Toast.LENGTH_LONG).show();
+    }
+
+
+    //Used for testing
+    public String getSave_string_status() {
+        return save_string_status;
+    }
+
+    //Used for testing
+    public void setTextviewdescription(String text) {
+        this.textviewdescription.setText(text);
     }
 
 }

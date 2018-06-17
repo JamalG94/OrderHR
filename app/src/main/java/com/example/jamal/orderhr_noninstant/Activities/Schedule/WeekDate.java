@@ -27,7 +27,6 @@ public class WeekDate {
     }
 
 
-
     //Used to retrieve the current week
     public int GetWeek(){
         cal = Calendar.getInstance();

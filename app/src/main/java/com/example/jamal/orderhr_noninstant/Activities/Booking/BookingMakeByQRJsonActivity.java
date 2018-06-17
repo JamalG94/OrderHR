@@ -71,16 +71,21 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
         try{
             modelreceivedBooking = initiateBookingDataFromJson(extras.getString("jsonparser"));
         }
-        catch (IndexOutOfBoundsException|JSONException|IOException e) {
+        catch (IndexOutOfBoundsException|JSONException|IOException|NullPointerException e) {
             Intent test = new Intent(this,MainActivity.class);
             Log.d(e.getClass().toString(), e.getMessage());
             if(e.getClass() == IndexOutOfBoundsException.class){
                 Toast.makeText(this,"Received timeslots invalid!",Toast.LENGTH_LONG).show();
-            }else{
+            }
+            else if(e.getClass() == NullPointerException.class){
+                Toast.makeText(this, "One or more fields was not passed by the QR code", Toast.LENGTH_LONG).show();
+            }
+            else{
                 Toast.makeText(this,"Server connection error!",Toast.LENGTH_LONG).show();
             }
             startActivity(test);
         }
+
 
         //This part handles the availability, it checks it in the first 2 rows, then updates all accordingly in the rest.
         AvailableSlot slots_to_book  = getAvaibilityCheckerModelClass();
@@ -99,12 +104,17 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
 
     //Sets the initial values of all the appropiate text views in this activity.
     private void SetInitialTexts(com.example.jamal.orderhr_noninstant.Datastructures.Booking databooking){
-        DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-        textviewroom.setText(textviewroom.getText() + databooking.getRoom());
-        textiewdate.setText(textiewdate.getText() + format.format(databooking.getDate()));
-        textviewweeknumber.setText("Weeknumber : " + databooking.getWeeknummer());
-        textviewtime.setText(textviewtime.getText() + databooking.getTimefrom() + " to " + databooking.getTimeto());
-        textviewtimeslots.setText(textviewtimeslots.getText() + String.valueOf(databooking.getTimeslotfrom()) + " to " + String.valueOf(databooking.getTimeslotto()));
+        try{
+            DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+            textviewroom.setText(textviewroom.getText() + databooking.getRoom());
+            textiewdate.setText(textiewdate.getText() + format.format(databooking.getDate()));
+            textviewweeknumber.setText("Weeknumber : " + databooking.getWeeknummer());
+            textviewtime.setText(textviewtime.getText() + databooking.getTimefrom() + " to " + databooking.getTimeto());
+            textviewtimeslots.setText(textviewtimeslots.getText() + String.valueOf(databooking.getTimeslotfrom()) + " to " + String.valueOf(databooking.getTimeslotto()));
+        }
+        catch (NullPointerException e){
+            Log.d("SetInitialTexts", "SetInitialTexts: One or more fields were empty");
+        }
     }
 
     //TODO
@@ -148,12 +158,18 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
     }
 
     public AvailableSlot getAvaibilityCheckerModelClass(){
+        try{
         AvailableSlot slots_to_book = new AvailableSlot();
         slots_to_book.setDate(modelreceivedBooking.getDate());
         slots_to_book.setRoom(modelreceivedBooking.getRoom());
         slots_to_book.setTimeslotfrom(modelreceivedBooking.getTimeslotfrom());
         slots_to_book.setTimeslotto(modelreceivedBooking.getTimeslotto());
         return slots_to_book;
+        }
+        catch (NullPointerException e){
+            Log.d("getAvailalitiy", "getAvaibilityCheckerModelClass: required fields were not available");
+        }
+        return new AvailableSlot();
     }
 
     //Adds a new class to the class text view
@@ -194,7 +210,7 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
 
     //TODO UNIT TESTABLE
     //Takes the json, parses it' s data into the model we are using for this booking!
-    public static Booking initiateBookingDataFromJson(String json) throws IndexOutOfBoundsException,JSONException,IOException{
+    public static Booking initiateBookingDataFromJson(String json) throws IndexOutOfBoundsException,JSONException,IOException, NullPointerException{
         ObjectMapper objectMapper = new ObjectMapper();
 
         JSONObject jsonobjectparser = new JSONObject(json);
@@ -204,15 +220,21 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
         objectMapper.setDateFormat(format);
 
         Booking booking_data = objectMapper.readValue(gottenres, Booking.class);
-        Pair<String, String> timesofslotstart = TimeSlotConverter.TimeSlotToTimeString(booking_data.getTimeslotfrom());
-        Pair<String, String> timesofslotstop = TimeSlotConverter.TimeSlotToTimeString(booking_data.getTimeslotto());
-        booking_data.setTimeto(timesofslotstop.second);
-        booking_data.setTimefrom(timesofslotstart.first);
-        Calendar timeconverter = new GregorianCalendar();
-        int weeknum = timeconverter.get(Calendar.WEEK_OF_YEAR);
-        timeconverter.setTime(booking_data.getDate());
-        booking_data.setWeeknummer(weeknum);
 
-        return booking_data;
+        if(booking_data.getRoom() != null){
+            //These are the fields we didn't get from the QR code, so we need to generate them manually.
+            Pair<String, String> timesofslotstart = TimeSlotConverter.TimeSlotToTimeString(booking_data.getTimeslotfrom());
+            Pair<String, String> timesofslotstop = TimeSlotConverter.TimeSlotToTimeString(booking_data.getTimeslotto());
+            booking_data.setTimeto(timesofslotstop.second);
+            booking_data.setTimefrom(timesofslotstart.first);
+
+            Calendar timeconverter = new GregorianCalendar();
+            timeconverter.setTime(booking_data.getDate());
+            int weeknum = timeconverter.get(Calendar.WEEK_OF_YEAR);
+            booking_data.setWeeknummer(weeknum);
+
+            return booking_data;
+        }
+        throw new NullPointerException();
     }
 }
