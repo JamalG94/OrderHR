@@ -6,22 +6,28 @@ import android.os.Looper;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.util.Log;
+import android.view.View;
 
+import com.example.jamal.orderhr_noninstant.API.IO;
 import com.example.jamal.orderhr_noninstant.Datastructures.Booking;
 
 import org.json.JSONException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * Created by jamal on 6/16/2018.
  */
 
-public class BookingMakeByQRNotAllFieldsTest {
+public class BookingMakeByQRTest {
 
     Context appContext;
     BookingMakeByQRJsonActivity activity;
@@ -33,7 +39,7 @@ public class BookingMakeByQRNotAllFieldsTest {
         protected Intent getActivityIntent() {
             InstrumentationRegistry.getTargetContext();
             Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.putExtra("jsonparser", "{\"reservation\": {\"timeslotfrom\": 4, \"timeslotto\": 4, \"date\": \"17-6-2018\", \"room\": \"H.3.403\"}}");
+            intent.putExtra("jsonparser", "{\"reservation\": {\"timeslotfrom\": 6, \"timeslotto\": 9, \"date\": \"13-6-2018\", \"room\": \"H.3.306\"}}");
             return intent;
         }
     };
@@ -122,6 +128,7 @@ public class BookingMakeByQRNotAllFieldsTest {
         assertEquals(true, given);
     }
 
+    //This test is supposed to fail, proving that setDateformat in the objectmapper still accepts other date formats
     @Test
     public void WrongFormatDate(){
         Boolean given = false;
@@ -144,4 +151,50 @@ public class BookingMakeByQRNotAllFieldsTest {
         }
         assertEquals(true, given);
     }
+
+    @Test
+    public void wrongJson(){
+        String no_json_format = " FDf335";
+
+        try{
+            BookingMakeByQRJsonActivity.initiateBookingDataFromJson(no_json_format);
+            fail("expected json exception");
+        }catch(JSONException e){
+            assert(e.getMessage().equals("Value FDf335 of type java.lang.String cannot be converted to JSONObject"));
+        }
+        catch (IOException e){
+        }
+    }
+
+    @Test
+    public void NoSlotAvailable(){
+        activity.onClickSaveBooking(new View(appContext));
+
+        //We expect that the timeslot is already taken.
+        assertEquals("Failed! Try generating on another timeslot!",activity.getStatus_stringstatus());
+    }
+
+    @Test
+    public void TextNotFilled(){
+        activity.setInitial_available(true);
+        activity.onClickSaveBooking(new View(appContext));
+        assertEquals("Failed! Fill in Lesson and Class fields!", activity.getStatus_stringstatus());
+    }
+
+    @Test
+    public void SaveBooking(){
+        activity.setInitial_available(true);
+        activity.setTexteditclass("INF3C");
+        activity.setTexteditlesson("ICTLAB");
+        activity.onClickSaveBooking(new View(appContext));
+    }
+
+    @After
+    public void TearDown(){
+        IO _IO = IO.GetInstance();
+        String json = "{room\":\"H.3.306\",  \"weeknummer\":\"24}";
+        _IO.DoPostRequestToAPIServer(json, "http://markb.pythonanywhere.com/bookingbyroom/", activity);
+    }
+
+
 }
