@@ -25,7 +25,7 @@ public class BookingAPI {
         return weekSchedule;
     }
 
-    //TODO TEST
+    //test case C12
     public static BookingWrapper[] JsonToBookingWrapper(String json){
         ObjectMapper objectMapper = new ObjectMapper();
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());

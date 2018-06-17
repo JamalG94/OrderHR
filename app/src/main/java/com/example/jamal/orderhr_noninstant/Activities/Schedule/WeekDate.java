@@ -54,6 +54,7 @@ public class WeekDate {
         return cal;
     }
 
+    //C15
     public void AddDatesToHashMap(Calendar cal, int daysToAdd){
         for(int i = 1; i <= daysToAdd; i++){
             this.PutDate(i, cal.getTime());
