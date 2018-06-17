@@ -27,6 +27,7 @@ import org.junit.runner.RunWith;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 
 import static org.junit.Assert.*;
@@ -84,8 +85,16 @@ public class ScheduleActivityTest {
             test.add(new TimeDay(2,2));
             field.set(rule.getActivity(),test);
 
-            EditText lessonfield = (EditText)rule.getActivity().findViewById(R.id.lesson);
-            lessonfield.setText("C43TEST");
+
+            rule.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    EditText lessonfield = (EditText)rule.getActivity().findViewById(R.id.lesson);
+                    lessonfield.setText("C43TEST");
+                }
+            });
+//            EditText lessonfield = (EditText)rule.getActivity().findViewById(R.id.lesson);
+//            lessonfield.setText("C43TEST");
 
             rule.getActivity().ClickReserve(new View(appContext));
             String getfromactivity = rule.getActivity().status_stringstatus;
@@ -99,8 +108,14 @@ public class ScheduleActivityTest {
             test.add(new TimeDay(2, 2));
             field_selected_timeslots.set(rule.getActivity(), test);
 
-            EditText lessonfield = (EditText) rule.getActivity().findViewById(R.id.lesson);
-            lessonfield.setText("C44TEST");
+            rule.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    EditText lessonfield = (EditText)rule.getActivity().findViewById(R.id.lesson);
+                    lessonfield.setText("C44TEST");
+                }
+            });
+
 
             Field field_selected_room = ScheduleActivity.class.getDeclaredField("currentRoom");
             field_selected_room.setAccessible(true);
@@ -116,28 +131,80 @@ public class ScheduleActivityTest {
         String getfromactivity = rule.getActivity().status_stringstatus;
         assertEquals("Not yet saved",getfromactivity);
     }
-
-    //TODO
-    //calendar weekdate does not seem to work as intended.
     @Test //C14.1 start new year
     public void onClickNextWeek1() throws Exception{
-        WeekDate sourceweekdate = new WeekDate();
-        sourceweekdate.GetWeek();
-
+        Calendar test = Calendar.getInstance();
+        test.setWeekDate(2018,52,1);
+        WeekDate sourcweekdate = new WeekDate();
         Field field_cal = WeekDate.class.getDeclaredField("cal");
         field_cal.setAccessible(true);
-        field_cal.set(sourceweekdate,sourceweekdate.GetCalendarSetAtWeek(51));
-        //GetCalendarSetAtWeek does not seem to have any effect ^^^^
-
+        field_cal.set(sourcweekdate,test);
         Field field_weekdate = ScheduleActivity.class.getDeclaredField("weekDate");
         field_weekdate.setAccessible(true);
-        field_weekdate.set(rule.getActivity(),sourceweekdate);
+        field_weekdate.set(rule.getActivity(),sourcweekdate);
+        Field field_selected_weekdate = ScheduleActivity.class.getDeclaredField("currentWeek");
+        field_selected_weekdate.setAccessible(true);
+        field_selected_weekdate.set(rule.getActivity(),52);
 
         rule.getActivity().onClickNextWeek(new View(appContext));
 
-        assertEquals(1,sourceweekdate.GetWeek());
-        assertEquals(2018,sourceweekdate.GetYear());
-
+        assertEquals(1,((int)field_selected_weekdate.get(rule.getActivity())));
     }
+    @Test //C14.2 start new week
+    public void onClickNextWeek2() throws Exception{
+        Calendar test = Calendar.getInstance();
+        test.setWeekDate(2018,3,1);
+        WeekDate sourcweekdate = new WeekDate();
+        Field field_cal = WeekDate.class.getDeclaredField("cal");
+        field_cal.setAccessible(true);
+        field_cal.set(sourcweekdate,test);
+        Field field_weekdate = ScheduleActivity.class.getDeclaredField("weekDate");
+        field_weekdate.setAccessible(true);
+        field_weekdate.set(rule.getActivity(),sourcweekdate);
+        Field field_selected_weekdate = ScheduleActivity.class.getDeclaredField("currentWeek");
+        field_selected_weekdate.setAccessible(true);
+        field_selected_weekdate.set(rule.getActivity(),3);
 
+        rule.getActivity().onClickNextWeek(new View(appContext));
+
+        assertEquals(4,((int)field_selected_weekdate.get(rule.getActivity())));
+    }
+    @Test //C14.3 start previous year
+    public void onClickPreviousWeek1() throws Exception{
+        Calendar test = Calendar.getInstance();
+        test.setWeekDate(2018,1,1);
+        WeekDate sourcweekdate = new WeekDate();
+        Field field_cal = WeekDate.class.getDeclaredField("cal");
+        field_cal.setAccessible(true);
+        field_cal.set(sourcweekdate,test);
+        Field field_weekdate = ScheduleActivity.class.getDeclaredField("weekDate");
+        field_weekdate.setAccessible(true);
+        field_weekdate.set(rule.getActivity(),sourcweekdate);
+        Field field_selected_weekdate = ScheduleActivity.class.getDeclaredField("currentWeek");
+        field_selected_weekdate.setAccessible(true);
+        field_selected_weekdate.set(rule.getActivity(),1);
+
+        rule.getActivity().onClickNextWeek(new View(appContext));
+
+        assertEquals(52,((int)field_selected_weekdate.get(rule.getActivity())));
+    }
+    @Test //C14.2 start previous week
+    public void onClickPreviousWeek2() throws Exception{
+        Calendar test = Calendar.getInstance();
+        test.setWeekDate(2018,18,1);
+        WeekDate sourcweekdate = new WeekDate();
+        Field field_cal = WeekDate.class.getDeclaredField("cal");
+        field_cal.setAccessible(true);
+        field_cal.set(sourcweekdate,test);
+        Field field_weekdate = ScheduleActivity.class.getDeclaredField("weekDate");
+        field_weekdate.setAccessible(true);
+        field_weekdate.set(rule.getActivity(),sourcweekdate);
+        Field field_selected_weekdate = ScheduleActivity.class.getDeclaredField("currentWeek");
+        field_selected_weekdate.setAccessible(true);
+        field_selected_weekdate.set(rule.getActivity(),18);
+
+        rule.getActivity().onClickNextWeek(new View(appContext));
+
+        assertEquals(17,((int)field_selected_weekdate.get(rule.getActivity())));
+    }
 }
