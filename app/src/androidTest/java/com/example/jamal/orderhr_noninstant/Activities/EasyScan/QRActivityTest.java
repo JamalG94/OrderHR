@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.fail;
 
 /**
  * Created by jamal on 6/15/2018.
@@ -30,11 +29,17 @@ public class QRActivityTest {
 
     @Before
     public void setUp() throws Exception {
+        //if the Looper has not been prepared yet, initialize it. This is needed, else Toasts used in the method will cause it to crash.
+        if(Looper.myLooper() == null){
+            Looper.prepare();
+        }
         appContext = InstrumentationRegistry.getTargetContext();
         session = new Session(appContext);
 
     }
 
+
+    //Tests the flow if an defunct json gets parsed
     @Test
     public void testQRDefunct(){
         String json = "{defunct:{}}";
@@ -46,6 +51,7 @@ public class QRActivityTest {
         Assert.assertEquals(statusExpected, statusGiven);
     }
 
+    //Tests if an staff member tries to reserve through QR
     @Test
     public void testQRReservationStaff(){
         String json = "{reservation:{}}";
@@ -58,15 +64,9 @@ public class QRActivityTest {
         Assert.assertEquals(statusExpected, statusGiven);
     }
 
+    //Tests if an student tries to reserve through QR
     @Test
     public void testQRReservationStudent(){
-        try{
-            Looper.prepare();
-
-        }catch(Exception e){
-            fail();
-        }
-
         String json = "{reservation:{}}";
         session.setUser(new Student());
 
@@ -76,6 +76,19 @@ public class QRActivityTest {
 
         Assert.assertEquals(statusExpected, statusGiven);
     }
+
+    //Tests the EasyScan class if a gibberish json is parsed
+    @Test
+    public void testQRGibberish(){
+        String json = "{abc:{}}";
+        String statusExpected = "JSON FORMAT WITH QR NOT RECOGNIZED";
+
+        EasyScanActivity.GetNextIntentFromInputJson(json, appContext);
+        String statusGiven = EasyScanActivity.pathStatus;
+
+        Assert.assertEquals(statusExpected, statusGiven);
+    }
+
 
 
 }

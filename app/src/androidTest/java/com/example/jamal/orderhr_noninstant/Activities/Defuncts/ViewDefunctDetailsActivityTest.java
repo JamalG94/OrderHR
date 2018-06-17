@@ -66,17 +66,36 @@ public class ViewDefunctDetailsActivityTest {
         listofwraps.add(wrapwrap5);
     }
 
+    //Case where defuncts get filtered with the handled between them
     @Test
-    public void fillListWithFilteredItems() throws Exception {
-        assertEquals(2, ViewDefunctDetailsActivity.FillListWithFilteredItems("MiSSinG",true,listofwraps).size());
-        assertEquals(1, ViewDefunctDetailsActivity.FillListWithFilteredItems("MiSSinG",false,listofwraps).size());
+    public void FilteredMissingWithHandled(){
+        assertEquals(0, ViewDefunctDetailsActivity.FillListWithFilteredItems("broken",true,listofwraps).size());
+
         assertEquals(1, ViewDefunctDetailsActivity.FillListWithFilteredItems("soFtwArE",true,listofwraps).size());
+
+        assertEquals(2, ViewDefunctDetailsActivity.FillListWithFilteredItems("MiSSinG",true,listofwraps).size());
+    }
+
+    //Case where defuncts get filtered without the handled between them
+    @Test
+    public void FilteredMissingWithoutHandled(){
+        assertEquals(1, ViewDefunctDetailsActivity.FillListWithFilteredItems("MiSSinG",false,listofwraps).size());
+
         assertEquals(0, ViewDefunctDetailsActivity.FillListWithFilteredItems("soFtwArE",false,listofwraps).size());
 
-        assertEquals(2, ViewDefunctDetailsActivity.FillListWithFilteredItems("No Type",true,listofwraps).size());
-        assertEquals(0, ViewDefunctDetailsActivity.FillListWithFilteredItems("No Type",false,listofwraps).size());
-        assertEquals(0, ViewDefunctDetailsActivity.FillListWithFilteredItems("broken",true,listofwraps).size());
         assertEquals(0, ViewDefunctDetailsActivity.FillListWithFilteredItems("broken",false,listofwraps).size());
+    }
+
+    //Case where defuncts dont get filtered with the handled between them
+    @Test
+    public void NoFilterWithHandled(){
+        assertEquals(2, ViewDefunctDetailsActivity.FillListWithFilteredItems("No Type",true,listofwraps).size());
+    }
+
+    //Case where defuncts dont get filtered without the handled between them
+    @Test
+    public void NoFilterWithoutHandled(){
+        assertEquals(0, ViewDefunctDetailsActivity.FillListWithFilteredItems("No Type",false,listofwraps).size());
     }
 
 }

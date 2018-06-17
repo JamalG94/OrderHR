@@ -52,6 +52,7 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
 
     boolean initial_available = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,12 +160,12 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
 
     public AvailableSlot getAvaibilityCheckerModelClass(){
         try{
-        AvailableSlot slots_to_book = new AvailableSlot();
-        slots_to_book.setDate(modelreceivedBooking.getDate());
-        slots_to_book.setRoom(modelreceivedBooking.getRoom());
-        slots_to_book.setTimeslotfrom(modelreceivedBooking.getTimeslotfrom());
-        slots_to_book.setTimeslotto(modelreceivedBooking.getTimeslotto());
-        return slots_to_book;
+            AvailableSlot slots_to_book = new AvailableSlot();
+            slots_to_book.setDate(modelreceivedBooking.getDate());
+            slots_to_book.setRoom(modelreceivedBooking.getRoom());
+            slots_to_book.setTimeslotfrom(modelreceivedBooking.getTimeslotfrom());
+            slots_to_book.setTimeslotto(modelreceivedBooking.getTimeslotto());
+            return slots_to_book;
         }
         catch (NullPointerException e){
             Log.d("getAvailalitiy", "getAvaibilityCheckerModelClass: required fields were not available");
@@ -236,5 +237,21 @@ public class BookingMakeByQRJsonActivity extends AppCompatActivity {
             return booking_data;
         }
         throw new NullPointerException();
+    }
+
+    public void setInitial_available(boolean initial_available) {
+        this.initial_available = initial_available;
+    }
+
+    public String getStatus_stringstatus() {
+        return status_stringstatus;
+    }
+
+    public void setTexteditclass(String text) {
+        this.texteditclass.setText(text);
+    }
+
+    public void setTexteditlesson(String text) {
+        this.texteditlesson.setText(text);
     }
 }

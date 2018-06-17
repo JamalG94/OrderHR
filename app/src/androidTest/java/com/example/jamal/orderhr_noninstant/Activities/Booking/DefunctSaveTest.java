@@ -42,6 +42,7 @@ public class DefunctSaveTest {
         }
     }
 
+    //Test case when user hasn't filled in a description for the defunct
     @Test
     public void EmptyString(){
         activity.setTextviewdescription("");
@@ -50,7 +51,7 @@ public class DefunctSaveTest {
         assertEquals("Please fill in the Description field", activity.getSave_string_status());
     }
 
-
+    //Test case when a random description gets filled in by the user for the defunct
     @Test
     public void GibberishString(){
         activity.setTextviewdescription("%s3412145a;fd;a");
@@ -59,6 +60,7 @@ public class DefunctSaveTest {
         assertEquals("Something went wrong with saving the data! Do you have a connection?", activity.getSave_string_status());
     }
 
+    //Test case when a realistic string gets filled in by the user for the defunct
     @Test
     public void RealisticString(){
         activity.setTextviewdescription("EMP Strike");
