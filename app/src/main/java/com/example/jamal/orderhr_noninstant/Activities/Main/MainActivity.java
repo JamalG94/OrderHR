@@ -21,7 +21,6 @@ public class MainActivity extends TableBuilder {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        super.CreateTable(5, 10, "timeslot_", false);
 
         //ASK FOR PERMISSION (CAMERA) (of not yet given)
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
