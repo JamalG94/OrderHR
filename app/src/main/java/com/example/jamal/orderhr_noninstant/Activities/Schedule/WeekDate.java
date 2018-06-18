@@ -40,6 +40,11 @@ public class WeekDate {
         Log.d(" ", "GetYear:" + year);
         return year;
     }
+    public int GetActualWeek(){
+        int week = cal.get(Calendar.WEEK_OF_YEAR);
+        Log.d(" ", "GetWeek:" + week);
+        return week;
+    }
 
     //Used to compare the date of a given booking with the year of our weekschedule'
     public Boolean CompareYears(Date date){

@@ -188,16 +188,16 @@ public class ScheduleActivity extends RowFiller {
     //TODO CLICK BUTTON
     public void onClickNextWeek(View view){
         try{
-        if(currentWeek + 1 <= 52)
-        {
-            currentWeek += 1;
-        }
-        else{
-            currentWeek = 1;
-            weekDate.PassYear();
-            Toast.makeText(this, weekDate.GetYear(), Toast.LENGTH_SHORT).show();
-        }
-        ChangeWeek();
+            if(currentWeek + 1 <= 52)
+            {
+                currentWeek += 1;
+            }
+            else{
+                currentWeek = 1;
+                weekDate.PassYear();
+                Toast.makeText(this, weekDate.GetYear(), Toast.LENGTH_SHORT).show();
+            }
+            ChangeWeek();
         }
         catch (Exception e){
 
