@@ -33,6 +33,9 @@ public class Session {
     public static void setEmail(String email){
         prefs.edit().putString("Email", email).apply();
     }
+    public static void setUsername(String username){
+        prefs.edit().putString("userN", username).apply();
+    }
 
     public static String getEmail(){
         String email = prefs.getString("Email", "");

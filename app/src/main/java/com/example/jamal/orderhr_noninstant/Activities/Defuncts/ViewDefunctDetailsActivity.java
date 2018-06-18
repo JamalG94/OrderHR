@@ -1,6 +1,7 @@
 package com.example.jamal.orderhr_noninstant.Activities.Defuncts;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +15,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jamal.orderhr_noninstant.Activities.Main.MainActivity;
 import com.example.jamal.orderhr_noninstant.Datastructures.DefunctWrapper;
 import com.example.jamal.orderhr_noninstant.API.IO;
 import com.example.jamal.orderhr_noninstant.LocalDBControllers.LocalDatabaseRepository;
@@ -104,8 +106,10 @@ public class ViewDefunctDetailsActivity extends AppCompatActivity{
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        loadMainDefunctListToView(findViewById(R.id.buttonsetHandled));
+//                        loadMainDefunctListToView(findViewById(R.id.buttonsetHandled));
                         Toast.makeText(ViewDefunctDetailsActivity.this,handleDefunct(inputdefunct),Toast.LENGTH_LONG).show();
+                        Intent gobacktomain = new Intent(ViewDefunctDetailsActivity.this, MainActivity.class);
+                        startActivity(gobacktomain);
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
     }

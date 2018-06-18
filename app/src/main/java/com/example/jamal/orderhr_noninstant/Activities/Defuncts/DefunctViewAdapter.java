@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.example.jamal.orderhr_noninstant.Datastructures.DefunctWrapper;
 import com.example.jamal.orderhr_noninstant.R;
 
+import org.w3c.dom.Text;
+
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -53,6 +55,8 @@ public class DefunctViewAdapter extends ArrayAdapter<DefunctWrapper> {
         title.setText(currentitem.getFields().getRoom()+ " " + currentitem.getFields().getType());
         TextView description = (TextView)defunctview.findViewById(R.id.defunctdescription);
         description.setText(currentitem.getFields().getDescription());
+        TextView textviewHandled = (TextView)defunctview.findViewById(R.id.textviewHandled);
+        textviewHandled.setText("Handled: " + currentitem.getFields().isHandled());
 
         return defunctview;
     }

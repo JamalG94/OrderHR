@@ -83,6 +83,7 @@ public class GoogleLoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 session.setUser(user);
+                session.setUsername(account.getEmail());
             }
             else{
                 //Case for when a non-hr account has been selected
