@@ -150,9 +150,9 @@ public class ScheduleActivity extends RowFiller {
         }
     };
 
-    //TODO CLICK BUTTON
+    //testcase C12
     //this is the function that each cell uses and we give to the onclick of each cell
-    private boolean MarkTimedays(TimeDay timeDay){
+    public boolean MarkTimedays(TimeDay timeDay){
         if(selectedBookings.contains(timeDay)){
             selectedBookings.remove(timeDay);
             if(selectedBookings.size() <= 0){
@@ -290,4 +290,9 @@ public class ScheduleActivity extends RowFiller {
             //Toast.makeText(this, "The room you selected has no bookings this week!", Toast.LENGTH_SHORT).show();
         }
     }
+    public void setTextEditLesson(String text) {
+        this.lesson.setText(text);
+
+    }
+
 }

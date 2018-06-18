@@ -29,6 +29,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
+import java.util.ServiceConfigurationError;
 
 import static org.junit.Assert.*;
 
@@ -77,7 +79,7 @@ public class ScheduleActivityTest {
             String getfromactivity = rule.getActivity().status_stringstatus;
             assertEquals("Fill in a lesson code",getfromactivity);
     }
-    @Test //C4.3 no room has been selected
+    @Test //C4.3 no room has been selected run individually
     public void clickReserve3() throws Exception{
             Field field = ScheduleActivity.class.getDeclaredField("selectedBookings");
             field.setAccessible(true);
@@ -85,22 +87,17 @@ public class ScheduleActivityTest {
             test.add(new TimeDay(2,2));
             field.set(rule.getActivity(),test);
 
-
             rule.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    EditText lessonfield = (EditText)rule.getActivity().findViewById(R.id.lesson);
-                    lessonfield.setText("C43TEST");
+                    rule.getActivity().setTextEditLesson("C43TEST");
                 }
             });
-//            EditText lessonfield = (EditText)rule.getActivity().findViewById(R.id.lesson);
-//            lessonfield.setText("C43TEST");
-
             rule.getActivity().ClickReserve(new View(appContext));
             String getfromactivity = rule.getActivity().status_stringstatus;
             assertEquals("Choose a room",getfromactivity);
     }
-    @Test //C4.4 leverything should work out
+    @Test //C4.4 leverything should work out run individually
     public void clickReserve4() throws Exception {
             Field field_selected_timeslots = ScheduleActivity.class.getDeclaredField("selectedBookings");
             field_selected_timeslots.setAccessible(true);
@@ -108,13 +105,14 @@ public class ScheduleActivityTest {
             test.add(new TimeDay(2, 2));
             field_selected_timeslots.set(rule.getActivity(), test);
 
+
             rule.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    EditText lessonfield = (EditText)rule.getActivity().findViewById(R.id.lesson);
-                    lessonfield.setText("C44TEST");
+                    rule.getActivity().setTextEditLesson("C44TEST");
                 }
             });
+//            rule.getActivity().setTextEditLesson("C44TEST");
 
 
             Field field_selected_room = ScheduleActivity.class.getDeclaredField("currentRoom");
@@ -126,6 +124,7 @@ public class ScheduleActivityTest {
             //this booking should already exist. Should return already booked
             assertEquals("Already booked!",getfromactivity);
     }
+
     @Test  //C4.5 control
     public void clickReserve5() throws Exception {
         String getfromactivity = rule.getActivity().status_stringstatus;
@@ -184,7 +183,7 @@ public class ScheduleActivityTest {
         field_selected_weekdate.setAccessible(true);
         field_selected_weekdate.set(rule.getActivity(),1);
 
-        rule.getActivity().onClickNextWeek(new View(appContext));
+        rule.getActivity().onClickPreviousWeek(new View(appContext));
 
         assertEquals(52,((int)field_selected_weekdate.get(rule.getActivity())));
     }
@@ -203,8 +202,51 @@ public class ScheduleActivityTest {
         field_selected_weekdate.setAccessible(true);
         field_selected_weekdate.set(rule.getActivity(),18);
 
-        rule.getActivity().onClickNextWeek(new View(appContext));
+        rule.getActivity().onClickPreviousWeek(new View(appContext));
 
         assertEquals(17,((int)field_selected_weekdate.get(rule.getActivity())));
+    }
+
+    @Test  //C12.1
+    public void MarkTimedaystest1() throws Exception{
+        TimeDay timeslot1 = new TimeDay(3,1);
+        rule.getActivity().MarkTimedays(timeslot1);
+
+        Field currentselectedbookingsfield = ScheduleActivity.class.getDeclaredField("selectedBookings");
+        currentselectedbookingsfield.setAccessible(true);
+        ArrayList<TimeDay> result = (ArrayList<TimeDay> )currentselectedbookingsfield.get(rule.getActivity());
+        assertEquals(result.get(0),timeslot1);
+    }
+    @Test  //C12.2
+    public void MarkTimedaystest2() throws Exception{
+        TimeDay timeslot1 = new TimeDay(1,2);
+        rule.getActivity().MarkTimedays(timeslot1);
+        rule.getActivity().MarkTimedays(timeslot1);
+        Field currentselectedbookingsfield = ScheduleActivity.class.getDeclaredField("selectedBookings");
+        currentselectedbookingsfield.setAccessible(true);
+        ArrayList<TimeDay> result = (ArrayList<TimeDay> )currentselectedbookingsfield.get(rule.getActivity());
+        Field fieldselecteddate = ScheduleActivity.class.getDeclaredField("selectedDate");
+        fieldselecteddate.setAccessible(true);
+        Date resultdate = (Date)fieldselecteddate.get(rule.getActivity());
+
+        assertEquals(0,result.size());
+        assertEquals(null,resultdate);
+    }
+    @Test  //C12.3
+    public void MarkTimedaystest3() throws Exception{
+        TimeDay timeslotc = new TimeDay(3,3);
+        rule.getActivity().MarkTimedays(timeslotc);
+        TimeDay timeslot1 = new TimeDay(1,2);
+        rule.getActivity().MarkTimedays(timeslot1);
+        rule.getActivity().MarkTimedays(timeslot1);
+        Field currentselectedbookingsfield = ScheduleActivity.class.getDeclaredField("selectedBookings");
+        currentselectedbookingsfield.setAccessible(true);
+        ArrayList<TimeDay> result = (ArrayList<TimeDay> )currentselectedbookingsfield.get(rule.getActivity());
+        Field fieldselecteddate = ScheduleActivity.class.getDeclaredField("selectedDate");
+        fieldselecteddate.setAccessible(true);
+        Date resultdate = (Date)fieldselecteddate.get(rule.getActivity());
+
+        assertEquals(result.get(0),timeslotc);
+        assertEquals(null,resultdate);
     }
 }
