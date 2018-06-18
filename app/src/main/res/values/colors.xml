@@ -3,4 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#ff4081</color>
+
+
+    <!-- color int as #AARRGGBB (alpha, red, green, blue) -->
+        <color name="orange">#fff3632b</color>
+        <color name="my_view_color">@color/orange</color>
+
+    <color name="white">#FFFFFF</color>
+
 </resources>

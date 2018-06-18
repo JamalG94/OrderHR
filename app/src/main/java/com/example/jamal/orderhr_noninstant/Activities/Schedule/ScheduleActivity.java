@@ -1,6 +1,7 @@
 package com.example.jamal.orderhr_noninstant.Activities.Schedule;
 
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -142,21 +143,35 @@ public class ScheduleActivity extends RowFiller {
                 if (v.getTag() != null) {
                     TimeDay booking = (TimeDay) (v.getTag());
                     if (SameDayCheck(weekDate.DayToDate(booking.getDay()))) {
-                        MarkTimedays(booking);
-                        }
+                        ChangeBackGroundCell(MarkTimedays(booking), v);
                     }
                 }
             }
-        };
+        }
+    };
 
     //TODO CLICK BUTTON
     //this is the function that each cell uses and we give to the onclick of each cell
-    private void MarkTimedays(TimeDay timeDay){
+    private boolean MarkTimedays(TimeDay timeDay){
         if(selectedBookings.contains(timeDay)){
             selectedBookings.remove(timeDay);
+            if(selectedBookings.size() <= 0){
+                selectedDate = null;
+            }
+            return false;
         }
         else {
             selectedBookings.add(timeDay);
+            return true;
+        }
+    }
+
+    private void ChangeBackGroundCell(Boolean select, View cell){
+        if(select){
+            cell.setBackgroundResource(R.color.orange);
+        }
+        else{
+            cell.setBackgroundResource(R.color.white);
         }
     }
 
